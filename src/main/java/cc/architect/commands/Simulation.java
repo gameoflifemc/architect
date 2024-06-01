@@ -1,30 +1,36 @@
 package cc.architect.commands;
 
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static cc.architect.Utilities.initializeSimulation;
+import static org.bukkit.Bukkit.getPlayer;
 
-public class Simulation implements CommandExecutor {
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+public class Simulation implements BasicCommand {
+    @Override
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length != 2) {
-            return false;
+            return;
+        }
+        if (stack.getSender() instanceof Player) {
+            return;
+        }
+        Player player = getPlayer(args[1]);
+        if (player == null) {
+            return;
         }
         switch (args[0]) {
             case "initialize" -> {
                 Bukkit.broadcast(Component.text("Creating simulation..."));
-                initializeSimulation(args[1]);
-                return true;
+                Bukkit.broadcast(Component.text("Creating simulation..."));
             }
             case "assimilate" -> {
                 Bukkit.broadcast(Component.text("Assimilating simulation..."));
-                return true;
+                Bukkit.broadcast(Component.text("Assimilating simulation..."));
             }
         }
-        return false;
     }
 }
