@@ -1,9 +1,7 @@
 package cc.architect;
 
 import cc.architect.commands.Simulation;
-import cc.architect.events.player.Join;
-import cc.architect.events.player.Move;
-import cc.architect.events.player.Quit;
+import cc.architect.events.player.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -28,7 +26,7 @@ public final class Architect extends JavaPlugin {
             commands.register("simulation", new Simulation());
         });
         // events
-        List<Listener> events = List.of(new Join(), new Quit(), new Move());
+        List<Listener> events = List.of(new Join(), new Quit(), new Move(), new InteractEntity(), new ToggleSneak());
         for (Listener event : events) {
             getServer().getPluginManager().registerEvents(event,this);
         }
