@@ -26,7 +26,7 @@ public final class Architect extends JavaPlugin {
             commands.register("simulation", new Simulation());
         });
         // events
-        List<Listener> events = List.of(new Join(), new Quit(), new Move(), new InteractEntity(), new ToggleSneak());
+        List<Listener> events = List.of(new InteractEntity(), new Join(), new Move(), new Quit(), new ToggleSneak());
         for (Listener event : events) {
             getServer().getPluginManager().registerEvents(event,this);
         }

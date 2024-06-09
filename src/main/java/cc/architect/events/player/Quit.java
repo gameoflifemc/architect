@@ -1,14 +1,24 @@
 package cc.architect.events.player;
 
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import static cc.architect.managers.Dialogue.leaveDialogue;
+import static cc.architect.managers.Dialogue.playersInDialogue;
 
 public class Quit implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         // empty quit message
         e.quitMessage(Component.empty());
+        // get player
+        Player p = e.getPlayer();
+        // remove player from dialogue
+        if (playersInDialogue.contains(p)) {
+            leaveDialogue(p);
+        }
     }
 }
