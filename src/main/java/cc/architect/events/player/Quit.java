@@ -6,8 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import static cc.architect.managers.Dialogue.dialoguePositions;
 import static cc.architect.managers.Dialogue.leaveDialogue;
-import static cc.architect.managers.Dialogue.playersInDialogue;
 
 public class Quit implements Listener {
     @EventHandler
@@ -17,7 +17,7 @@ public class Quit implements Listener {
         // get player
         Player p = e.getPlayer();
         // remove player from dialogue
-        if (playersInDialogue.contains(p)) {
+        if (dialoguePositions.containsKey(p)) {
             leaveDialogue(p);
         }
     }
