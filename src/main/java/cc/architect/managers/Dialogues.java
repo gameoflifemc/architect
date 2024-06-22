@@ -1,29 +1,42 @@
 package cc.architect.managers;
 
 import cc.architect.objects.DialoguePosition;
+import cc.architect.objects.ResponseList;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Objective;
 
 import java.util.HashMap;
 
 import static cc.architect.Architect.plugin;
-import static cc.architect.Utilities.givePlayerDialogOverlay;
+import static cc.architect.Utilities.giveOverlay;
+import static cc.architect.managers.Scoreboards.createObjective;
+import static cc.architect.managers.Scoreboards.showResponses;
 import static org.bukkit.Bukkit.getScheduler;
 
-public class Dialogue {
+public class Dialogues {
     public static final HashMap<Player, DialoguePosition> dialoguePositions = new HashMap<>();
-    public static void enterDialogue(Player p, Location targetLoc) {
+    public static final HashMap<Player, ResponseList> responseLists = new HashMap<>();
+    public static void enterDialogue(Player p, Location targetLoc, String id) {
         // add player to dialogue
         dialoguePositions.put(p, new DialoguePosition(p.getLocation(), targetLoc));
         // force player to look at target
-        forcePlayerRotation(p);
+        createCamera(p);
         // give player overlay
-        givePlayerDialogOverlay(p);
+        giveOverlay(p);
+        // prepare response list
+        ResponseList responseList = new ResponseList(id);
+        // add response list to response lists
+        responseLists.put(p, responseList);
+        // create a new objective
+        createObjective(p);
+        // show player responses
+        showResponses(p);
     }
-    public static void forcePlayerRotation(Player p) {
+    private static void createCamera(Player p) {
         // entity location
         Location cameraLoc = p.getEyeLocation();
         // summon camera entity
@@ -62,6 +75,15 @@ public class Dialogue {
         pos.getCamera().remove();
         // remove player from dialogue
         dialoguePositions.remove(p);
+        // get objective
+        Objective objective = p.getScoreboard().getObjective(p.toString());
+        if (objective == null) {
+            return;
+        }
+        // unregister objective
+        objective.unregister();
+        // remove response list
+        responseLists.remove(p);
         // remove overlay
         p.getInventory().setHelmet(ItemStack.empty());
     }

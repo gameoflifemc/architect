@@ -1,0 +1,27 @@
+dialogues:
+    greeting:
+        response1:
+            - "Hello!"
+            - "Friend!"
+        response2:
+            - "Hi!"
+            - "Friend!"
+        response3:
+            - "Hey!"
+            - "Friend!"
+        response4:
+            - "Good morning!"
+            - "Friend!"
+    farewell:
+        response1:
+            - "Goodbye!"
+            - "Friend!"
+        response2:
+            - "Bye!"
+            - "Friend!"
+        response3:
+            - "See you!"
+            - "Friend!"
+        response4:
+            - "Take care!"
+            - "Friend!"

@@ -4,7 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerStopSpectatingEntityEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import static cc.architect.managers.Dialogue.dialoguePositions;
+import static cc.architect.managers.Dialogues.dialoguePositions;
 
 public class StopSpectatingEntity implements Listener {
     @EventHandler

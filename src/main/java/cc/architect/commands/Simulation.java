@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static cc.architect.managers.Instance.initializeSimulation;
+import static cc.architect.managers.Instances.initializeSimulation;
 import static org.bukkit.Bukkit.getPlayer;
 
 public class Simulation implements BasicCommand {

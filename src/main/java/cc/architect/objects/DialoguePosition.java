@@ -9,7 +9,7 @@ public class DialoguePosition {
     private final float yaw;
     private final float pitch;
     private ItemDisplay camera;
-    public DialoguePosition(Location origin, Location target) {
+    public DialoguePosition(Location origin,Location target) {
         // use origin as base
         loc = origin;
         // camera placeholder

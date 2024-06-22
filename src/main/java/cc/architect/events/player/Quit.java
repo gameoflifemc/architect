@@ -6,8 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static cc.architect.managers.Dialogue.dialoguePositions;
-import static cc.architect.managers.Dialogue.leaveDialogue;
+import static cc.architect.managers.Dialogues.dialoguePositions;
+import static cc.architect.managers.Dialogues.leaveDialogue;
 
 public class Quit implements Listener {
     @EventHandler

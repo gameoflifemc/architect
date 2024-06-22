@@ -22,10 +22,12 @@ public final class Architect extends JavaPlugin {
     public void onEnable() {
         // plugin
         plugin = this;
+        // config
+        saveDefaultConfig();
         // commands
-        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             final Commands commands = event.registrar();
-            commands.register("simulation", new Simulation());
+            commands.register("simulation",new Simulation());
         });
         // events
         List<Listener> events = List.of(
