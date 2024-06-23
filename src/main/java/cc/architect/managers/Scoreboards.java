@@ -23,7 +23,20 @@ public class Scoreboards {
         // set player's scoreboard
         p.setScoreboard(scoreboard);
     }
+    public static void removeObjective(Player p) {
+        // get objective
+        Objective objective = p.getScoreboard().getObjective(p.toString());
+        // remove objective
+        if (objective != null) {
+            objective.unregister();
+            responseLists.remove(p);
+        }
+    }
     public static void showResponses(Player p) {
+        // check if player has an active response list
+        if (!responseLists.containsKey(p)) {
+            return;
+        }
         // get response list
         ResponseList responseList = responseLists.get(p);
         // get objective
@@ -34,7 +47,7 @@ public class Scoreboards {
         // initialize counter
         AtomicInteger counter = new AtomicInteger(0);
         // add responses to objective
-        for (int i = 0; i < responseList.size(); i++) {
+        for (int i = 0; i < 4; i++) {
             // get and increment counter
             int count = counter.getAndAdd(3);
             // get components

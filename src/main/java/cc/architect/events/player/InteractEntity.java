@@ -11,27 +11,42 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import java.util.Optional;
 
-import static cc.architect.managers.Dialogues.dialoguePositions;
-import static cc.architect.managers.Dialogues.enterDialogue;
+import static cc.architect.managers.Dialogues.*;
 
 public class InteractEntity implements Listener {
     @EventHandler
     public void onInteractEntity(PlayerInteractEntityEvent e) {
+        // get player
         Player p = e.getPlayer();
-        if (!dialoguePositions.containsKey(p)) {
-            Entity clicked = e.getRightClicked();
-            if (!(clicked instanceof Interaction)) {
+        // check if clicked entity is an interaction entity
+        Entity clicked = e.getRightClicked();
+        if (!(clicked instanceof Interaction)) {
+            Optional<Entity> optional = clicked.getNearbyEntities(0,0,0).stream().filter(entity -> entity instanceof Interaction).findFirst();
+            if (optional.isEmpty()) {
                 return;
             }
-            // get tags of clicked entity
+            clicked = optional.get();
+        }
+        // cancel event
+        e.setCancelled(true);
+        // check if player is in dialogue
+        if (!dialoguePositions.containsKey(p)) {
+            // get first tag of clicked entity
             Optional<String> possibleId = clicked.getScoreboardTags().stream().findFirst();
-            // check if tags exist
+            // check if the tag exist
             if (possibleId.isEmpty()) {
                 return;
             }
             // enter dialogue
             enterDialogue(p,clicked.getLocation(),possibleId.get());
             Bukkit.broadcast(Component.text("Entering dialogue..."));
+        } else {
+            // check if player has an active response list
+            if (!responseLists.containsKey(p)) {
+                return;
+            }
+            // choose next response
+            responseLists.get(p).chooseNext(p);
         }
     }
 }

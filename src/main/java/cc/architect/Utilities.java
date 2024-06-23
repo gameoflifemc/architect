@@ -21,7 +21,7 @@ public class Utilities {
         StringBuilder sb = new StringBuilder();
         // remove spaces
         for (int i = 0; i < text.length(); i++) {
-            sb.append(text.charAt(i)).append("#");
+            sb.append(text.charAt(i)).append("@");
         }
         return sb.toString();
     }

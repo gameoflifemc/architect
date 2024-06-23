@@ -12,6 +12,8 @@ public class DialoguePosition {
     public DialoguePosition(Location origin,Location target) {
         // use origin as base
         loc = origin;
+        // add 0.1 to y to prevent clipping
+        loc.add(0,0.1,0);
         // camera placeholder
         camera = null;
         // subtract vectors

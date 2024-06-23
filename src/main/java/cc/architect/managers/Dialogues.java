@@ -2,19 +2,19 @@ package cc.architect.managers;
 
 import cc.architect.objects.DialoguePosition;
 import cc.architect.objects.ResponseList;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.Objective;
 
 import java.util.HashMap;
 
 import static cc.architect.Architect.plugin;
 import static cc.architect.Utilities.giveOverlay;
-import static cc.architect.managers.Scoreboards.createObjective;
-import static cc.architect.managers.Scoreboards.showResponses;
+import static cc.architect.managers.RepeatingTasks.*;
+import static cc.architect.managers.Scoreboards.*;
 import static org.bukkit.Bukkit.getScheduler;
 
 public class Dialogues {
@@ -27,6 +27,11 @@ public class Dialogues {
         createCamera(p);
         // give player overlay
         giveOverlay(p);
+        // send controls
+        p.sendActionBar(standard);
+        
+        
+        
         // prepare response list
         ResponseList responseList = new ResponseList(id);
         // add response list to response lists
@@ -35,12 +40,14 @@ public class Dialogues {
         createObjective(p);
         // show player responses
         showResponses(p);
+        // send controls
+        p.sendActionBar(response);
     }
     private static void createCamera(Player p) {
         // entity location
         Location cameraLoc = p.getEyeLocation();
         // summon camera entity
-        ItemDisplay camera = cameraLoc.getWorld().spawn(cameraLoc, ItemDisplay.class);
+        ItemDisplay camera = cameraLoc.getWorld().spawn(cameraLoc,ItemDisplay.class);
         // set camera's teleport duration
         camera.setTeleportDuration(20);
         // put player in spectator mode
@@ -66,25 +73,20 @@ public class Dialogues {
         // get player's dialogue position
         DialoguePosition pos = dialoguePositions.get(p);
         // remove player from camera
-        p.setSpectatorTarget(null);
+        p.setSpectatorTarget(p);
         // teleport player back to original location
         p.teleport(pos.getLocation());
         // put player back in adventure mode
         p.setGameMode(GameMode.ADVENTURE);
         // remove camera entity
         pos.getCamera().remove();
+        // remove objective
+        removeObjective(p);
         // remove player from dialogue
         dialoguePositions.remove(p);
-        // get objective
-        Objective objective = p.getScoreboard().getObjective(p.toString());
-        if (objective == null) {
-            return;
-        }
-        // unregister objective
-        objective.unregister();
-        // remove response list
-        responseLists.remove(p);
         // remove overlay
         p.getInventory().setHelmet(ItemStack.empty());
+        // send empty action bar
+        p.sendActionBar(Component.empty());
     }
 }
