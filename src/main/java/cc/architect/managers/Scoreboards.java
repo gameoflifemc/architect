@@ -1,38 +1,40 @@
 package cc.architect.managers;
 
+import cc.architect.objects.HashMaps;
 import cc.architect.objects.ResponseList;
 import io.papermc.paper.scoreboard.numbers.NumberFormat;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static cc.architect.managers.Dialogues.responseLists;
-import static org.bukkit.Bukkit.getScoreboardManager;
-
 public class Scoreboards {
-    public static void createObjective(Player p) {
+    public static void create(Player p) {
         // get scoreboard
-        Scoreboard scoreboard = getScoreboardManager().getNewScoreboard();
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         // create objective
-        Objective objective = scoreboard.registerNewObjective(p.toString(),Criteria.DUMMY,Component.empty());
+        Objective objective = scoreboard.registerNewObjective(p.toString(), Criteria.DUMMY,Component.empty());
         // set objective settings
         objective.numberFormat(NumberFormat.blank());
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         // set player's scoreboard
         p.setScoreboard(scoreboard);
     }
-    public static void removeObjective(Player p) {
+    public static void remove(Player p) {
         // get objective
         Objective objective = p.getScoreboard().getObjective(p.toString());
         // remove objective
         if (objective != null) {
             objective.unregister();
-            responseLists.remove(p);
+            HashMaps.RESPONSE_LISTS.remove(p);
         }
     }
-    public static void showResponses(Player p) {
+    public static void show(Player p) {
+        // get response lists
+        HashMap<Player, ResponseList> responseLists = HashMaps.RESPONSE_LISTS;
         // check if player has an active response list
         if (!responseLists.containsKey(p)) {
             return;

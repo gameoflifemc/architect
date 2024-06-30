@@ -1,5 +1,6 @@
 package cc.architect.commands;
 
+import cc.architect.managers.Instances;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
@@ -7,27 +8,28 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static cc.architect.managers.Instances.initializeSimulation;
-import static org.bukkit.Bukkit.getPlayer;
-
 public class Simulation implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        if (args.length != 2) {
+        if (args.length != 3) {
             return;
         }
-        Player p = getPlayer(args[1]);
+        Player p = Bukkit.getPlayer(args[1]);
         if (p == null) {
             return;
         }
         switch (args[0]) {
             case "initialize" -> {
-                Bukkit.broadcast(Component.text("Creating simulation..."));
-                initializeSimulation(p.getName());
+                Bukkit.broadcast(Component.text("Initializing simulation..."));
+                Instances.initialize(p.getName(),args[2]);
             }
             case "assimilate" -> {
-                Bukkit.broadcast(Component.text("Assimilating simulation..."));
-                Bukkit.broadcast(Component.text("Assimilating simulation..."));
+                Bukkit.broadcast(Component.text("Assimilating player to simulation..."));
+                Instances.assimilate(p);
+            }
+            case "decommission" -> {
+                Bukkit.broadcast(Component.text("Decommissioning simulation..."));
+                Instances.decommission(p.getName());
             }
         }
     }

@@ -1,12 +1,13 @@
 package cc.architect.events.player;
 
+import cc.architect.objects.HashMaps;
+import cc.architect.objects.ResponseList;
 import com.destroystokyo.paper.event.player.PlayerStartSpectatingEntityEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import static cc.architect.managers.Dialogues.dialoguePositions;
-import static cc.architect.managers.Dialogues.responseLists;
+import java.util.HashMap;
 
 public class StartSpectatingEntity implements Listener {
     @EventHandler
@@ -14,7 +15,7 @@ public class StartSpectatingEntity implements Listener {
         // get player
         Player p = e.getPlayer();
         // check if player is in dialogue
-        if (!dialoguePositions.containsKey(p)) {
+        if (!HashMaps.DIALOGUE_POSITIONS.containsKey(p)) {
             return;
         }
         // check if player is not spectating themselves
@@ -23,6 +24,8 @@ public class StartSpectatingEntity implements Listener {
         }
         // cancel event
         e.setCancelled(true);
+        // get response lists
+        HashMap<Player, ResponseList> responseLists = HashMaps.RESPONSE_LISTS;
         // check if player has an active response list
         if (!responseLists.containsKey(p)) {
             return;

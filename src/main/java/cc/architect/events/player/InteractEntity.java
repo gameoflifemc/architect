@@ -1,5 +1,8 @@
 package cc.architect.events.player;
 
+import cc.architect.managers.Dialogues;
+import cc.architect.objects.HashMaps;
+import cc.architect.objects.ResponseList;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -9,9 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
+import java.util.HashMap;
 import java.util.Optional;
-
-import static cc.architect.managers.Dialogues.*;
 
 public class InteractEntity implements Listener {
     @EventHandler
@@ -30,7 +32,7 @@ public class InteractEntity implements Listener {
         // cancel event
         e.setCancelled(true);
         // check if player is in dialogue
-        if (!dialoguePositions.containsKey(p)) {
+        if (!HashMaps.DIALOGUE_POSITIONS.containsKey(p)) {
             // get first tag of clicked entity
             Optional<String> possibleId = clicked.getScoreboardTags().stream().findFirst();
             // check if the tag exist
@@ -38,9 +40,11 @@ public class InteractEntity implements Listener {
                 return;
             }
             // enter dialogue
-            enterDialogue(p,clicked.getLocation(),possibleId.get());
+            Dialogues.enter(p,clicked.getLocation(),possibleId.get());
             Bukkit.broadcast(Component.text("Entering dialogue..."));
         } else {
+            // get response lists
+            HashMap<Player, ResponseList> responseLists = HashMaps.RESPONSE_LISTS;
             // check if player has an active response list
             if (!responseLists.containsKey(p)) {
                 return;

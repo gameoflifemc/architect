@@ -1,27 +1,27 @@
 package cc.architect.managers;
 
+import cc.architect.Architect;
+import cc.architect.objects.HashMaps;
+import cc.architect.objects.Messages;
+import cc.architect.objects.ResponseList;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import static cc.architect.Architect.plugin;
-import static cc.architect.managers.Dialogues.dialoguePositions;
-import static cc.architect.managers.Dialogues.responseLists;
-import static org.bukkit.Bukkit.getScheduler;
+import java.util.HashMap;
 
 public class RepeatingTasks {
-    public static Component standard = Component.text("SHIFT - Leave");
-    public static Component response = Component.text("SHIFT - Leave, RIGHT-CLICK - Next Response, LEFT-CLICK - Choose");
-    public static Component confirm = Component.text("SHIFT - Leave, LEFT-CLICK - Confirm");
     public static void scheduleActionBarTask() {
-        getScheduler().runTaskTimer(plugin, () -> {
-            for (Player p : dialoguePositions.keySet()) {
+        Bukkit.getScheduler().runTaskTimer(Architect.PLUGIN,() -> {
+            for (Player p : HashMaps.RESPONSE_LISTS.keySet()) {
                 // initialize message
                 Component message;
                 // determine message
+                HashMap<Player, ResponseList> responseLists = HashMaps.RESPONSE_LISTS;
                 if (responseLists.containsKey(p)) {
-                    message = responseLists.get(p).isConfirmed() ? confirm : response;
+                    message = responseLists.get(p).isConfirmed() ? Messages.CONFIRM : Messages.RESPONSE;
                 } else {
-                    message = standard;
+                    message = Messages.STANDARD;
                 }
                 // send message
                 p.sendActionBar(message);

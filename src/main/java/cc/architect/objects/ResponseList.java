@@ -1,7 +1,9 @@
 package cc.architect.objects;
 
+import cc.architect.Architect;
+import cc.architect.Utilities;
+import cc.architect.managers.Scoreboards;
 import cc.architect.records.Response;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,21 +12,14 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cc.architect.Architect.plugin;
-import static cc.architect.Utilities.addNegativeSpaces;
-import static cc.architect.managers.RepeatingTasks.*;
-import static cc.architect.managers.Scoreboards.removeObjective;
-import static cc.architect.managers.Scoreboards.showResponses;
-
 public class ResponseList {
-    private static final Key DIALOGUE_FONT = Key.key("minecraft:dialogue");
     private final List<Response> responses = new ArrayList<>(4);
     private int chosen = 3;
     private boolean cooldown = false;
     private boolean confirmed = false;
     public ResponseList(String id) {
         // get config
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = Architect.PLUGIN.getConfig();
         // get responses
         for (int i = 1; i <= 4; i++) {
             List<String> response = config.getStringList("dialogues." + id + ".response" + i);
@@ -39,16 +34,16 @@ public class ResponseList {
         // the third component is always empty
         components[2] = Component.empty();
         // get formatted response lines
-        String firstLine = addNegativeSpaces(response.firstLine());
-        String secondLine = addNegativeSpaces(response.secondLine());
+        String firstLine = Utilities.addNegativeSpaces(response.firstLine());
+        String secondLine = Utilities.addNegativeSpaces(response.secondLine());
         // get background character
         String background = chosen == i ? confirmed ? "#&#" : "^" : "%";
         // set first line
-        components[1] = Component.text("$" + background + "$" + firstLine).font(DIALOGUE_FONT);
+        components[1] = Component.text("$" + background + "$" + firstLine).font(Fonts.DIALOGUE_FONT);
         // get aligner for the second line
         String aligner = chosen == i && confirmed ? "#" : "";
         // set second line
-        components[0] = Component.text(aligner + "@$ " + secondLine).font(DIALOGUE_FONT);
+        components[0] = Component.text(aligner + "@$ " + secondLine).font(Fonts.DIALOGUE_FONT);
         // return finished components
         return components;
     }
@@ -60,7 +55,7 @@ public class ResponseList {
         // activate cooldown
         cooldown = true;
         // schedule cooldown reset
-        Bukkit.getScheduler().runTaskLater(plugin,() -> cooldown = false,1);
+        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> cooldown = false,1);
         // reset confirm indicator
         confirmed = false;
         // get next response
@@ -68,9 +63,9 @@ public class ResponseList {
         // increment chosen
         chosen = next < 0 ? 3 : next;
         // update scoreboard
-        showResponses(p);
+        Scoreboards.show(p);
         // send controls
-        p.sendActionBar(response);
+        p.sendActionBar(Messages.RESPONSE);
     }
     public void confirmOrSend(Player p) {
         // check if response is confirmed
@@ -78,18 +73,18 @@ public class ResponseList {
             // get response
             Response response = responses.get(chosen);
             // remove objective
-            removeObjective(p);
+            Scoreboards.remove(p);
             // send response
             Bukkit.broadcast(Component.text(response.firstLine() + " " + response.secondLine()));
             // send controls
-            p.sendActionBar(standard);
+            p.sendActionBar(Messages.STANDARD);
         } else {
             // confirm response
             confirmed = true;
             // update scoreboard
-            showResponses(p);
+            Scoreboards.show(p);
             // send controls
-            p.sendActionBar(confirm);
+            p.sendActionBar(Messages.CONFIRM);
         }
     }
     public boolean isConfirmed() {

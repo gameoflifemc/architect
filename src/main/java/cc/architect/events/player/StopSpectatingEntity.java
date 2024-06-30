@@ -1,15 +1,14 @@
 package cc.architect.events.player;
 
+import cc.architect.objects.HashMaps;
 import com.destroystokyo.paper.event.player.PlayerStopSpectatingEntityEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import static cc.architect.managers.Dialogues.dialoguePositions;
-
 public class StopSpectatingEntity implements Listener {
     @EventHandler
     public void onStopSpectatingEntity(PlayerStopSpectatingEntityEvent e) {
-        if (dialoguePositions.containsKey(e.getPlayer())) {
+        if (HashMaps.DIALOGUE_POSITIONS.containsKey(e.getPlayer())) {
             e.setCancelled(true);
         }
     }

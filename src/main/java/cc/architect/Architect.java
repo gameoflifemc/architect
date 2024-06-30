@@ -2,10 +2,10 @@ package cc.architect;
 
 import cc.architect.commands.Simulation;
 import cc.architect.events.player.*;
-import io.papermc.paper.command.brigadier.Commands;
+import cc.architect.managers.RepeatingTasks;
+import cc.architect.objects.Messages;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -13,22 +13,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-import static cc.architect.managers.RepeatingTasks.scheduleActionBarTask;
-import static org.bukkit.Bukkit.getConsoleSender;
-
 public final class Architect extends JavaPlugin {
-    public static Plugin plugin;
+    public static Plugin PLUGIN;
     @Override
     public void onEnable() {
         // plugin
-        plugin = this;
+        PLUGIN = this;
         // config
-        saveDefaultConfig();
+        this.saveDefaultConfig();
         // commands
-        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,event -> {
-            final Commands commands = event.registrar();
-            commands.register("simulation",new Simulation());
-        });
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,event -> event.registrar().register("simulation",new Simulation()));
         // events
         List<Listener> events = List.of(
             new InteractEntity(),
@@ -43,10 +37,9 @@ public final class Architect extends JavaPlugin {
             pluginManager.registerEvents(event,this);
         }
         // start repeating tasks
-        scheduleActionBarTask();
+        RepeatingTasks.scheduleActionBarTask();
         // welcome message
-        getConsoleSender().sendMessage(Component.text("Core Architect protocol running, the Game of Life is ready to begin.")
-            .color(TextColor.fromHexString("#FF1313")));
+        Bukkit.getConsoleSender().sendMessage(Messages.WELCOME);
         // yay, we're up and running!
     }
 }
