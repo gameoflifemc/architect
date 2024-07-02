@@ -12,9 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Dialogues {
-    public static void enter(Player p, Location targetLoc, String id) {
+    /**
+     * Insert a player into a dialogue
+     * @param p Player
+     * @param target Target location
+     * @param uid Dialogue unique identifier
+     */
+    public static void enter(Player p, Location target, String uid) {
         // add player to dialogue
-        HashMaps.DIALOGUE_POSITIONS.put(p, new DialoguePosition(p.getLocation(), targetLoc));
+        HashMaps.DIALOGUE_POSITIONS.put(p, new DialoguePosition(p.getLocation(), target));
         // force player to look at target
         Dialogues.createCamera(p);
         // give player overlay
@@ -25,7 +31,7 @@ public class Dialogues {
         
         
         // prepare response list
-        ResponseList responseList = new ResponseList(id);
+        ResponseList responseList = new ResponseList(uid);
         // add response list to response lists
         HashMaps.RESPONSE_LISTS.put(p, responseList);
         // create a new objective
@@ -35,6 +41,10 @@ public class Dialogues {
         // send controls
         p.sendActionBar(Messages.RESPONSE);
     }
+    /**
+     * Remove a player from a dialogue
+     * @param p Player
+     */
     public static void leave(Player p) {
         // get player's dialogue position
         DialoguePosition pos = HashMaps.DIALOGUE_POSITIONS.get(p);
@@ -55,11 +65,15 @@ public class Dialogues {
         // send empty action bar
         p.sendActionBar(Component.empty());
     }
+    /**
+     * Create a camera entity for a player
+     * @param p Player
+     */
     private static void createCamera(Player p) {
         // entity location
-        Location cameraLoc = p.getEyeLocation();
+        Location loc = p.getEyeLocation();
         // summon camera entity
-        ItemDisplay camera = cameraLoc.getWorld().spawn(cameraLoc,ItemDisplay.class);
+        ItemDisplay camera = loc.getWorld().spawn(loc,ItemDisplay.class);
         // set camera's teleport duration
         camera.setTeleportDuration(20);
         // put player in spectator mode
@@ -71,14 +85,14 @@ public class Dialogues {
         // save camera entity to dialogue position
         pos.setCamera(camera);
         // new camera location
-        Location newCameraLoc = cameraLoc.clone();
+        Location newLoc = loc.clone();
         // set target rotations
-        newCameraLoc.setYaw(pos.getYaw());
-        newCameraLoc.setPitch(pos.getPitch());
+        newLoc.setYaw(pos.getYaw());
+        newLoc.setPitch(pos.getPitch());
         // teleport camera entity to target location
         Bukkit.getScheduler().runTaskLater(Architect.PLUGIN, () -> {
             // teleport camera entity
-            camera.teleport(newCameraLoc);
+            camera.teleport(newLoc);
         },2);
     }
 }

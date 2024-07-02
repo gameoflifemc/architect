@@ -9,6 +9,11 @@ public class DialoguePosition {
     private final float yaw;
     private final float pitch;
     private ItemDisplay camera;
+    /**
+     * Holds the position data of a dialogue, including the origin and target yaw and pitch as well as the camera entity
+     * @param origin The origin location
+     * @param target The target location
+     */
     public DialoguePosition(Location origin,Location target) {
         // use origin as base
         loc = origin;
@@ -25,22 +30,47 @@ public class DialoguePosition {
         loc.setYaw(yaw);
         loc.setPitch(pitch);
     }
+    /**
+     * Converts degrees in a double format to a float format
+     * @param value The double to convert
+     * @return The converted float
+     */
     private float toFloat(double value) {
         // invert value if over 180
         return value > 180 ? (float) -(360 - value) : (float) value;
     }
+    /**
+     * Sets the camera entity
+     * @param cameraEntity The camera entity
+     */
     public void setCamera(ItemDisplay cameraEntity) {
         camera = cameraEntity;
     }
+    /**
+     * Gets the camera entity
+     * @return The camera entity
+     */
     public ItemDisplay getCamera() {
         return camera;
     }
+    /**
+     * Gets the location
+     * @return The location
+     */
     public Location getLocation() {
         return loc;
     }
+    /**
+     * Gets the yaw
+     * @return The yaw
+     */
     public float getYaw() {
         return yaw;
     }
+    /**
+     * Gets the pitch
+     * @return The pitch
+     */
     public float getPitch() {
         return pitch;
     }

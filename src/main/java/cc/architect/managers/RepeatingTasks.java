@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class RepeatingTasks {
+    /**
+     * Schedule the action bar to get updated every 30 ticks.
+     */
     public static void scheduleActionBarTask() {
         Bukkit.getScheduler().runTaskTimer(Architect.PLUGIN,() -> {
             for (Player p : HashMaps.RESPONSE_LISTS.keySet()) {

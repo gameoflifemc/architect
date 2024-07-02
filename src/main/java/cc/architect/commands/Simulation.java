@@ -11,13 +11,17 @@ import org.jetbrains.annotations.NotNull;
 public class Simulation implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        if (args.length != 3) {
+        // check command arguments
+        int length = args.length;
+        if (length < 2 || length > 3) {
             return;
         }
+        // get player
         Player p = Bukkit.getPlayer(args[1]);
         if (p == null) {
             return;
         }
+        // determine command
         switch (args[0]) {
             case "initialize" -> {
                 Bukkit.broadcast(Component.text("Initializing simulation..."));

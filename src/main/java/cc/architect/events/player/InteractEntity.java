@@ -34,13 +34,13 @@ public class InteractEntity implements Listener {
         // check if player is in dialogue
         if (!HashMaps.DIALOGUE_POSITIONS.containsKey(p)) {
             // get first tag of clicked entity
-            Optional<String> possibleId = clicked.getScoreboardTags().stream().findFirst();
+            Optional<String> possibleUid = clicked.getScoreboardTags().stream().findFirst();
             // check if the tag exist
-            if (possibleId.isEmpty()) {
+            if (possibleUid.isEmpty()) {
                 return;
             }
             // enter dialogue
-            Dialogues.enter(p,clicked.getLocation(),possibleId.get());
+            Dialogues.enter(p,clicked.getLocation(),possibleUid.get());
             Bukkit.broadcast(Component.text("Entering dialogue..."));
         } else {
             // get response lists

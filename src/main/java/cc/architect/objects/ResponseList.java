@@ -17,15 +17,24 @@ public class ResponseList {
     private int chosen = 3;
     private boolean cooldown = false;
     private boolean confirmed = false;
-    public ResponseList(String id) {
+    /**
+     * A list of 4 responses for a dialogue interaction.
+     * @param uid unique identifier of the dialogue.
+     */
+    public ResponseList(String uid) {
         // get config
         FileConfiguration config = Architect.PLUGIN.getConfig();
         // get responses
         for (int i = 1; i <= 4; i++) {
-            List<String> response = config.getStringList("dialogues." + id + ".response" + i);
+            List<String> response = config.getStringList("dialogues." + uid + ".response" + i);
             responses.add(new Response(response.get(0), response.get(1)));
         }
     }
+    /**
+     * Get the components for a response in the response list. Each response has two lines of text and an empty line for offset purposes.
+     * @param i The index of the response to get components for.
+     * @return An array of components for the response.
+     */
     public Component[] getComponents(int i) {
         // get response
         Response response = responses.get(i);
@@ -47,6 +56,10 @@ public class ResponseList {
         // return finished components
         return components;
     }
+    /**
+     * Choose the next response in the response list.
+     * @param p The player that this response list belongs to.
+     */
     public void chooseNext(Player p) {
         // check for cooldown
         if (cooldown) {
@@ -67,6 +80,10 @@ public class ResponseList {
         // send controls
         p.sendActionBar(Messages.RESPONSE);
     }
+    /**
+     * Before a response is sent, it must be confirmed. This method will either confirm the current response or, if it is already confirmed, send it.
+     * @param p The player that this response list belongs to.
+     */
     public void confirmOrSend(Player p) {
         // check if response is confirmed
         if (confirmed) {
@@ -87,6 +104,10 @@ public class ResponseList {
             p.sendActionBar(Messages.CONFIRM);
         }
     }
+    /**
+     * Check if the current response is confirmed. See {@link #confirmOrSend(Player)} for information about response confirmation.
+     * @return True if the response is confirmed, false otherwise.
+     */
     public boolean isConfirmed() {
         return confirmed;
     }

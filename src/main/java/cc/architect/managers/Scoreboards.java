@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Scoreboards {
+    /**
+     * Create a new scoreboard and objective for the player.
+     * @param p The player to create the scoreboard for.
+     */
     public static void create(Player p) {
         // get scoreboard
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -23,6 +27,10 @@ public class Scoreboards {
         // set player's scoreboard
         p.setScoreboard(scoreboard);
     }
+    /**
+     * Remove the player's scoreboard and objective.
+     * @param p The player to remove the scoreboard for.
+     */
     public static void remove(Player p) {
         // get objective
         Objective objective = p.getScoreboard().getObjective(p.toString());
@@ -32,6 +40,10 @@ public class Scoreboards {
             HashMaps.RESPONSE_LISTS.remove(p);
         }
     }
+    /**
+     * Show the player's response list on their scoreboard.
+     * @param p The player to show the response list for.
+     */
     public static void show(Player p) {
         // get response lists
         HashMap<Player, ResponseList> responseLists = HashMaps.RESPONSE_LISTS;

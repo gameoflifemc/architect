@@ -6,6 +6,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class Utilities {
+    /**
+     * Give a player a carved pumpkin overlay.
+     * @param p Player to give overlay.
+     */
     public static void giveOverlay(Player p) {
         // prepare helmet item
         ItemStack item = new ItemStack(Material.CARVED_PUMPKIN);
@@ -16,6 +20,11 @@ public class Utilities {
         // set helmet item
         p.getInventory().setHelmet(item);
     }
+    /**
+     * Add negative spaces in between a string.
+     * @param text Text to add negative spaces to.
+     * @return Text with negative spaces.
+     */
     public static String addNegativeSpaces(String text) {
         // prepare new string
         StringBuilder sb = new StringBuilder();
