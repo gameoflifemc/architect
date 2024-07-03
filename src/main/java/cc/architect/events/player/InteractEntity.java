@@ -6,7 +6,7 @@ import cc.architect.objects.ResponseList;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Interaction;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,14 +20,11 @@ public class InteractEntity implements Listener {
     public void onInteractEntity(PlayerInteractEntityEvent e) {
         // get player
         Player p = e.getPlayer();
-        // check if clicked entity is an interaction entity
+        // get clicked entity
         Entity clicked = e.getRightClicked();
-        if (!(clicked instanceof Interaction)) {
-            Optional<Entity> optional = clicked.getNearbyEntities(0,0,0).stream().filter(entity -> entity instanceof Interaction).findFirst();
-            if (optional.isEmpty()) {
-                return;
-            }
-            clicked = optional.get();
+        // check if clicked entity is an interaction entity
+        if (clicked.getType() != EntityType.INTERACTION) {
+            return;
         }
         // cancel event
         e.setCancelled(true);
@@ -39,6 +36,7 @@ public class InteractEntity implements Listener {
             if (possibleUid.isEmpty()) {
                 return;
             }
+            
             // enter dialogue
             Dialogues.enter(p,clicked.getLocation(),possibleUid.get());
             Bukkit.broadcast(Component.text("Entering dialogue..."));

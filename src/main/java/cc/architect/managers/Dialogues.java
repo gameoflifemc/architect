@@ -2,7 +2,10 @@ package cc.architect.managers;
 
 import cc.architect.Architect;
 import cc.architect.Utilities;
-import cc.architect.objects.*;
+import cc.architect.objects.DialoguePosition;
+import cc.architect.objects.HashMaps;
+import cc.architect.objects.Messages;
+import cc.architect.objects.ResponseList;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -26,7 +29,7 @@ public class Dialogues {
         // give player overlay
         Utilities.giveOverlay(p);
         // send controls
-        p.sendActionBar(Messages.STANDARD);
+        p.sendActionBar(Messages.ACTIONBAR_DIALOGUE_STANDARD);
         
         
         
@@ -39,7 +42,7 @@ public class Dialogues {
         // show player responses
         Scoreboards.show(p);
         // send controls
-        p.sendActionBar(Messages.RESPONSE);
+        p.sendActionBar(Messages.ACTIONBAR_DIALOGUE_RESPONSE);
     }
     /**
      * Remove a player from a dialogue

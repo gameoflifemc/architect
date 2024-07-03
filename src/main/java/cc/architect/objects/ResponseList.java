@@ -48,11 +48,11 @@ public class ResponseList {
         // get background character
         String background = chosen == i ? confirmed ? "#&#" : "^" : "%";
         // set first line
-        components[1] = Component.text("$" + background + "$" + firstLine).font(Fonts.DIALOGUE_FONT);
+        components[1] = Component.text("$" + background + "$" + firstLine).font(Fonts.DIALOGUE);
         // get aligner for the second line
         String aligner = chosen == i && confirmed ? "#" : "";
         // set second line
-        components[0] = Component.text(aligner + "@$ " + secondLine).font(Fonts.DIALOGUE_FONT);
+        components[0] = Component.text(aligner + "@$ " + secondLine).font(Fonts.DIALOGUE);
         // return finished components
         return components;
     }
@@ -78,7 +78,7 @@ public class ResponseList {
         // update scoreboard
         Scoreboards.show(p);
         // send controls
-        p.sendActionBar(Messages.RESPONSE);
+        p.sendActionBar(Messages.ACTIONBAR_DIALOGUE_RESPONSE);
     }
     /**
      * Before a response is sent, it must be confirmed. This method will either confirm the current response or, if it is already confirmed, send it.
@@ -94,14 +94,14 @@ public class ResponseList {
             // send response
             Bukkit.broadcast(Component.text(response.firstLine() + " " + response.secondLine()));
             // send controls
-            p.sendActionBar(Messages.STANDARD);
+            p.sendActionBar(Messages.ACTIONBAR_DIALOGUE_STANDARD);
         } else {
             // confirm response
             confirmed = true;
             // update scoreboard
             Scoreboards.show(p);
             // send controls
-            p.sendActionBar(Messages.CONFIRM);
+            p.sendActionBar(Messages.ACTIONBAR_DIALOGUE_CONFIRM);
         }
     }
     /**

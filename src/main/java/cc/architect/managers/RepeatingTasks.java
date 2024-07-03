@@ -22,9 +22,9 @@ public class RepeatingTasks {
                 // determine message
                 HashMap<Player, ResponseList> responseLists = HashMaps.RESPONSE_LISTS;
                 if (responseLists.containsKey(p)) {
-                    message = responseLists.get(p).isConfirmed() ? Messages.CONFIRM : Messages.RESPONSE;
+                    message = responseLists.get(p).isConfirmed() ? Messages.ACTIONBAR_DIALOGUE_CONFIRM : Messages.ACTIONBAR_DIALOGUE_RESPONSE;
                 } else {
-                    message = Messages.STANDARD;
+                    message = Messages.ACTIONBAR_DIALOGUE_STANDARD;
                 }
                 // send message
                 p.sendActionBar(message);

@@ -1,10 +1,11 @@
 package cc.architect;
 
+import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
 import cc.architect.events.player.*;
 import cc.architect.managers.RepeatingTasks;
 import cc.architect.objects.Messages;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -21,8 +22,11 @@ public final class Architect extends JavaPlugin {
         PLUGIN = this;
         // config
         this.saveDefaultConfig();
+        // get lifecycle manager
+        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         // commands
-        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,event -> event.registrar().register("simulation",new Simulation()));
+        Simulation.register(manager);
+        Party.register(manager);
         // events
         List<Listener> events = List.of(
             new InteractEntity(),
@@ -32,14 +36,14 @@ public final class Architect extends JavaPlugin {
             new StopSpectatingEntity(),
             new ToggleSneak()
         );
-        PluginManager pluginManager = getServer().getPluginManager();
+        PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {
             pluginManager.registerEvents(event,this);
         }
         // start repeating tasks
         RepeatingTasks.scheduleActionBarTask();
         // welcome message
-        Bukkit.getConsoleSender().sendMessage(Messages.WELCOME);
+        Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!
     }
 }
