@@ -14,9 +14,9 @@ import java.util.List;
 
 public class ResponseList {
     private final List<Response> responses = new ArrayList<>(4);
-    private int chosen = 3;
     private boolean cooldown = false;
     private boolean confirmed = false;
+    private int chosen = 3;
     /**
      * A list of 4 responses for a dialogue interaction.
      * @param uid unique identifier of the dialogue.

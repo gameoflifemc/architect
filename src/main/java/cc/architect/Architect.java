@@ -3,6 +3,7 @@ package cc.architect;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
 import cc.architect.events.player.*;
+import cc.architect.managers.Residents;
 import cc.architect.managers.RepeatingTasks;
 import cc.architect.objects.Messages;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -20,8 +21,8 @@ public final class Architect extends JavaPlugin {
     public void onEnable() {
         // plugin
         PLUGIN = this;
-        // config
-        this.saveDefaultConfig();
+        // configs
+        Residents.loadConfigs();
         // get lifecycle manager
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         // commands

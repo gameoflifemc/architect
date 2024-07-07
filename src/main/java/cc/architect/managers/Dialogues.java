@@ -6,6 +6,8 @@ import cc.architect.objects.DialoguePosition;
 import cc.architect.objects.HashMaps;
 import cc.architect.objects.Messages;
 import cc.architect.objects.ResponseList;
+import de.oliver.fancynpcs.api.FancyNpcsPlugin;
+import de.oliver.fancynpcs.api.Npc;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -22,14 +24,26 @@ public class Dialogues {
      * @param uid Dialogue unique identifier
      */
     public static void enter(Player p, Location target, String uid) {
+        // create a new dialogue position
+        DialoguePosition pos = new DialoguePosition(p.getLocation(), target, uid);
         // add player to dialogue
-        HashMaps.DIALOGUE_POSITIONS.put(p, new DialoguePosition(p.getLocation(), target));
+        HashMaps.DIALOGUE_POSITIONS.put(p, pos);
+        // disable the turn-to-player function of the NPC
+        Npc npc = FancyNpcsPlugin.get().getNpcManager().getNpc(uid);
+        npc.getData().setTurnToPlayer(false);
         // force player to look at target
-        Dialogues.createCamera(p);
+        Dialogues.createCamera(p, pos);
         // give player overlay
         Utilities.giveOverlay(p);
         // send controls
         p.sendActionBar(Messages.ACTIONBAR_DIALOGUE_STANDARD);
+        // handle the first stage
+        Dialogues.start(p, uid);
+        
+        
+        
+        
+        
         
         
         
@@ -51,28 +65,34 @@ public class Dialogues {
     public static void leave(Player p) {
         // get player's dialogue position
         DialoguePosition pos = HashMaps.DIALOGUE_POSITIONS.get(p);
-        // remove player from camera
-        p.setSpectatorTarget(p);
-        // teleport player back to original location
-        p.teleport(pos.getLocation());
-        // put player back in adventure mode
-        p.setGameMode(GameMode.ADVENTURE);
+        // re-enable the turn-to-player function of the NPC
+        Npc npc = FancyNpcsPlugin.get().getNpcManager().getNpc(pos.getUid());
+        npc.getData().setTurnToPlayer(true);
+        // only do this if the player is online
+        if (p.isOnline()) {
+            // remove player from camera
+            p.setSpectatorTarget(p);
+            // teleport player back to original location
+            p.teleport(pos.getLocation());
+            // put player back in adventure mode
+            p.setGameMode(GameMode.ADVENTURE);
+            // remove overlay
+            p.getInventory().setHelmet(ItemStack.empty());
+            // send empty action bar
+            p.sendActionBar(Component.empty());
+        }
         // remove camera entity
         pos.getCamera().remove();
         // remove objective
         Scoreboards.remove(p);
         // remove player from dialogue
         HashMaps.DIALOGUE_POSITIONS.remove(p);
-        // remove overlay
-        p.getInventory().setHelmet(ItemStack.empty());
-        // send empty action bar
-        p.sendActionBar(Component.empty());
     }
     /**
      * Create a camera entity for a player
      * @param p Player
      */
-    private static void createCamera(Player p) {
+    private static void createCamera(Player p, DialoguePosition pos) {
         // entity location
         Location loc = p.getEyeLocation();
         // summon camera entity
@@ -83,8 +103,6 @@ public class Dialogues {
         p.setGameMode(GameMode.SPECTATOR);
         // set camera entity as the player's camera
         p.setSpectatorTarget(camera);
-        // get target location
-        DialoguePosition pos = HashMaps.DIALOGUE_POSITIONS.get(p);
         // save camera entity to dialogue position
         pos.setCamera(camera);
         // new camera location
@@ -97,5 +115,8 @@ public class Dialogues {
             // teleport camera entity
             camera.teleport(newLoc);
         },2);
+    }
+    private static void start(Player p, String uid) {
+        Residents.CONFIGS.get(uid).getString("start." + uid + ".response1");
     }
 }

@@ -9,12 +9,16 @@ public class DialoguePosition {
     private final float yaw;
     private final float pitch;
     private ItemDisplay camera;
+    private final String uid;
     /**
-     * Holds the position data of a dialogue, including the origin and target yaw and pitch as well as the camera entity
+     * Holds data about the dialogue position
      * @param origin The origin location
      * @param target The target location
+     * @param uid The unique identifier of the dialogue
      */
-    public DialoguePosition(Location origin,Location target) {
+    public DialoguePosition(Location origin,Location target, String uid) {
+        // set uid
+        this.uid = uid;
         // use origin as base
         loc = origin;
         // add 0.1 to y to prevent clipping
@@ -73,5 +77,12 @@ public class DialoguePosition {
      */
     public float getPitch() {
         return pitch;
+    }
+    /**
+     * Gets the unique identifier
+     * @return The unique identifier
+     */
+    public String getUid() {
+        return uid;
     }
 }

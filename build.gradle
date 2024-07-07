@@ -15,12 +15,21 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "fancy-plugins"
+        url = "https://repo.fancyplugins.de/releases"
+    }
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
-    compileOnly 'net.luckperms:api:5.4'
-    implementation 'commons-io:commons-io:2.16.1'
+    // paper core
+    implementation "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
+    // libraries
+    implementation "commons-io:commons-io:2.16.1"
+    implementation 'org.tomlj:tomlj:1.1.1'
+    // APIs
+    implementation "net.luckperms:api:5.4"
+    implementation "de.oliver:FancyNpcs:2.2.0"
 }
 
 def targetJavaVersion = 21

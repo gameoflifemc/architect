@@ -1,5 +1,6 @@
 package cc.architect.commands;
 
+import cc.architect.managers.Residents;
 import cc.architect.managers.Instances;
 import cc.architect.objects.Messages;
 import com.mojang.brigadier.Command;
@@ -93,6 +94,12 @@ public class Simulation {
                             return Command.SINGLE_SUCCESS;
                         })
                     )
+                )
+                .then(Commands.literal("reload")
+                    .executes(ctx -> {
+                        Residents.loadConfigs();
+                        return Command.SINGLE_SUCCESS;
+                    })
                 )
                 .build()
             );

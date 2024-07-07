@@ -4,3 +4,9 @@ main: cc.architect.Architect
 api-version: '1.21'
 authors: [japicraft]
 website: https://crystalcaverns.net
+dependencies:
+  server:
+    FancyNpcs:
+      load: BEFORE
+    LuckPerms:
+      load: BEFORE
