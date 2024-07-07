@@ -1,6 +1,8 @@
 package cc.architect.commands;
 
 import cc.architect.managers.Avatars;
+import cc.architect.managers.PartyChannelManager;
+import cc.architect.managers.PartyManager;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -17,6 +19,7 @@ public class Party {
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             // register command
             event.registrar().register(Commands.literal("party")
+                //prints the head of a player
                 .then(Commands.literal("head")
                     .then(Commands.argument("player",StringArgumentType.word())
                         .executes(ctx -> {
@@ -34,6 +37,52 @@ public class Party {
                             return Command.SINGLE_SUCCESS;
                         })
                     )
+                )
+                .then(Commands.literal("invite")
+                    .then(Commands.argument("player",StringArgumentType.word())
+                        .executes(ctx -> {
+                            Player sender = (Player) ctx.getSource().getSender();
+                            String receiver = StringArgumentType.getString(ctx,"player");
+                            if (receiver == null) {
+                                return Command.SINGLE_SUCCESS;
+                            }
+                            PartyManager.sendInvite(sender,receiver);
+                            return Command.SINGLE_SUCCESS;
+                        })
+                    )
+                )
+                .then(Commands.literal("accept")
+                    .executes(ctx -> {
+                        if (ctx.getSource() == null) {
+                            return Command.SINGLE_SUCCESS;
+                        }
+                        Player receiver = (Player) ctx.getSource().getSender();
+
+                        PartyManager.acceptInvite(receiver);
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+                .then(Commands.literal("deny")
+                    .executes(ctx -> {
+                        if (ctx.getSource() == null) {
+                            return Command.SINGLE_SUCCESS;
+                        }
+                        Player receiver = (Player) ctx.getSource().getSender();
+
+                        PartyManager.denyInvite(receiver);
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+                .then(Commands.literal("test")
+                    .executes(ctx -> {
+                        if (ctx.getSource() == null) {
+                            return Command.SINGLE_SUCCESS;
+                        }
+                        Player receiver = (Player) ctx.getSource().getSender();
+
+                        PartyChannelManager.sendPartyChannelMessage("SomeSubChannel","SomeData");
+                        return Command.SINGLE_SUCCESS;
+                    })
                 )
                 .build()
             );

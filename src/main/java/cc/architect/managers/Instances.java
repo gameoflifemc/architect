@@ -58,8 +58,16 @@ public class Instances {
      * @param player The player this world belongs to
      */
     public static void decommission(Player player) {
+        String name = player.getUniqueId().toString();
         // unload world
-        Bukkit.unloadWorld(player.getUniqueId().toString(),false);
+        Bukkit.unloadWorld(name,false);
+        // delete world
+        File targetFile = new File(Bukkit.getWorldContainer().getPath() + File.separator + name);
+        try {
+            FileUtils.deleteDirectory(targetFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         // confirmation message
         player.sendMessage(Messages.INSTANCE_DECOMMISSIONED);
     }

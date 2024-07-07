@@ -22,6 +22,7 @@ public class Simulation {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             // register command
             event.registrar().register(Commands.literal("simulation")
+                //creates a new world from a template for player
                 .then(Commands.literal("initialize")
                     .then(Commands.argument("player",StringArgumentType.word())
                         .then(Commands.argument("template",StringArgumentType.word())
@@ -37,6 +38,7 @@ public class Simulation {
                         )
                     )
                 )
+                //teleports player to world spawn of its world
                 .then(Commands.literal("assimilate")
                     .then(Commands.argument("player",StringArgumentType.word())
                         .executes(ctx -> {
@@ -50,6 +52,8 @@ public class Simulation {
                         })
                     )
                 )
+                //deletes player's world
+                //TODO: SUS
                 .then(Commands.literal("decommission")
                     .then(Commands.argument("player",StringArgumentType.word())
                         .executes(ctx -> {

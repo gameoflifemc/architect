@@ -3,6 +3,7 @@ package cc.architect;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
 import cc.architect.events.player.*;
+import cc.architect.managers.PartyChannelManager;
 import cc.architect.managers.Residents;
 import cc.architect.managers.RepeatingTasks;
 import cc.architect.objects.Messages;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
 import java.util.List;
 
 public final class Architect extends JavaPlugin {
@@ -43,8 +45,14 @@ public final class Architect extends JavaPlugin {
         }
         // start repeating tasks
         RepeatingTasks.scheduleActionBarTask();
+
+        //setup channel
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, PartyChannelManager.PUBLIC_CHANNEL);
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, PartyChannelManager.PUBLIC_CHANNEL, new PartyChannelManager());
         // welcome message
         Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
+        Bukkit.getConsoleSender().sendMessage("Out "+ Arrays.toString(this.getServer().getMessenger().getOutgoingChannels().toArray(new String[0])));
+        Bukkit.getConsoleSender().sendMessage("In "+ Arrays.toString(this.getServer().getMessenger().getIncomingChannels().toArray(new String[0])));
         // yay, we're up and running!
     }
 }
