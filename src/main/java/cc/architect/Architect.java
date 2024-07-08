@@ -1,9 +1,11 @@
 package cc.architect;
 
+import cc.architect.channels.PlayerFinder;
+import cc.architect.channels.ServerName;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
 import cc.architect.events.player.*;
-import cc.architect.managers.PartyChannelManager;
+import cc.architect.channels.PartyChannelManager;
 import cc.architect.managers.Residents;
 import cc.architect.managers.RepeatingTasks;
 import cc.architect.objects.Messages;
@@ -16,6 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static cc.architect.channels.BaseChannels.PUBLIC_CHANNEL;
 
 public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
@@ -47,8 +51,10 @@ public final class Architect extends JavaPlugin {
         RepeatingTasks.scheduleActionBarTask();
 
         //setup channel
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, PartyChannelManager.PUBLIC_CHANNEL);
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, PartyChannelManager.PUBLIC_CHANNEL, new PartyChannelManager());
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, PUBLIC_CHANNEL);
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PartyChannelManager());
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PlayerFinder());
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new ServerName());
         // welcome message
         Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
         Bukkit.getConsoleSender().sendMessage("Out "+ Arrays.toString(this.getServer().getMessenger().getOutgoingChannels().toArray(new String[0])));

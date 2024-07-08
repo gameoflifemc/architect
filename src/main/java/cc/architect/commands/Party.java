@@ -1,7 +1,8 @@
 package cc.architect.commands;
 
+import cc.architect.channels.PlayerFinder;
 import cc.architect.managers.Avatars;
-import cc.architect.managers.PartyChannelManager;
+import cc.architect.channels.PartyChannelManager;
 import cc.architect.managers.PartyManager;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -12,6 +13,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import static cc.architect.channels.ServerName.requestServerName;
+import static org.bukkit.Bukkit.getServer;
 
 public class Party {
     public static void register(LifecycleEventManager<Plugin> manager) {
@@ -58,7 +62,7 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        PartyManager.acceptInvite(receiver);
+                        PartyManager.acceptInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
                 )
@@ -69,7 +73,7 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        PartyManager.denyInvite(receiver);
+                        PartyManager.denyInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
                 )
@@ -79,10 +83,26 @@ public class Party {
                             return Command.SINGLE_SUCCESS;
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
-
-                        PartyChannelManager.sendPartyChannelMessage("SomeSubChannel","SomeData");
+                        requestServerName();
+                        Bukkit.broadcastMessage(getServer().getName());
                         return Command.SINGLE_SUCCESS;
                     })
+                )
+                .then(Commands.literal("findplayer")
+                    .then(Commands.argument("player",StringArgumentType.word())
+                        .executes(ctx -> {
+                            Player sender = (Player) ctx.getSource().getSender();
+                            String receiver = StringArgumentType.getString(ctx,"player");
+                            if (receiver == null) {
+                                return Command.SINGLE_SUCCESS;
+                            }
+                            sender.sendMessage("Searching for player "+receiver);
+                            PlayerFinder.getPlayerServer(receiver,(serverName) -> {
+                                sender.sendMessage("Player "+receiver+" found on server "+serverName);
+                            });
+                            return Command.SINGLE_SUCCESS;
+                        })
+                    )
                 )
                 .build()
             );

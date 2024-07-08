@@ -5,6 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+
 public class Utilities {
     /**
      * Give a player a carved pumpkin overlay.
@@ -33,5 +36,12 @@ public class Utilities {
             sb.append(text.charAt(i)).append("@");
         }
         return sb.toString();
+    }
+    public static String readUTF(DataInputStream msgin) {
+        try {
+            return msgin.readUTF();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
