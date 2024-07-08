@@ -24,6 +24,7 @@ import static org.bukkit.Bukkit.getPlayerExact;
 public class PartyChannelManager implements PluginMessageListener {
 
     public static Map<String, ImmutablePair<String,String>> playerInvitesQueue = new HashMap<>();
+
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if (!channel.equals(PUBLIC_CHANNEL)) {
@@ -118,7 +119,7 @@ public class PartyChannelManager implements PluginMessageListener {
             response = hasInvite(inviteReceiver) ? "DENY" : "ACCEPT";
         }
         if(response.equals("ACCEPT")){
-            PartyManager.createInvite(inviteReceiver, inviteSender);
+            PartyManager.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
         }
 
         BaseChannels.prepareForwardMessage();
@@ -135,22 +136,28 @@ public class PartyChannelManager implements PluginMessageListener {
             throw new RuntimeException(e);
         }
         BaseChannels.sendForwardMessage(serverName, INVITE_CHANNEL, getPlayerExact(inviteReceiver));
+
     }
     public static void processInviteResponse(DataInputStream messageData, String uuid, String serverName){
         String response = Utilities.readUTF(messageData);
-        String receiver = Utilities.readUTF(messageData);
-        String sender = Utilities.readUTF(messageData);
+        String inviteReceiver = Utilities.readUTF(messageData);
+        String inviteSender = Utilities.readUTF(messageData);
+
+        ImmutablePair<String,String> pair = playerInvitesQueue.get(uuid);
+        if(pair==null) return;
+        if(!pair.getLeft().equals(inviteSender) || !pair.getRight().equals(inviteReceiver)) return;
+        playerInvitesQueue.remove(uuid);
 
         if(response.equals("ACCEPT")){
-            PartyManager.sendInviteMessages(receiver, sender);
+            PartyManager.sendInviteMessages(inviteReceiver, inviteSender);
             return;
         }
         if(response.equals("DENY")){
-            getPlayerExact(sender).sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(receiver));
+            getPlayerExact(inviteSender).sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
             return;
         }
         if(response.equals("OFFLINE")){
-            getPlayerExact(sender).sendMessage(Messages.PLAYER_NOT_ONLINE(receiver));
+            getPlayerExact(inviteSender).sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
             return;
         }
     }

@@ -2,6 +2,7 @@ package cc.architect;
 
 import cc.architect.channels.PlayerFinder;
 import cc.architect.channels.ServerName;
+import cc.architect.channels.TeleportChannel;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
 import cc.architect.events.player.*;
@@ -55,6 +56,7 @@ public final class Architect extends JavaPlugin {
         this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PartyChannelManager());
         this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PlayerFinder());
         this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new ServerName());
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new TeleportChannel());
         // welcome message
         Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
         Bukkit.getConsoleSender().sendMessage("Out "+ Arrays.toString(this.getServer().getMessenger().getOutgoingChannels().toArray(new String[0])));

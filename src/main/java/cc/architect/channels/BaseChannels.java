@@ -15,11 +15,12 @@ import java.io.DataOutputStream;
 
 public class BaseChannels {
     public static final String PUBLIC_CHANNEL = "BungeeCord";
-    public static final String PARTY_CHANNEL = "Architect:Party";
+    public static final String CONNECT_CHANNEL = "Connect";
     public static final String INVITE_CHANNEL = "Architect:Invite";
+    public static final String TELEPORT_CHANNEL = "Architect:Teleport";
+    public static final String GET_PLAYER_SERVER_CHANNEL = "Architect:GetPlayerServer";
     public static final String FORWARD_CHANNEL = "Forward";
     public static final String GET_SERVER_NAME_CHANNEL = "GetServer";
-    public static final String GET_PLAYER_SERVER_CHANNEL = "Architect:GetPlayerServer";
     public static final String REQUEST = "Request";
     public static final String RESPONSE = "Response";
 
