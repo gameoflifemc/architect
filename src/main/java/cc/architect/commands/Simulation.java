@@ -1,6 +1,6 @@
 package cc.architect.commands;
 
-import cc.architect.managers.Residents;
+import cc.architect.managers.Configurations;
 import cc.architect.managers.Instances;
 import cc.architect.objects.Messages;
 import com.mojang.brigadier.Command;
@@ -19,7 +19,7 @@ import org.bukkit.plugin.Plugin;
 public class Simulation {
     public static void register(LifecycleEventManager<Plugin> manager) {
         // create and register command
-        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+        manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             // register command
             event.registrar().register(Commands.literal("simulation")
                 //creates a new world from a template for player
@@ -101,7 +101,7 @@ public class Simulation {
                 )
                 .then(Commands.literal("reload")
                     .executes(ctx -> {
-                        Residents.loadConfigs();
+                        Configurations.load();
                         return Command.SINGLE_SUCCESS;
                     })
                 )

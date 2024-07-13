@@ -1,14 +1,14 @@
 package cc.architect;
 
+import cc.architect.channels.PartyChannelManager;
 import cc.architect.channels.PlayerFinder;
 import cc.architect.channels.ServerName;
 import cc.architect.channels.TeleportChannel;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
-import cc.architect.events.player.*;
-import cc.architect.channels.PartyChannelManager;
-import cc.architect.managers.Residents;
-import cc.architect.managers.RepeatingTasks;
+import cc.architect.events.player.Join;
+import cc.architect.events.player.Quit;
+import cc.architect.managers.Configurations;
 import cc.architect.objects.Messages;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import org.bukkit.Bukkit;
@@ -28,8 +28,8 @@ public final class Architect extends JavaPlugin {
     public void onEnable() {
         // plugin
         PLUGIN = this;
-        // configs
-        Residents.loadConfigs();
+        // load configurations
+        Configurations.load();
         // get lifecycle manager
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         // commands
@@ -37,21 +37,14 @@ public final class Architect extends JavaPlugin {
         Party.register(manager);
         // events
         List<Listener> events = List.of(
-            new InteractEntity(),
             new Join(),
-            new Quit(),
-            new StartSpectatingEntity(),
-            new StopSpectatingEntity(),
-            new ToggleSneak()
+            new Quit()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {
             pluginManager.registerEvents(event,this);
         }
-        // start repeating tasks
-        RepeatingTasks.scheduleActionBarTask();
-
-        //setup channel
+        // setup channels
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, PUBLIC_CHANNEL);
         this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PartyChannelManager());
         this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PlayerFinder());

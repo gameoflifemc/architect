@@ -2,8 +2,6 @@ package cc.architect.commands;
 
 import cc.architect.channels.PlayerFinder;
 import cc.architect.managers.Avatars;
-import cc.architect.channels.PartyChannelManager;
-import cc.architect.managers.PartyManager;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -50,7 +48,7 @@ public class Party {
                             if (receiver == null) {
                                 return Command.SINGLE_SUCCESS;
                             }
-                            PartyManager.sendInvite(sender,receiver);
+                            cc.architect.managers.Party.sendInvite(sender,receiver);
                             return Command.SINGLE_SUCCESS;
                         })
                     )
@@ -62,7 +60,7 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        PartyManager.acceptInvite(receiver.getName());
+                        cc.architect.managers.Party.acceptInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
                 )
@@ -73,7 +71,7 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        PartyManager.denyInvite(receiver.getName());
+                        cc.architect.managers.Party.denyInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
                 )

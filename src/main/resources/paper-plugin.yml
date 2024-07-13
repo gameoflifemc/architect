@@ -6,7 +6,5 @@ authors: [japicraft]
 website: https://crystalcaverns.net
 dependencies:
   server:
-    FancyNpcs:
-      load: BEFORE
     LuckPerms:
       load: BEFORE

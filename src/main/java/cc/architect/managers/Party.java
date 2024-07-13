@@ -6,7 +6,6 @@ import cc.architect.objects.Messages;
 import cc.architect.objects.PartyInvite;
 import com.google.common.io.ByteArrayDataOutput;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -17,12 +16,10 @@ import java.util.Map;
 
 import static cc.architect.channels.BaseChannels.*;
 import static cc.architect.channels.PartyChannelManager.sendRemoteInviteRequest;
-import static cc.architect.channels.ServerName.getServerName;
 import static cc.architect.objects.HashMaps.CANNOT_MAKE_PARTY;
-import static de.oliver.fancynpcs.libs.chatcolorhandler.ChatColorHandler.sendMessage;
 import static org.bukkit.Bukkit.getPlayerExact;
 
-public class PartyManager {
+public class Party {
     public static final int MAX_INVITE_TIME = 60; // 60 seconds
     //reciever -> sender, taskid
     public static Map<String, PartyInvite> invites = new HashMap<>();

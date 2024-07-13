@@ -1,7 +1,7 @@
 package cc.architect.channels;
 
 import cc.architect.Utilities;
-import cc.architect.managers.PartyManager;
+import cc.architect.managers.Party;
 import cc.architect.objects.Messages;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -10,15 +10,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import static cc.architect.channels.BaseChannels.*;
 import static cc.architect.channels.ServerName.getServerName;
-import static cc.architect.managers.PartyManager.hasInvite;
-import static org.bukkit.Bukkit.getPlayer;
+import static cc.architect.managers.Party.hasInvite;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class PartyChannelManager implements PluginMessageListener {
@@ -119,7 +120,7 @@ public class PartyChannelManager implements PluginMessageListener {
             response = hasInvite(inviteReceiver) ? "DENY" : "ACCEPT";
         }
         if(response.equals("ACCEPT")){
-            PartyManager.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
+            Party.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
         }
 
         BaseChannels.prepareForwardMessage();
@@ -149,7 +150,7 @@ public class PartyChannelManager implements PluginMessageListener {
         playerInvitesQueue.remove(uuid);
 
         if(response.equals("ACCEPT")){
-            PartyManager.sendInviteMessages(inviteReceiver, inviteSender);
+            Party.sendInviteMessages(inviteReceiver, inviteSender);
             return;
         }
         if(response.equals("DENY")){

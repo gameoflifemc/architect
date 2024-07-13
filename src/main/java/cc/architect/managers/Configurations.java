@@ -1,5 +1,6 @@
 package cc.architect.managers;
 
+import cc.architect.Architect;
 import org.bukkit.Bukkit;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
@@ -7,11 +8,11 @@ import org.tomlj.TomlParseResult;
 import java.io.File;
 import java.util.HashMap;
 
-public class Residents {
+public class Configurations {
     public static final HashMap<String, TomlParseResult> CONFIGS = new HashMap<>();
-    public static void loadConfigs() {
+    public static void load() {
         // get base path
-        String basePath = Bukkit.getPluginsFolder().getPath() + File.separator + ".residents" + File.separator;
+        String basePath = Bukkit.getPluginsFolder().getPath() + File.separator + Architect.PLUGIN.getName() + File.separator;
         // get folder
         File folder = new File(basePath);
         // get all files
