@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static cc.architect.channels.BaseChannels.*;
+import static cc.architect.channels.BaseChannels.getForwardMessageData;
 import static cc.architect.channels.ServerName.getServerName;
 import static org.bukkit.Bukkit.getServer;
 
@@ -22,7 +22,7 @@ public class PlayerFinder implements PluginMessageListener {
     public static Map<String, Consumer<String>> playerServerQueue = new HashMap<>();
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
-        if(!channel.equals(PUBLIC_CHANNEL)){
+        if(!channel.equals(BaseChannels.PUBLIC)){
             return;
         }
 
@@ -30,8 +30,8 @@ public class PlayerFinder implements PluginMessageListener {
         ByteArrayDataInput request = ByteStreams.newDataInput(message);
         String subChannel = request.readUTF();
 
-        //checks if request is from GET_PLAYER_SERVER_CHANNEL
-        if(!subChannel.equals(GET_PLAYER_SERVER_CHANNEL)){
+        //checks if request is from BaseChannels.GET_PLAYER_SERVER_CHANNEL
+        if(!subChannel.equals(BaseChannels.GET_PLAYER_SERVER)){
             return;
         }
 
@@ -43,7 +43,7 @@ public class PlayerFinder implements PluginMessageListener {
         String playerName = Utilities.readUTF(messageData);
 
         //if message is a response, and player is waiting for response, accept server name
-        if(!type.equals(REQUEST)){
+        if(!type.equals(BaseChannels.REQUEST)){
             playerServerQueue.get(playerName).accept(serverName);
             playerServerQueue.remove(playerName);
             return;
@@ -57,13 +57,13 @@ public class PlayerFinder implements PluginMessageListener {
             DataOutputStream messageOut = BaseChannels.getForwardMessageData();
 
             try {
-                messageOut.writeUTF(RESPONSE);
+                messageOut.writeUTF(BaseChannels.RESPONSE);
                 messageOut.writeUTF(getServerName());
                 messageOut.writeUTF(playerName);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            BaseChannels.sendForwardMessage(serverName,GET_PLAYER_SERVER_CHANNEL);
+            BaseChannels.sendForwardMessage(serverName,BaseChannels.GET_PLAYER_SERVER);
         }
 
     }
@@ -72,14 +72,14 @@ public class PlayerFinder implements PluginMessageListener {
         BaseChannels.prepareForwardMessage();
         DataOutputStream messageOut = BaseChannels.getForwardMessageData();
         try {
-            messageOut.writeUTF(REQUEST);
+            messageOut.writeUTF(BaseChannels.REQUEST);
             messageOut.writeUTF(getServerName());
             messageOut.writeUTF(playerName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         playerServerQueue.put(playerName, consumer);
-        BaseChannels.sendForwardMessage("ALL",GET_PLAYER_SERVER_CHANNEL);
+        BaseChannels.sendForwardMessage("ALL",BaseChannels.GET_PLAYER_SERVER);
     }
 
 }

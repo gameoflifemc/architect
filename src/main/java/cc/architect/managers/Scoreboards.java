@@ -34,7 +34,7 @@ public class Scoreboards {
         // remove objective
         if (objective != null) {
             objective.unregister();
-            //HashMaps.RESPONSE_LISTS.remove(p);
+            //HashMaps.BaseChannels.RESPONSE_LISTS.remove(p);
         }
     }
     /**
@@ -43,7 +43,7 @@ public class Scoreboards {
      */
     public static void show(Player p) {
         // get response lists
-        //HashMap<Player, ResponseList> responseLists = HashMaps.RESPONSE_LISTS;
+        //HashMap<Player, ResponseList> responseLists = HashMaps.BaseChannels.RESPONSE_LISTS;
         // check if player has an active response list
         //if (!responseLists.containsKey(p)) {
         //    return;

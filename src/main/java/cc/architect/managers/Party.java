@@ -14,7 +14,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cc.architect.channels.BaseChannels.*;
+import static cc.architect.channels.BaseChannels.getBasicMessage;
+import static cc.architect.channels.BaseChannels.sendToDefaultChannelPlayer;
 import static cc.architect.channels.PartyChannelManager.sendRemoteInviteRequest;
 import static cc.architect.objects.HashMaps.CANNOT_MAKE_PARTY;
 import static org.bukkit.Bukkit.getPlayerExact;
@@ -147,10 +148,10 @@ public class Party {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        BaseChannels.sendForwardMessage(invite.getSenderServer(), TELEPORT_CHANNEL);
+        BaseChannels.sendForwardMessage(invite.getSenderServer(), BaseChannels.TELEPORT);
 
         //connecting to other server
-        ByteArrayDataOutput out = getBasicMessage(CONNECT_CHANNEL);
+        ByteArrayDataOutput out = getBasicMessage(BaseChannels.CONNECT);
         out.writeUTF(invite.getSenderServer());
         Bukkit.broadcastMessage(invite.getSenderServer());
 

@@ -2,7 +2,6 @@ package cc.architect.managers;
 
 import cc.architect.objects.Fonts;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
@@ -29,7 +28,7 @@ public class Avatars {
         // get image of avatar
         BufferedImage image = ImageIO.read(connection.getInputStream());
         // prepare builder
-        ComponentBuilder<TextComponent, TextComponent.Builder> builder = Component.text();
+        TextComponent.Builder builder = Component.text();
         // iterate through y coordinates
         for (int y = 0; y < 8; y++) {
             // pick the correct char
@@ -37,9 +36,9 @@ public class Avatars {
             // iterate through x coordinates
             for (int x = 0; x < 8; x++) {
                 // get the pixel color
-                TextColor textColor = TextColor.color(image.getRGB(x,y));
+                TextColor color = TextColor.color(image.getRGB(x,y));
                 // add color to the character
-                Component pixel = character.color(textColor);
+                Component pixel = character.color(color);
                 // add pixel to the builder
                 builder.append(pixel).append(MINUS);
             }

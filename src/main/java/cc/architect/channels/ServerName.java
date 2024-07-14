@@ -8,13 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
-import static cc.architect.channels.BaseChannels.*;
+import static cc.architect.channels.BaseChannels.getBasicMessage;
+import static cc.architect.channels.BaseChannels.sendToDefaultChannel;
 
 public class ServerName implements PluginMessageListener {
     public static String name = null;
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
-        if(!channel.equals(PUBLIC_CHANNEL)){
+        if(!channel.equals(BaseChannels.PUBLIC)){
             return;
         }
 
@@ -23,7 +24,7 @@ public class ServerName implements PluginMessageListener {
         String subChannel = request.readUTF();
 
         //checks if request is from GET_PLAYER_SERVER_CHANNEL
-        if(!subChannel.equals(GET_SERVER_NAME_CHANNEL)){
+        if(!subChannel.equals(BaseChannels.GET_SERVER)){
             return;
         }
 
@@ -33,7 +34,7 @@ public class ServerName implements PluginMessageListener {
 
     public static void requestServerName(){
         Bukkit.getConsoleSender().sendMessage("Requesting name...");
-        ByteArrayDataOutput out = getBasicMessage(GET_SERVER_NAME_CHANNEL);
+        ByteArrayDataOutput out = getBasicMessage(BaseChannels.GET_SERVER);
         sendToDefaultChannel(out);
     }
 

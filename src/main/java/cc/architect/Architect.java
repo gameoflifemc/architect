@@ -1,9 +1,6 @@
 package cc.architect;
 
-import cc.architect.channels.PartyChannelManager;
-import cc.architect.channels.PlayerFinder;
-import cc.architect.channels.ServerName;
-import cc.architect.channels.TeleportChannel;
+import cc.architect.channels.*;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
 import cc.architect.events.player.Join;
@@ -19,8 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static cc.architect.channels.BaseChannels.PUBLIC_CHANNEL;
 
 public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
@@ -45,15 +40,15 @@ public final class Architect extends JavaPlugin {
             pluginManager.registerEvents(event,this);
         }
         // setup channels
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, PUBLIC_CHANNEL);
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PartyChannelManager());
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new PlayerFinder());
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new ServerName());
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, PUBLIC_CHANNEL, new TeleportChannel());
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this,BaseChannels.PUBLIC);
+        this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PartyChannelManager());
+        this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PlayerFinder());
+        this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new ServerName());
+        this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new TeleportChannel());
         // welcome message
         Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
-        Bukkit.getConsoleSender().sendMessage("Out "+ Arrays.toString(this.getServer().getMessenger().getOutgoingChannels().toArray(new String[0])));
-        Bukkit.getConsoleSender().sendMessage("In "+ Arrays.toString(this.getServer().getMessenger().getIncomingChannels().toArray(new String[0])));
+        Bukkit.getConsoleSender().sendMessage("Out " + Arrays.toString(this.getServer().getMessenger().getOutgoingChannels().toArray(new String[0])));
+        Bukkit.getConsoleSender().sendMessage("In " + Arrays.toString(this.getServer().getMessenger().getIncomingChannels().toArray(new String[0])));
         // yay, we're up and running!
     }
 }

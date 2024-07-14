@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static cc.architect.channels.BaseChannels.*;
+import static cc.architect.channels.BaseChannels.getForwardMessageData;
 import static cc.architect.channels.ServerName.getServerName;
 import static cc.architect.managers.Party.hasInvite;
 import static org.bukkit.Bukkit.getPlayerExact;
@@ -28,7 +28,7 @@ public class PartyChannelManager implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
-        if (!channel.equals(PUBLIC_CHANNEL)) {
+        if (!channel.equals(BaseChannels.PUBLIC)) {
             return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
@@ -36,7 +36,7 @@ public class PartyChannelManager implements PluginMessageListener {
 
         //Bukkit.broadcastMessage("Received message from BungeeCord on subchannel: " + subchannel);
 
-        if(subchannel.equals(INVITE_CHANNEL)){
+        if(subchannel.equals(BaseChannels.INVITE)){
             processInviteChannel(getForwardMessageData(in));
             return;
         }
@@ -61,14 +61,14 @@ public class PartyChannelManager implements PluginMessageListener {
      * - ServerName: Name of the server sending the request <br>
      * - Receiver: Name of the player receiving the request <br>
      * - Sender: Name of the player sending the request <br><br>
-     * - Channel: INVITE_CHANNEL
+     * - Channel: BaseChannels.INVITE_CHANNEL
      * **/
     public static void sendRemoteInviteRequest(Player inviteSender, String inviteReceiver){
         BaseChannels.prepareForwardMessage();
         DataOutputStream out = getForwardMessageData();
         try {
             String uuid = UUID.randomUUID().toString();
-            out.writeUTF(REQUEST);
+            out.writeUTF(BaseChannels.REQUEST);
             out.writeUTF(uuid);
             out.writeUTF(getServerName());
             out.writeUTF(inviteReceiver);
@@ -79,7 +79,7 @@ public class PartyChannelManager implements PluginMessageListener {
             inviteSender.sendMessage(Messages.SEND_INVITE_ERROR);
             return;
         }
-        BaseChannels.sendForwardMessage("ALL", INVITE_CHANNEL, inviteSender);
+        BaseChannels.sendForwardMessage("ALL", BaseChannels.INVITE, inviteSender);
     }
 
     public static void processInviteChannel(DataInputStream messageData){
@@ -105,7 +105,7 @@ public class PartyChannelManager implements PluginMessageListener {
      * - Response: DENY-has invite  ACCEPT-valid NOT_FOUND OFFILNE<br>
      * - Receiver: Name of the player receiving the request <br>
      * - Sender: Name of the player sending the request <br><br>
-     * - Channel: INVITE_CHANNEL
+     * - Channel: BaseChannels.INVITE_CHANNEL
      * **/
     public static void processInviteRequest(DataInputStream messageData, String uuid, String serverName){
         String inviteReceiver = Utilities.readUTF(messageData);
@@ -127,7 +127,7 @@ public class PartyChannelManager implements PluginMessageListener {
         DataOutputStream messageOut = BaseChannels.getForwardMessageData();
 
         try {
-            messageOut.writeUTF(RESPONSE);
+            messageOut.writeUTF(BaseChannels.RESPONSE);
             messageOut.writeUTF(uuid);
             messageOut.writeUTF(getServerName());
             messageOut.writeUTF(response);
@@ -136,7 +136,7 @@ public class PartyChannelManager implements PluginMessageListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        BaseChannels.sendForwardMessage(serverName, INVITE_CHANNEL, getPlayerExact(inviteReceiver));
+        BaseChannels.sendForwardMessage(serverName, BaseChannels.INVITE, getPlayerExact(inviteReceiver));
 
     }
     public static void processInviteResponse(DataInputStream messageData, String uuid, String serverName){

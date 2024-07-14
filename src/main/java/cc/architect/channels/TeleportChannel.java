@@ -10,18 +10,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 
-import static cc.architect.channels.BaseChannels.*;
+import static cc.architect.channels.BaseChannels.getForwardMessageData;
 
 public class TeleportChannel implements PluginMessageListener {
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
-        if (!channel.equals(PUBLIC_CHANNEL)) {
+        if (!channel.equals(BaseChannels.PUBLIC)) {
             return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subchannel = in.readUTF();
 
-        if(!subchannel.equals(TELEPORT_CHANNEL)) return;
+        if(!subchannel.equals(BaseChannels.TELEPORT)) return;
 
         DataInputStream messageData = getForwardMessageData(in);
         String receiver = Utilities.readUTF(messageData);

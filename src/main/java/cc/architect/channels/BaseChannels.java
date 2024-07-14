@@ -14,60 +14,55 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 public class BaseChannels {
-    public static final String PUBLIC_CHANNEL = "BungeeCord";
-    public static final String CONNECT_CHANNEL = "Connect";
-    public static final String INVITE_CHANNEL = "Architect:Invite";
-    public static final String TELEPORT_CHANNEL = "Architect:Teleport";
-    public static final String GET_PLAYER_SERVER_CHANNEL = "Architect:GetPlayerServer";
-    public static final String FORWARD_CHANNEL = "Forward";
-    public static final String GET_SERVER_NAME_CHANNEL = "GetServer";
+    public static final String PUBLIC = "BungeeCord";
+    public static final String CONNECT = "Connect";
+    public static final String INVITE = "Architect:Invite";
+    public static final String TELEPORT = "Architect:Teleport";
+    public static final String GET_PLAYER_SERVER = "Architect:GetPlayerServer";
+    public static final String FORWARD = "Forward";
+    public static final String GET_SERVER = "GetServer";
     public static final String REQUEST = "Request";
     public static final String RESPONSE = "Response";
-
-    public static ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
-    public static DataOutputStream msgout = new DataOutputStream(msgbytes);
+    public static ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
+    public static DataOutputStream msgOut = new DataOutputStream(msgBytes);
     public static void sendToDefaultChannel(ByteArrayDataOutput out){
-        Iterables.getFirst(Bukkit.getOnlinePlayers(), null).sendPluginMessage(Architect.PLUGIN, PUBLIC_CHANNEL, out.toByteArray());
+        Iterables.getFirst(Bukkit.getOnlinePlayers(),null).sendPluginMessage(Architect.PLUGIN,BaseChannels.PUBLIC,out.toByteArray());
     }
-    public static void sendToDefaultChannelPlayer(ByteArrayDataOutput out, Player player){
-        player.sendPluginMessage(Architect.PLUGIN, PUBLIC_CHANNEL, out.toByteArray());
+    public static void sendToDefaultChannelPlayer(ByteArrayDataOutput out,Player player){
+        player.sendPluginMessage(Architect.PLUGIN,BaseChannels.PUBLIC,out.toByteArray());
     }
-
-    public static ByteArrayDataOutput getBasicMessage(String subchannel){
+    public static ByteArrayDataOutput getBasicMessage(String subChannel){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF(subchannel);
+        out.writeUTF(subChannel);
         return out;
     }
     public static void prepareForwardMessage(){
-        msgbytes = new ByteArrayOutputStream();
-        msgout = new DataOutputStream(msgbytes);
+        msgBytes = new ByteArrayOutputStream();
+        msgOut = new DataOutputStream(msgBytes);
     }
-    public static DataOutputStream getForwardMessageData(){
-        return msgout;
+    public static DataOutputStream getForwardMessageData() {
+        return msgOut;
     }
     public static void sendForwardMessage(String server, String channel){
-        ByteArrayDataOutput out = getBasicMessage(FORWARD_CHANNEL);
+        ByteArrayDataOutput out = getBasicMessage(BaseChannels.FORWARD);
         out.writeUTF(server);
         out.writeUTF(channel);
-
-        out.writeShort(msgbytes.toByteArray().length);
-        out.write(msgbytes.toByteArray());
+        out.writeShort(msgBytes.toByteArray().length);
+        out.write(msgBytes.toByteArray());
         sendToDefaultChannel(out);
     }
     public static void sendForwardMessage(String server, String channel, Player player){
-        ByteArrayDataOutput out = getBasicMessage(FORWARD_CHANNEL);
+        ByteArrayDataOutput out = getBasicMessage(BaseChannels.FORWARD);
         out.writeUTF(server);
         out.writeUTF(channel);
-
-        out.writeShort(msgbytes.toByteArray().length);
-        out.write(msgbytes.toByteArray());
+        out.writeShort(msgBytes.toByteArray().length);
+        out.write(msgBytes.toByteArray());
         sendToDefaultChannelPlayer(out,player);
     }
     public static DataInputStream getForwardMessageData(ByteArrayDataInput in){
-        short len = in.readShort();
-        byte[] msgbytes = new byte[len];
-        in.readFully(msgbytes);
-
-        return new DataInputStream(new ByteArrayInputStream(msgbytes));
+        short input = in.readShort();
+        byte[] msgBytes = new byte[input];
+        in.readFully(msgBytes);
+        return new DataInputStream(new ByteArrayInputStream(msgBytes));
     }
 }
