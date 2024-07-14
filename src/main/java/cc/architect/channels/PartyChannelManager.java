@@ -23,25 +23,19 @@ import static cc.architect.managers.Party.hasInvite;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class PartyChannelManager implements PluginMessageListener {
-
     public static Map<String, ImmutablePair<String,String>> playerInvitesQueue = new HashMap<>();
-
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if (!channel.equals(BaseChannels.PUBLIC)) {
             return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        String subchannel = in.readUTF();
-
+        String subChannel = in.readUTF();
         //Bukkit.broadcastMessage("Received message from BungeeCord on subchannel: " + subchannel);
-
-        if(subchannel.equals(BaseChannels.INVITE)){
+        if (subChannel.equals(BaseChannels.INVITE)) {
             processInviteChannel(getForwardMessageData(in));
-            return;
         }
-
-        /*DataInputStream msgin = getForwardMessageData(in);
+        /* DataInputStream msgin = getForwardMessageData(in);
 
         try {
             String somedata = msgin.readUTF();
@@ -81,7 +75,6 @@ public class PartyChannelManager implements PluginMessageListener {
         }
         BaseChannels.sendForwardMessage("ALL", BaseChannels.INVITE, inviteSender);
     }
-
     public static void processInviteChannel(DataInputStream messageData){
         String type = Utilities.readUTF(messageData);
         String uuid = Utilities.readUTF(messageData);
@@ -110,22 +103,22 @@ public class PartyChannelManager implements PluginMessageListener {
     public static void processInviteRequest(DataInputStream messageData, String uuid, String serverName){
         String inviteReceiver = Utilities.readUTF(messageData);
         String inviteSender = Utilities.readUTF(messageData);
-
         String response = null;
-
-        if(getPlayerExact(inviteReceiver)==null) return;
-        if(!getPlayerExact(inviteReceiver).isOnline()) response = "OFFLINE";
-
-        if(response == null) {
+        Player p = getPlayerExact(inviteReceiver);
+        if (p == null) {
+            return;
+        }
+        if (!p.isOnline()) {
+            response = "OFFLINE";
+        }
+        if (response == null) {
             response = hasInvite(inviteReceiver) ? "DENY" : "ACCEPT";
         }
-        if(response.equals("ACCEPT")){
+        if (response.equals("ACCEPT")){
             Party.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
         }
-
         BaseChannels.prepareForwardMessage();
         DataOutputStream messageOut = BaseChannels.getForwardMessageData();
-
         try {
             messageOut.writeUTF(BaseChannels.RESPONSE);
             messageOut.writeUTF(uuid);
@@ -136,30 +129,34 @@ public class PartyChannelManager implements PluginMessageListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        BaseChannels.sendForwardMessage(serverName, BaseChannels.INVITE, getPlayerExact(inviteReceiver));
-
+        BaseChannels.sendForwardMessage(serverName,BaseChannels.INVITE,p);
     }
     public static void processInviteResponse(DataInputStream messageData, String uuid, String serverName){
         String response = Utilities.readUTF(messageData);
         String inviteReceiver = Utilities.readUTF(messageData);
         String inviteSender = Utilities.readUTF(messageData);
-
         ImmutablePair<String,String> pair = playerInvitesQueue.get(uuid);
-        if(pair==null) return;
-        if(!pair.getLeft().equals(inviteSender) || !pair.getRight().equals(inviteReceiver)) return;
+        if (pair == null) {
+            return;
+        }
+        if (!pair.getLeft().equals(inviteSender) || !pair.getRight().equals(inviteReceiver)) {
+            return;
+        }
         playerInvitesQueue.remove(uuid);
-
-        if(response.equals("ACCEPT")){
-            Party.sendInviteMessages(inviteReceiver, inviteSender);
+        Player p = getPlayerExact(inviteSender);
+        if (p == null) {
             return;
         }
-        if(response.equals("DENY")){
-            getPlayerExact(inviteSender).sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
-            return;
-        }
-        if(response.equals("OFFLINE")){
-            getPlayerExact(inviteSender).sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
-            return;
+        switch (response) {
+            case "ACCEPT" -> {
+                Party.sendInviteMessages(inviteReceiver, inviteSender);
+            }
+            case "DENY" -> {
+                p.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
+            }
+            case "OFFLINE" -> {
+                p.sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
+            }
         }
     }
 }

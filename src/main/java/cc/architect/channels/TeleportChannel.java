@@ -14,19 +14,18 @@ import static cc.architect.channels.BaseChannels.getForwardMessageData;
 
 public class TeleportChannel implements PluginMessageListener {
     @Override
-    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if (!channel.equals(BaseChannels.PUBLIC)) {
             return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        String subchannel = in.readUTF();
-
-        if(!subchannel.equals(BaseChannels.TELEPORT)) return;
-
+        String subChannel = in.readUTF();
+        if (!subChannel.equals(BaseChannels.TELEPORT)) {
+            return;
+        }
         DataInputStream messageData = getForwardMessageData(in);
         String receiver = Utilities.readUTF(messageData);
         String sender = Utilities.readUTF(messageData);
-
         Join.pendingJoin.put(receiver, sender);
     }
 }
