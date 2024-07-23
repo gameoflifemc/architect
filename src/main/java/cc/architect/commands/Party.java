@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import static cc.architect.channels.PlayerLister.getPlayerList;
 import static cc.architect.channels.ServerName.requestServerName;
 import static org.bukkit.Bukkit.getServer;
 
@@ -50,6 +51,12 @@ public class Party {
                             }
                             cc.architect.managers.Party.sendInvite(sender,receiver);
                             return Command.SINGLE_SUCCESS;
+                        })
+                        .suggests((ctx, builder) ->{
+                            getPlayerList((playerList) -> {
+                                playerList.forEach(builder::suggest);
+                            });
+                            return builder.buildFuture();
                         })
                     )
                 )
@@ -104,6 +111,7 @@ public class Party {
                 )
                 .build()
             );
+            final Commands commands = event.registrar();
         });
     }
 }

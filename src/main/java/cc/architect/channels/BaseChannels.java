@@ -16,6 +16,7 @@ import java.io.DataOutputStream;
 public class BaseChannels {
     public static final String PUBLIC = "BungeeCord";
     public static final String CONNECT = "Connect";
+    public static final String PLAYER_LIST = "PlayerList";
     public static final String INVITE = "Architect:Invite";
     public static final String TELEPORT = "Architect:Teleport";
     public static final String GET_PLAYER_SERVER = "Architect:GetPlayerServer";
