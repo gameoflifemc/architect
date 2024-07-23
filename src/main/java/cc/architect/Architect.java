@@ -9,6 +9,7 @@ import cc.architect.managers.Configurations;
 import cc.architect.objects.Messages;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -45,6 +46,7 @@ public final class Architect extends JavaPlugin {
         this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PlayerFinder());
         this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new ServerName());
         this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new TeleportChannel());
+        this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PlayerLister());
         // welcome message
         Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
         Bukkit.getConsoleSender().sendMessage("Out " + Arrays.toString(this.getServer().getMessenger().getOutgoingChannels().toArray(new String[0])));

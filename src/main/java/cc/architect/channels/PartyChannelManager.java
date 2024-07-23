@@ -1,7 +1,7 @@
 package cc.architect.channels;
 
 import cc.architect.Utilities;
-import cc.architect.managers.Party;
+import cc.architect.managers.PartyManager;
 import cc.architect.objects.Messages;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -19,7 +19,8 @@ import java.util.UUID;
 
 import static cc.architect.channels.BaseChannels.getForwardMessageData;
 import static cc.architect.channels.ServerName.getServerName;
-import static cc.architect.managers.Party.hasInvite;
+import static cc.architect.managers.PartyManager.hasInvite;
+import static cc.architect.objects.HashMaps.IS_IN_PARTY;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class PartyChannelManager implements PluginMessageListener {
@@ -104,6 +105,10 @@ public class PartyChannelManager implements PluginMessageListener {
         String inviteReceiver = Utilities.readUTF(messageData);
         String inviteSender = Utilities.readUTF(messageData);
         String response = null;
+
+        if(IS_IN_PARTY.contains(inviteReceiver)){
+            response = "CAN_NOT_MAKE_PARTY";
+        }
         Player p = getPlayerExact(inviteReceiver);
         if (p == null) {
             return;
@@ -115,7 +120,7 @@ public class PartyChannelManager implements PluginMessageListener {
             response = hasInvite(inviteReceiver) ? "DENY" : "ACCEPT";
         }
         if (response.equals("ACCEPT")){
-            Party.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
+            PartyManager.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
         }
         BaseChannels.prepareForwardMessage();
         DataOutputStream messageOut = BaseChannels.getForwardMessageData();
@@ -149,13 +154,16 @@ public class PartyChannelManager implements PluginMessageListener {
         }
         switch (response) {
             case "ACCEPT" -> {
-                Party.sendInviteMessages(inviteReceiver, inviteSender);
+                PartyManager.sendInviteMessages(inviteReceiver, inviteSender);
             }
             case "DENY" -> {
                 p.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
             }
             case "OFFLINE" -> {
                 p.sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
+            }
+            case "CAN_NOT_MAKE_PARTY" -> {
+                p.sendMessage(Messages.PLAYER_IN_PARTY);
             }
         }
     }

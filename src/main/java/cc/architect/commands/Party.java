@@ -2,6 +2,7 @@ package cc.architect.commands;
 
 import cc.architect.channels.PlayerFinder;
 import cc.architect.managers.Avatars;
+import cc.architect.managers.PartyManager;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -49,15 +50,16 @@ public class Party {
                             if (receiver == null) {
                                 return Command.SINGLE_SUCCESS;
                             }
-                            cc.architect.managers.Party.sendInvite(sender,receiver);
+                            PartyManager.sendInvite(sender,receiver);
                             return Command.SINGLE_SUCCESS;
                         })
-                        .suggests((ctx, builder) ->{
+                        /*.suggests((ctx, builder) ->{
+                            builder.suggest("test");
                             getPlayerList((playerList) -> {
                                 playerList.forEach(builder::suggest);
                             });
                             return builder.buildFuture();
-                        })
+                        })*/
                     )
                 )
                 .then(Commands.literal("accept")
@@ -67,7 +69,7 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        cc.architect.managers.Party.acceptInvite(receiver.getName());
+                        PartyManager.acceptInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
                 )
@@ -78,9 +80,20 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        cc.architect.managers.Party.denyInvite(receiver.getName());
+                        PartyManager.denyInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
+                )
+                .then(Commands.literal("leave")
+                        .executes(ctx -> {
+                            if (ctx.getSource() == null) {
+                                return Command.SINGLE_SUCCESS;
+                            }
+                            Player receiver = (Player) ctx.getSource().getSender();
+
+                            PartyManager.leaveParty(receiver.getName());
+                            return Command.SINGLE_SUCCESS;
+                        })
                 )
                 .then(Commands.literal("test")
                     .executes(ctx -> {

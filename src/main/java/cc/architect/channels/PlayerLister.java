@@ -12,10 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static cc.architect.channels.BaseChannels.*;
@@ -39,9 +36,12 @@ public class PlayerLister implements PluginMessageListener {
             return;
         }
 
+        String server = request.readUTF();
         String[] playerList = request.readUTF().split(", ");
 
-        queue.getFirst().accept(List.of(playerList));
+        Bukkit.getConsoleSender().sendMessage("Recieve: "+Arrays.toString(playerList));
+
+        queue.getFirst().accept(new ArrayList<>(Arrays.asList(playerList)));
     }
     public static void getPlayerList(Consumer<List<String>> consumer){
         queue.add(consumer);

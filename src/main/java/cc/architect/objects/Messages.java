@@ -16,6 +16,13 @@ public class Messages {
     public static final Component INSTANCE_DECOMMISSIONING = Component.text("Decommissioning simulation...");
     public static final Component INSTANCE_DECOMMISSIONED = Component.text("Simulation decommissioned.");
     public static final Component INTERACTION_ENTITY = Component.text("Created new interaction entity.");
+    public static final Component SEND_INVITE_CANNOT_MAKE_PARTY = Component.text("You can't make party.");
+    public static final Component PLAYER_IN_PARTY = Component.text("Player is already in party.");
+    public static final Component NOT_IN_PARTY = Component.text("You are not in party.");
+    public static final Component YOU_LEFT_PARTY_LEADER_LEAVE = Component.text("Leader left party, you not in party.");
+    public static final Component YOU_LEFT_PARTY_MEMBERS_EMPTY = Component.text("You left party, party is empty.");
+    public static final Component YOU_LEFT_PARTY = Component.text("You left party.");
+
     public static Component SEND_INVITE_SENDER(String player){
         return Component.text("You sent invite to player "+player+".");
     };
