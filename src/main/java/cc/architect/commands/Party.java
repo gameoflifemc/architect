@@ -84,7 +84,7 @@ public class Party {
                         return Command.SINGLE_SUCCESS;
                     })
                 )
-                .then(Commands.literal("leave")
+                /*.then(Commands.literal("leave")
                         .executes(ctx -> {
                             if (ctx.getSource() == null) {
                                 return Command.SINGLE_SUCCESS;
@@ -121,7 +121,7 @@ public class Party {
                             return Command.SINGLE_SUCCESS;
                         })
                     )
-                )
+                )*/
                 .build()
             );
             final Commands commands = event.registrar();

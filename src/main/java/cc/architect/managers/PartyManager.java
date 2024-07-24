@@ -25,17 +25,17 @@ import static org.bukkit.Bukkit.getPlayerExact;
 
 public class PartyManager {
     public static final int MAX_INVITE_TIME = 60; // 60 seconds
-    //reciever -> sender, taskid
+    //receiver -> sender, taskid
     public static Map<String, PartyInvite> invites = new HashMap<>();
     public static void sendInvite(Player sender, String receiverName) {
-        if(IS_IN_PARTY.contains(sender.getName())){
+        /*if(IS_IN_PARTY.contains(sender.getName())){
             sender.sendMessage(Messages.SEND_INVITE_CANNOT_MAKE_PARTY);
             return;
         }
         if(IS_IN_PARTY.contains(receiverName)){
             sender.sendMessage(Messages.PLAYER_IN_PARTY);
             return;
-        }
+        }*/
 
         Player receiver = getPlayerExact(receiverName);
 
@@ -164,10 +164,7 @@ public class PartyManager {
     }
 
     public static boolean hasInvite(String receiver) {
-        if(!invites.containsKey(receiver)){
-            return false;
-        }
-        return true;
+        return invites.containsKey(receiver);
     }
 
     public static void optionMessageSend(String player, Component message){

@@ -106,9 +106,9 @@ public class PartyChannelManager implements PluginMessageListener {
         String inviteSender = Utilities.readUTF(messageData);
         String response = null;
 
-        if(IS_IN_PARTY.contains(inviteReceiver)){
+        /*if(IS_IN_PARTY.contains(inviteReceiver)){
             response = "CAN_NOT_MAKE_PARTY";
-        }
+        }*/
         Player p = getPlayerExact(inviteReceiver);
         if (p == null) {
             return;
@@ -162,9 +162,9 @@ public class PartyChannelManager implements PluginMessageListener {
             case "OFFLINE" -> {
                 p.sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
             }
-            case "CAN_NOT_MAKE_PARTY" -> {
+            /*case "CAN_NOT_MAKE_PARTY" -> {
                 p.sendMessage(Messages.PLAYER_IN_PARTY);
-            }
+            }*/
         }
     }
 }
