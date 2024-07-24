@@ -3,6 +3,7 @@ package cc.architect.commands;
 import cc.architect.channels.PlayerFinder;
 import cc.architect.managers.Avatars;
 import cc.architect.managers.PartyManager;
+import cc.architect.managers.PlayerTime;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -122,6 +123,22 @@ public class Party {
                         })
                     )
                 )*/
+                .build()
+            );
+            event.registrar().register(Commands.literal("setTime")
+                    .then(Commands.argument("time",StringArgumentType.word())
+                        .then(Commands.argument("interpolate",StringArgumentType.word())
+                                .executes(ctx -> {
+                                    Player sender = (Player) ctx.getSource().getSender();
+                                    String time = StringArgumentType.getString(ctx,"time");
+                                    String interpolation = StringArgumentType.getString(ctx,"interpolate");
+
+                                    PlayerTime.setPlayerTime(sender.getUniqueId(), 0L);
+                                    PlayerTime.interpolatePlayerToTime(sender.getUniqueId(), Long.parseLong(time), Integer.parseInt(interpolation));
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                        )
+                    )
                 .build()
             );
             final Commands commands = event.registrar();
