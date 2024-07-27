@@ -3,9 +3,11 @@ plugins {
 }
 group = 'cc'
 version = '1.0'
+
 repositories {
     mavenCentral()
     maven { url "https://repo.papermc.io/repository/maven-public/" }
+    maven { url 'https://jitpack.io' }
 }
 dependencies {
     // paper core
@@ -14,7 +16,9 @@ dependencies {
     implementation 'commons-io:commons-io:2.16.1'
     implementation 'org.tomlj:tomlj:1.1.1'
     // APIs
-    implementation "net.luckperms:api:5.4"
+    implementation 'net.luckperms:api:5.4'
+    // AdvancedTextDisplay
+    implementation 'com.github.CAPS123987:AdvancedTextDisplay:releases-SNAPSHOT'
 }
 def targetJavaVersion = 21
 java {

@@ -9,9 +9,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import me.caps123987.advancedtextdisplay.displays.InteractiveDisplay;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.plugin.Plugin;
 
 import static cc.architect.channels.PlayerLister.getPlayerList;
@@ -29,6 +33,7 @@ public class Party {
                     .then(Commands.argument("player",StringArgumentType.word())
                         .executes(ctx -> {
                             Player p = Bukkit.getPlayer(StringArgumentType.getString(ctx,"player"));
+
                             if (p == null) {
                                 return Command.SINGLE_SUCCESS;
                             }
