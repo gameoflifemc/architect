@@ -1,22 +1,31 @@
 package cc.architect.commands;
 
+import cc.architect.leaderboards.PublicHologram;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Instances;
 import cc.architect.objects.Messages;
+import cc.architect.leaderboards.LeaderBoards;
+import com.maximde.hologramapi.hologram.RenderMode;
+import com.maximde.hologramapi.hologram.TextHologram;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.UUID;
+
 public class Simulation {
+    public static PublicHologram hol;
     public static void register(LifecycleEventManager<Plugin> manager) {
         // create and register command
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
@@ -102,6 +111,23 @@ public class Simulation {
                 .then(Commands.literal("reload")
                     .executes(ctx -> {
                         Configurations.load();
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+                .then(Commands.literal("test")
+                    .executes(ctx -> {
+                        TextHologram hologram = new TextHologram(UUID.randomUUID().toString())
+                                .setSeeThroughBlocks(false)
+                                .setBillboard(Display.Billboard.VERTICAL);
+                        hol = new PublicHologram(hologram, ((Player) ctx.getSource().getSender()).getLocation());
+                        hol.setText(Component.text("Hello %player_name% !"));
+                        hol.init();
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+                .then(Commands.literal("update")
+                    .executes(ctx -> {
+                        hol.updateAll();
                         return Command.SINGLE_SUCCESS;
                     })
                 )

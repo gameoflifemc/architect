@@ -24,6 +24,12 @@ public final class Architect extends JavaPlugin {
     public void onEnable() {
         // plugin
         PLUGIN = this;
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            Bukkit.getConsoleSender().sendMessage("Could not find PlaceholderAPI! This plugin is required.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
         // load configurations
         Configurations.load();
         // get lifecycle manager
@@ -49,8 +55,6 @@ public final class Architect extends JavaPlugin {
         this.getServer().getMessenger().registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PlayerLister());
         // welcome message
         Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
-        Bukkit.getConsoleSender().sendMessage("Out " + Arrays.toString(this.getServer().getMessenger().getOutgoingChannels().toArray(new String[0])));
-        Bukkit.getConsoleSender().sendMessage("In " + Arrays.toString(this.getServer().getMessenger().getIncomingChannels().toArray(new String[0])));
         // yay, we're up and running!
     }
 }

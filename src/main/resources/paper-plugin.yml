@@ -8,3 +8,9 @@ dependencies:
   server:
     LuckPerms:
       load: BEFORE
+    PlaceholderAPI:
+      load: BEFORE
+    HologramAPI:
+      load: BEFORE
+    packetevents:
+      load: BEFORE
