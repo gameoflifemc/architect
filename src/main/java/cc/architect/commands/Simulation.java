@@ -1,6 +1,5 @@
 package cc.architect.commands;
 
-import cc.architect.managers.Configurations;
 import cc.architect.managers.Instances;
 import cc.architect.objects.Messages;
 import com.mojang.brigadier.Command;
@@ -8,17 +7,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.UUID;
 
 import static cc.architect.leaderboards.PlayerStatsBoard.createStatsLeaderBoard;
 
