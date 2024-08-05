@@ -1,12 +1,8 @@
 package cc.architect.commands;
 
-import cc.architect.leaderboards.PublicHologram;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Instances;
 import cc.architect.objects.Messages;
-import cc.architect.leaderboards.LeaderBoards;
-import com.maximde.hologramapi.hologram.RenderMode;
-import com.maximde.hologramapi.hologram.TextHologram;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -24,8 +20,9 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
+import static cc.architect.leaderboards.PlayerStatsBoard.createStatsLeaderBoard;
+
 public class Simulation {
-    public static PublicHologram hol;
     public static void register(LifecycleEventManager<Plugin> manager) {
         // create and register command
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
@@ -108,26 +105,9 @@ public class Simulation {
                         })
                     )
                 )
-                .then(Commands.literal("reload")
-                    .executes(ctx -> {
-                        Configurations.load();
-                        return Command.SINGLE_SUCCESS;
-                    })
-                )
                 .then(Commands.literal("test")
                     .executes(ctx -> {
-                        TextHologram hologram = new TextHologram(UUID.randomUUID().toString())
-                                .setSeeThroughBlocks(false)
-                                .setBillboard(Display.Billboard.VERTICAL);
-                        hol = new PublicHologram(hologram, ((Player) ctx.getSource().getSender()).getLocation());
-                        hol.setText(Component.text("Hello %player_name% !"));
-                        hol.init();
-                        return Command.SINGLE_SUCCESS;
-                    })
-                )
-                .then(Commands.literal("update")
-                    .executes(ctx -> {
-                        hol.updateAll();
+                        createStatsLeaderBoard(Bukkit.getPlayer(ctx.getSource().getSender().getName()).getLocation());
                         return Command.SINGLE_SUCCESS;
                     })
                 )

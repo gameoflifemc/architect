@@ -10,7 +10,7 @@ dependencies:
       load: BEFORE
     PlaceholderAPI:
       load: BEFORE
-    HologramAPI:
+    MonitorAPI:
       load: BEFORE
     packetevents:
       load: BEFORE

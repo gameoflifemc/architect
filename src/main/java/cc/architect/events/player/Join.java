@@ -2,7 +2,6 @@ package cc.architect.events.player;
 
 import cc.architect.Architect;
 import cc.architect.channels.ServerName;
-import cc.architect.leaderboards.PublicHologram;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,7 +15,6 @@ import java.util.Set;
 
 public class Join implements Listener {
     public static HashMap<String, String> pendingJoin = new HashMap<>();
-    public static Set<PublicHologram> activeHolograms = new HashSet<>();
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         // empty join message
@@ -26,7 +24,6 @@ public class Join implements Listener {
         // get player name
         String pName = p.getName();
         //update holograms
-        activeHolograms.forEach(hologram -> hologram.addPlayer(p));
         // get server name
         if (ServerName.getServerName() == null) {
             Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,ServerName::requestServerName,5);

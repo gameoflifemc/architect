@@ -25,11 +25,6 @@ public final class Architect extends JavaPlugin {
         // plugin
         PLUGIN = this;
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            Bukkit.getConsoleSender().sendMessage("Could not find PlaceholderAPI! This plugin is required.");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
-
         // load configurations
         Configurations.load();
         // get lifecycle manager
