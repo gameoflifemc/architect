@@ -24,6 +24,7 @@ public class BaseChannels {
     public static final String GET_SERVER = "GetServer";
     public static final String REQUEST = "Request";
     public static final String RESPONSE = "Response";
+    public static final String LIMBO = "mobilave";
     public static ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
     public static DataOutputStream msgOut = new DataOutputStream(msgBytes);
     public static void sendToDefaultChannel(ByteArrayDataOutput out){

@@ -1,6 +1,5 @@
 package cc.architect.channels;
 
-import cc.architect.Utilities;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -9,20 +8,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
-import static cc.architect.channels.BaseChannels.*;
-import static cc.architect.channels.ServerName.getServerName;
-import static org.bukkit.Bukkit.getServer;
+import static cc.architect.channels.BaseChannels.getBasicMessage;
+import static cc.architect.channels.BaseChannels.sendToDefaultChannel;
 
 public class PlayerLister implements PluginMessageListener {
     public static List<Consumer<List<String>>> queue = new ArrayList<>();
     @Override
-    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if(!channel.equals(BaseChannels.PUBLIC)){
             return;
         }

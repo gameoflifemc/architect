@@ -1,6 +1,5 @@
 package cc.architect.commands;
 
-import cc.architect.channels.PlayerFinder;
 import cc.architect.managers.Avatars;
 import cc.architect.managers.PartyManager;
 import cc.architect.managers.PlayerTime;
@@ -11,15 +10,8 @@ import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
 import org.bukkit.plugin.Plugin;
-
-import static cc.architect.channels.PlayerLister.getPlayerList;
-import static cc.architect.channels.ServerName.requestServerName;
-import static org.bukkit.Bukkit.getServer;
 
 public class Party {
     public static void register(LifecycleEventManager<Plugin> manager) {
@@ -27,12 +19,11 @@ public class Party {
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             // register command
             event.registrar().register(Commands.literal("party")
-                //prints the head of a player
+                // prints the head of a player
                 .then(Commands.literal("head")
                     .then(Commands.argument("player",StringArgumentType.word())
                         .executes(ctx -> {
                             Player p = Bukkit.getPlayer(StringArgumentType.getString(ctx,"player"));
-
                             if (p == null) {
                                 return Command.SINGLE_SUCCESS;
                             }
@@ -145,7 +136,6 @@ public class Party {
                     )
                 .build()
             );
-            final Commands commands = event.registrar();
         });
     }
 }

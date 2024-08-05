@@ -10,8 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Join implements Listener {
     public static HashMap<String, String> pendingJoin = new HashMap<>();

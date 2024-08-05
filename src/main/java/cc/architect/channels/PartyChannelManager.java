@@ -20,7 +20,6 @@ import java.util.UUID;
 import static cc.architect.channels.BaseChannels.getForwardMessageData;
 import static cc.architect.channels.ServerName.getServerName;
 import static cc.architect.managers.PartyManager.hasInvite;
-import static cc.architect.objects.HashMaps.IS_IN_PARTY;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class PartyChannelManager implements PluginMessageListener {
@@ -153,15 +152,9 @@ public class PartyChannelManager implements PluginMessageListener {
             return;
         }
         switch (response) {
-            case "ACCEPT" -> {
-                PartyManager.sendInviteMessages(inviteReceiver, inviteSender);
-            }
-            case "DENY" -> {
-                p.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
-            }
-            case "OFFLINE" -> {
-                p.sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
-            }
+            case "ACCEPT" -> PartyManager.sendInviteMessages(inviteReceiver, inviteSender);
+            case "DENY" -> p.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
+            case "OFFLINE" -> p.sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
             /*case "CAN_NOT_MAKE_PARTY" -> {
                 p.sendMessage(Messages.PLAYER_IN_PARTY);
             }*/
