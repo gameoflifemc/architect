@@ -1,5 +1,7 @@
 package cc.architect.commands;
 
+import cc.architect.leaderboards.stats.PlayerStatsHolder;
+import cc.architect.leaderboards.stats.StatsSorter;
 import cc.architect.managers.Instances;
 import cc.architect.objects.Messages;
 import com.mojang.brigadier.Command;
@@ -14,6 +16,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static cc.architect.leaderboards.PlayerStatsBoard.createStatsLeaderBoard;
 
@@ -103,6 +108,40 @@ public class Simulation {
                 .then(Commands.literal("test")
                     .executes(ctx -> {
                         createStatsLeaderBoard(Bukkit.getPlayer(ctx.getSource().getSender().getName()).getLocation());
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+                .then(Commands.literal("leaderboard")
+                    .executes(ctx -> {
+                        List<PlayerStatsHolder> stats = new ArrayList<>();
+                        for(int i = 0; i < 30;i++){
+                            stats.add(new PlayerStatsHolder(
+                                    (int) (Math.random() * 1000.0),
+                                    (int) (Math.random() * 1000),
+                                    (int) (Math.random() * 1000),
+                                    (int) (Math.random() * 1000),
+                                    null,
+                                    "Player" + i
+                            ));
+                        }
+                        Bukkit.broadcastMessage("---------Leaderboard---------");
+                        for(PlayerStatsHolder stat : stats){
+                            Bukkit.broadcastMessage(stat.getName() + " " + stat.getMoney() + " " + stat.getScore() + " " + stat.getDebt() + " " + stat.getNetWorth());
+                        }
+                        Bukkit.broadcastMessage("");
+                        Bukkit.broadcastMessage("------Sorted Leaderboard-----");
+                        Bukkit.broadcastMessage("");
+                        StatsSorter.listAll(stats, PlayerStatsHolder::getMoney);
+                        for(PlayerStatsHolder stat : stats){
+                            Bukkit.broadcastMessage(stat.getName() + " " + stat.getMoney() + " " + stat.getScore() + " " + stat.getDebt() + " " + stat.getNetWorth());
+                        }
+                        Bukkit.broadcastMessage("");
+                        Bukkit.broadcastMessage("------top 10-----");
+                        Bukkit.broadcastMessage("");
+                        for (int i = 0; i < 10; i++) {
+                            Bukkit.broadcastMessage(stats.get(i).getName() + " " + stats.get(i).getMoney() + " " + stats.get(i).getScore() + " " + stats.get(i).getDebt() + " " + stats.get(i).getNetWorth());
+                        }
+
                         return Command.SINGLE_SUCCESS;
                     })
                 )
