@@ -9,11 +9,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
-import net.luckperms.api.node.matcher.NodeMatcher;
-import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -22,21 +17,14 @@ import org.bukkit.util.Vector;
 import org.joml.Vector3f;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 public class PlayerStatsBoard {
     public static void createStatsLeaderBoard(Location l) {
-        new PlayerStatsHolder();
-
         InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS);
         setupBoard(board);
-        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,2.5,0));
+        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,2.5,0.1));
         header.setOnSpawnCallback((display, uuid) -> {
-            header.setDisplayText(Component.text("Your Stats", Style.style(TextDecoration.BOLD)),uuid);
+            header.setDisplayText(Component.text("Your Stats", Style.style(TextDecoration.BOLD,TextColor.color(220,220,20))),uuid);
             header.setChangeToAllPlayers((display1, uuid1) -> display1.setTransformation(
                 new Transformation(
                     display1.getTransformation().getTranslation(),
@@ -49,6 +37,7 @@ public class PlayerStatsBoard {
         board.addComponent(header);
         board.create(l);
     }
+
     public static void setupBoard(InteractiveDisplay board){
         board.setHeader(Component.text("                                                                   "));
         board.enableHeader();

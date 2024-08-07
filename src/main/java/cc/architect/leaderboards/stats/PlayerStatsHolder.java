@@ -3,13 +3,10 @@ package cc.architect.leaderboards.stats;
 import lombok.Getter;
 import lombok.Setter;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
-import org.jetbrains.annotations.Contract;
 
-import java.beans.ConstructorProperties;
 import java.util.UUID;
 
 @Setter @Getter

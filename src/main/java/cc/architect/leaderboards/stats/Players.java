@@ -3,7 +3,6 @@ package cc.architect.leaderboards.stats;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.node.matcher.NodeMatcher;
 import net.luckperms.api.node.types.InheritanceNode;
-import org.bukkit.Bukkit;
 
 import java.util.List;
 import java.util.UUID;
