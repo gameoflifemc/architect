@@ -3,6 +3,8 @@ package cc.architect.objects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 
+import java.awt.*;
+
 public class Messages {
     public static final Component PLUGIN_WELCOME = Component.text("Core Architect protocol running, the Game of Life is ready to begin.")
         .color(TextColor.fromHexString("#2970ED"));
@@ -22,6 +24,10 @@ public class Messages {
     public static final Component YOU_LEFT_PARTY_LEADER_LEAVE = Component.text("Leader left party, you not in party.");
     public static final Component YOU_LEFT_PARTY_MEMBERS_EMPTY = Component.text("You left party, party is empty.");
     public static final Component YOU_LEFT_PARTY = Component.text("You left party.");
+    public static final Component TREASURE_FOUND = Component.text("You found a treasure.")
+            .color(TextColor.fromHexString("#00FF00"));
+    public static final Component STEAL = Component.text("Looks like someone's trying to steal your treasure, catch him and you'll get it back")
+            .color(TextColor.fromHexString("#FF0000"));
 
     public static Component SEND_INVITE_SENDER(String player) {
         return Component.text("You sent invite to player " + player + ".");

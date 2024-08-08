@@ -3,9 +3,9 @@ package cc.architect;
 import cc.architect.channels.*;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
-import cc.architect.events.player.Chat;
-import cc.architect.events.player.Join;
-import cc.architect.events.player.Quit;
+import cc.architect.events.entity.PlayerHurtEntity;
+import cc.architect.events.player.*;
+import cc.architect.heads.HeadLoader;
 import cc.architect.managers.Configurations;
 import cc.architect.objects.Messages;
 import com.google.common.io.ByteArrayDataOutput;
@@ -34,11 +34,16 @@ public final class Architect extends JavaPlugin {
         // commands
         Simulation.register(manager);
         Party.register(manager);
+        // load heads
+        HeadLoader.load();
         // events
         List<Listener> events = List.of(
             new Chat(),
             new Join(),
-            new Quit()
+            new Quit(),
+            new BlockBreak(),
+            new PlayerEntityInteraction(),
+            new PlayerHurtEntity()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {
