@@ -8,6 +8,7 @@ import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
 import cc.architect.managers.Configurations;
 import cc.architect.objects.Messages;
+import cc.architect.tasks.TaskManager;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -36,6 +37,8 @@ public final class Architect extends JavaPlugin {
         Party.register(manager);
         // load heads
         HeadLoader.load();
+        // register tasks
+        TaskManager.registerTasks();
         // events
         List<Listener> events = List.of(
             new Chat(),
