@@ -21,7 +21,6 @@ public class Join implements Listener {
         Player p = e.getPlayer();
         // get player name
         String pName = p.getName();
-        //update holograms
         // get server name
         if (ServerName.getServerName() == null) {
             Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,ServerName::requestServerName,5);

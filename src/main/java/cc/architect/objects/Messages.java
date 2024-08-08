@@ -3,11 +3,10 @@ package cc.architect.objects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 
-import java.awt.*;
-
 public class Messages {
     public static final Component PLUGIN_WELCOME = Component.text("Core Architect protocol running, the Game of Life is ready to begin.")
         .color(TextColor.fromHexString("#2970ED"));
+    public static final Component PLAYGROUND_LOADED = Component.text("Playground world loaded. All production worlds are now ready.");
     public static final Component ACTIONBAR_DIALOGUE_STANDARD = Component.text("SHIFT - Leave");
     public static final Component ACTIONBAR_DIALOGUE_RESPONSE = Component.text("SHIFT - Leave, RIGHT-CLICK - Next Response, LEFT-CLICK - Choose");
     public static final Component ACTIONBAR_DIALOGUE_CONFIRM = Component.text("SHIFT - Leave, LEFT-CLICK - Confirm");
@@ -28,7 +27,6 @@ public class Messages {
             .color(TextColor.fromHexString("#00FF00"));
     public static final Component STEAL = Component.text("Looks like someone's trying to steal your treasure, catch him and you'll get it back")
             .color(TextColor.fromHexString("#FF0000"));
-
     public static Component SEND_INVITE_SENDER(String player) {
         return Component.text("You sent invite to player " + player + ".");
     }

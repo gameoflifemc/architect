@@ -11,12 +11,14 @@ import cc.architect.objects.Messages;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bukkit.WorldCreator;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.util.List;
 
@@ -26,12 +28,10 @@ public final class Architect extends JavaPlugin {
     public void onEnable() {
         // plugin
         PLUGIN = this;
-
         // load configurations
         Configurations.load();
-        // get lifecycle manager
-        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         // commands
+        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         Simulation.register(manager);
         Party.register(manager);
         // load heads
@@ -39,26 +39,38 @@ public final class Architect extends JavaPlugin {
         // events
         List<Listener> events = List.of(
             new Chat(),
+            new Interact(),
             new Join(),
             new Quit(),
             new BlockBreak(),
             new PlayerEntityInteraction(),
-            new PlayerHurtEntity()
+            new PlayerHurtEntity(),
+            new SpawnLocation()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {
             pluginManager.registerEvents(event,this);
         }
-        // setup channels
+        // channels
         Messenger messenger = this.getServer().getMessenger();
         messenger.registerOutgoingPluginChannel(this,BaseChannels.PUBLIC);
-        messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PartyChannelManager());
-        messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PlayerFinder());
-        messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new ServerName());
-        messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new TeleportChannel());
-        messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,new PlayerLister());
+        List<PluginMessageListener> channels = List.of(
+            new PartyChannelManager(),
+            new PlayerFinder(),
+            new ServerName(),
+            new TeleportChannel(),
+            new PlayerLister()
+        );
+        for (PluginMessageListener channel : channels) {
+            messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,channel);
+        }
+        // logger
+        ComponentLogger logger = this.getComponentLogger();
+        // playground world
+        new WorldCreator("playground").createWorld();
+        logger.info(Messages.PLAYGROUND_LOADED);
         // welcome message
-        Bukkit.getConsoleSender().sendMessage(Messages.PLUGIN_WELCOME);
+        logger.info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!
     }
     @Override
@@ -70,5 +82,6 @@ public final class Architect extends JavaPlugin {
             out.writeUTF(BaseChannels.LIMBO);
             p.sendPluginMessage(this,BaseChannels.PUBLIC,out.toByteArray());
         });
+        // ...and we're done!
     }
 }

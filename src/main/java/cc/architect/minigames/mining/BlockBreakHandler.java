@@ -9,7 +9,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static cc.architect.Utilities.chance;
+import static cc.architect.Utilities.rollRandom;
 
 public class BlockBreakHandler {
     public static void handleBlockBreakEvent(BlockBreakEvent event) {
@@ -27,7 +27,7 @@ public class BlockBreakHandler {
                 event.setCancelled(true);
                 block.setType(Material.COBBLESTONE);
                 //                           this is here to secure the server from crashing
-                if (chance(100f) && MiningChestLootTable.miningChestsSpawned < 15) {
+                if (rollRandom(100f) && MiningChestLootTable.miningChestsSpawned < 15) {
                     Location spawnLocation = block.getLocation().add(0.5,-0.45f,0.5);
                     spawnTreasure(spawnLocation);
                     player.sendMessage(Messages.TREASURE_FOUND);
@@ -39,7 +39,7 @@ public class BlockBreakHandler {
             case Material.COBBLESTONE -> {
                 event.setCancelled(true);
                 block.setType(Material.BEDROCK);
-                if (chance(100f)) {
+                if (rollRandom(100f)) {
                     spawnStealer(event);
 
                     player.sendMessage(Messages.STEAL);
