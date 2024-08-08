@@ -10,7 +10,7 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 public class SpawnLocation implements Listener {
     @EventHandler
     public void onSpawnLocation(PlayerSpawnLocationEvent e) {
-        World world = Bukkit.getWorld("foyer");
+        World world = Bukkit.getWorld("world");
         Location location = new Location(world,0.5,127.0,0.5,0,0);
         e.setSpawnLocation(location);
     }
