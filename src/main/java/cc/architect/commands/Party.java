@@ -125,11 +125,9 @@ public class Party {
                         .then(Commands.argument("interpolate",StringArgumentType.word())
                                 .executes(ctx -> {
                                     Player sender = (Player) ctx.getSource().getSender();
-                                    String time = StringArgumentType.getString(ctx,"time");
-                                    String interpolation = StringArgumentType.getString(ctx,"interpolate");
+                                    long time = Long.parseLong(StringArgumentType.getString(ctx,"time"));
+                                    PlayerTime.addInterpolateTime(sender,time);
 
-                                    PlayerTime.setPlayerTime(sender.getUniqueId(), 0L);
-                                    PlayerTime.interpolatePlayerToTime(sender.getUniqueId(), Long.parseLong(time), Integer.parseInt(interpolation));
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )

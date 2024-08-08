@@ -75,4 +75,15 @@ public class Utilities {
         // save!
         lp.getUserManager().saveUser(user);
     }
+    public static void addMetaValue(User user, String key, int value) {
+        int val = user.getCachedData().getMetaData().getMetaValue(key, Integer::parseInt).orElse(0);
+        setMeta(user, key, Integer.toString(val + value));
+    }
+
+    public static void setMeta(User user, String key, String value) {
+        MetaNode node = MetaNode.builder(key, value).build();
+        user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(key)));
+        user.data().add(node);
+        LuckPermsProvider.get().getUserManager().saveUser(user);
+    }
 }

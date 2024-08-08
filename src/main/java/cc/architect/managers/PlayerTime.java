@@ -12,51 +12,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.bukkit.Bukkit.getPlayer;
 
 public class PlayerTime {
-    public static Map<UUID,Long> playerTime = new HashMap<>();
-    public static long getPlayerTime(UUID player){
-        return playerTime.get(player);
+    public static void setAbsoluteTime(Player p,long time){
+        p.setPlayerTime(time,false);
     }
-    public static void setPlayerTime(UUID player, long time) {
-        playerTime.put(player, time);
-        Player p = getPlayer(player);
-        if (p == null) {
-            return;
-        }
-        p.setPlayerTime(time, false);
+
+    public static void setRelativeTime(Player p,long time){
+        p.setPlayerTime(time,true);
     }
-    public static void addPlayerTime(UUID player, long time) {
-        long pTime = getPlayerTime(player);
-        playerTime.putIfAbsent(player, 0L);
-        playerTime.put(player, pTime + time);
-        Player p = getPlayer(player);
-        if (p == null) {
-            return;
-        }
-        p.setPlayerTime(pTime, false);
+
+    public static void addInterpolateTime(Player p,long time){
+        long finalTime = p.getPlayerTimeOffset()+time;
+        setRelativeTime(p,-(p.getWorld().getTime()-p.getPlayerTimeOffset()));
+        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> {
+            setAbsoluteTime(p,finalTime);
+        },time);
     }
-    /**
-     *
-     * @param player player to interpolate time for
-     * @param time time of day
-     * @param ticks time of duration in ticks
-     */
-    public static void interpolatePlayerToTime(UUID player, long time, int ticks) {
-        long additiveTime = time - getPlayerTime(player);
-        long add = additiveTime / ticks;
-        AtomicInteger i = new AtomicInteger(0);
-        Bukkit.getScheduler().runTaskTimer(Architect.PLUGIN,(task) -> {
-            Player p = Bukkit.getPlayer(player);
-            if (p == null) {
-                task.cancel();
-                return;
-            }
-            p.sendMessage("Interpolating time: " + i.get() + " / " + ticks + " ticks to time " + time + " add = " + add + " current time = " + getPlayerTime(player));
-            addPlayerTime(player,add);
-            i.getAndIncrement();
-            if (i.get() > ticks) {
-                setPlayerTime(player, getPlayerTime(player));
-                task.cancel();
-            }
-        }, 1L, 1L);
+
+    public static void setInterpolateTime(Player p,long time){
+        setRelativeTime(p,-(p.getWorld().getTime()-p.getPlayerTimeOffset()));
+        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> {
+            setAbsoluteTime(p,time);
+        },time);
     }
 }
+

@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.MetaNode;
+
+import cc.architect.Utilities;
 
 import java.util.UUID;
 
@@ -41,17 +41,11 @@ public class PlayerStatsHolder {
         this.uuid = uuid;
         this.name = name;
     }
-    public void setMeta(User user, String key, String value) {
-        MetaNode node = MetaNode.builder(key, value).build();
-        user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(key)));
-        user.data().add(node);
-        LuckPermsProvider.get().getUserManager().saveUser(user);
-    }
     public String getValue(User user, String key) {
         String val;
         String data = user.getCachedData().getMetaData().getMetaValue(key);
         if(data == null) {
-            setMeta(user, key, "0");
+            Utilities.setMeta(user, key, "0");
             val = "0";
         } else {
             val = data;
