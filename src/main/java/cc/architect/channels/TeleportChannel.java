@@ -2,7 +2,7 @@ package cc.architect.channels;
 
 import cc.architect.Utilities;
 import cc.architect.events.player.Join;
-import cc.architect.managers.PartyManager;
+import cc.architect.managers.Parties;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
@@ -28,6 +28,6 @@ public class TeleportChannel implements PluginMessageListener {
         String receiver = Utilities.readUTF(messageData);
         String sender = Utilities.readUTF(messageData);
         Join.pendingJoin.put(receiver, sender);
-        PartyManager.setPartiesMap(receiver, sender);
+        Parties.setPartiesMap(receiver, sender);
     }
 }

@@ -1,8 +1,8 @@
 package cc.architect.commands;
 
 import cc.architect.managers.Avatars;
-import cc.architect.managers.PartyManager;
-import cc.architect.managers.PlayerTime;
+import cc.architect.managers.Parties;
+import cc.architect.managers.Time;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -46,7 +46,7 @@ public class Party {
                             if (receiver == null) {
                                 return Command.SINGLE_SUCCESS;
                             }
-                            PartyManager.sendInvite(sender,receiver);
+                            Parties.sendInvite(sender,receiver);
                             return Command.SINGLE_SUCCESS;
                         })
                         /*.suggests((ctx, builder) ->{
@@ -65,7 +65,7 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        PartyManager.acceptInvite(receiver.getName());
+                        Parties.acceptInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
                 )
@@ -76,7 +76,7 @@ public class Party {
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
 
-                        PartyManager.denyInvite(receiver.getName());
+                        Parties.denyInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
                 )
@@ -123,13 +123,12 @@ public class Party {
             event.registrar().register(Commands.literal("setTime")
                     .then(Commands.argument("time",StringArgumentType.word())
                         .then(Commands.argument("interpolate",StringArgumentType.word())
-                                .executes(ctx -> {
-                                    Player sender = (Player) ctx.getSource().getSender();
-                                    long time = Long.parseLong(StringArgumentType.getString(ctx,"time"));
-                                    PlayerTime.addInterpolateTime(sender,time);
-
-                                    return Command.SINGLE_SUCCESS;
-                                })
+                            .executes(ctx -> {
+                                Player sender = (Player) ctx.getSource().getSender();
+                                long time = Long.parseLong(StringArgumentType.getString(ctx,"time"));
+                                Time.addInterpolateTime(sender,time);
+                                return Command.SINGLE_SUCCESS;
+                            })
                         )
                     )
                 .build()

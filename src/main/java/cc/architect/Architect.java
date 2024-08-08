@@ -8,11 +8,11 @@ import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
 import cc.architect.managers.Configurations;
 import cc.architect.objects.Messages;
-import cc.architect.tasks.TaskManager;
+import cc.architect.managers.Tasks;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.util.TriState;
 import org.bukkit.WorldCreator;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -29,16 +29,16 @@ public final class Architect extends JavaPlugin {
     public void onEnable() {
         // plugin
         PLUGIN = this;
-        // load configurations
+        // configurations
         Configurations.load();
         // commands
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         Simulation.register(manager);
         Party.register(manager);
-        // load heads
+        // heads
         HeadLoader.load();
-        // register tasks
-        TaskManager.registerTasks();
+        // tasks
+        Tasks.registerTasks();
         // events
         List<Listener> events = List.of(
             new Chat(),
@@ -56,7 +56,6 @@ public final class Architect extends JavaPlugin {
         }
         // channels
         Messenger messenger = this.getServer().getMessenger();
-        messenger.registerOutgoingPluginChannel(this,BaseChannels.PUBLIC);
         List<PluginMessageListener> channels = List.of(
             new PartyChannelManager(),
             new PlayerFinder(),
@@ -67,18 +66,25 @@ public final class Architect extends JavaPlugin {
         for (PluginMessageListener channel : channels) {
             messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,channel);
         }
-        // logger
-        ComponentLogger logger = this.getComponentLogger();
-        // playground world
-        new WorldCreator("playground").createWorld();
-        logger.info(Messages.PLAYGROUND_LOADED);
-        // welcome message
-        logger.info(Messages.PLUGIN_WELCOME);
+        messenger.registerOutgoingPluginChannel(this,BaseChannels.PUBLIC);
+        // worlds
+        List<String> worlds = List.of(
+            "village",
+            "mine",
+            "farm",
+            "dream",
+            "buildings"
+        );
+        for (String world : worlds) {
+            new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();
+        }
+        // welcome
+        this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!
     }
     @Override
     public void onDisable() {
-        // send players to limbo to prevent error messages
+        // send players to limbo to prevent error disconnect messages
         this.getServer().getOnlinePlayers().forEach(p -> {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF(BaseChannels.CONNECT);

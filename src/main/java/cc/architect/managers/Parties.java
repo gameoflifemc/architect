@@ -23,7 +23,7 @@ import static cc.architect.objects.HashMaps.PARTIES;
 import static cc.architect.objects.PartyHolder.getMemberParty;
 import static org.bukkit.Bukkit.getPlayerExact;
 
-public class PartyManager {
+public class Parties {
     public static final int MAX_INVITE_TIME = 60; // 60 seconds
     //receiver -> sender, taskid
     public static Map<String, PartyInvite> invites = new HashMap<>();

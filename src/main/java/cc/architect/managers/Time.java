@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.bukkit.Bukkit.getPlayer;
 
-public class PlayerTime {
+public class Time {
     public static void setAbsoluteTime(Player p,long time){
         p.setPlayerTime(time,false);
     }

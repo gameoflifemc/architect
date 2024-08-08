@@ -3,8 +3,7 @@ package cc.architect.minigames.mining;
 import cc.architect.heads.HeadLoader;
 import cc.architect.loottables.definitions.MiningChestLootTable;
 import cc.architect.objects.Messages;
-import cc.architect.tasks.ReplenishBedrock;
-import cc.architect.tasks.TaskManager;
+import cc.architect.managers.Tasks;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -41,7 +40,7 @@ public class BlockBreakHandler {
             case Material.COBBLESTONE -> {
                 event.setCancelled(true);
                 block.setType(Material.BEDROCK);
-                TaskManager.replenishBedrockTask.addBedrock(block.getLocation());
+                Tasks.replenishBedrockTask.addBedrock(block.getLocation());
                 if (rollRandom(5f)) {
                     spawnStealer(event);
 

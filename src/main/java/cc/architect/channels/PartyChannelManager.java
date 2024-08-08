@@ -1,7 +1,7 @@
 package cc.architect.channels;
 
 import cc.architect.Utilities;
-import cc.architect.managers.PartyManager;
+import cc.architect.managers.Parties;
 import cc.architect.objects.Messages;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import static cc.architect.channels.BaseChannels.getForwardMessageData;
 import static cc.architect.channels.ServerName.getServerName;
-import static cc.architect.managers.PartyManager.hasInvite;
+import static cc.architect.managers.Parties.hasInvite;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class PartyChannelManager implements PluginMessageListener {
@@ -119,7 +119,7 @@ public class PartyChannelManager implements PluginMessageListener {
             response = hasInvite(inviteReceiver) ? "DENY" : "ACCEPT";
         }
         if (response.equals("ACCEPT")){
-            PartyManager.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
+            Parties.createInvite(inviteReceiver, inviteSender,getServerName(),serverName);
         }
         BaseChannels.prepareForwardMessage();
         DataOutputStream messageOut = BaseChannels.getForwardMessageData();
@@ -152,7 +152,7 @@ public class PartyChannelManager implements PluginMessageListener {
             return;
         }
         switch (response) {
-            case "ACCEPT" -> PartyManager.sendInviteMessages(inviteReceiver, inviteSender);
+            case "ACCEPT" -> Parties.sendInviteMessages(inviteReceiver, inviteSender);
             case "DENY" -> p.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
             case "OFFLINE" -> p.sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
             /*case "CAN_NOT_MAKE_PARTY" -> {
