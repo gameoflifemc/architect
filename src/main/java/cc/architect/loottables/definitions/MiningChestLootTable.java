@@ -12,8 +12,10 @@ public class MiningChestLootTable extends BaseLootTable {
     public static int miningChestsSpawned = 0;
 
     private List<LootTableObject> lootTableItems = List.of(
-            new LootTableObject(50, new ItemStack(Material.AIR)),
-            new LootTableObject(50, new ItemStack(Material.EMERALD, 5))
+            new LootTableObject(20, new ItemStack(Material.EMERALD, 7)),
+            new LootTableObject(10, new ItemStack(Material.EMERALD, 10)),
+            new LootTableObject(30, new ItemStack(Material.EMERALD, 5)),
+            new LootTableObject(40, new ItemStack(Material.EMERALD, 4))
     );
 
     @Override
