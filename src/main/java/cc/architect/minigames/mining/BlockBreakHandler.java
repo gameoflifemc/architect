@@ -29,7 +29,7 @@ public class BlockBreakHandler {
                 event.setCancelled(true);
                 block.setType(Material.COBBLESTONE);
                 //                           this is here to secure the server from crashing
-                if (rollRandom(100f) && MiningChestLootTable.miningChestsSpawned < 15) {
+                if (rollRandom(3f) && MiningChestLootTable.miningChestsSpawned < 15) {
                     Location spawnLocation = block.getLocation().add(0.5,-0.45f,0.5);
                     spawnTreasure(spawnLocation);
                     player.sendMessage(Messages.TREASURE_FOUND);
@@ -42,7 +42,7 @@ public class BlockBreakHandler {
                 event.setCancelled(true);
                 block.setType(Material.BEDROCK);
                 TaskManager.replenishBedrockTask.addBedrock(block.getLocation());
-                if (rollRandom(100f)) {
+                if (rollRandom(5f)) {
                     spawnStealer(event);
 
                     player.sendMessage(Messages.STEAL);
