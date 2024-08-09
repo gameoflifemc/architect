@@ -1,8 +1,10 @@
 package cc.architect.loottables.definitions;
 
+import cc.architect.bonuses.DiamondBonus;
 import cc.architect.loottables.BaseLootTable;
 import cc.architect.loottables.LootTableObject;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -10,13 +12,19 @@ import java.util.List;
 public class MiningChestLootTable extends BaseLootTable {
 
     public static int miningChestsSpawned = 0;
+    public Player player;
+    private final List<LootTableObject> lootTableItems;
 
-    private List<LootTableObject> lootTableItems = List.of(
-            new LootTableObject(20, new ItemStack(Material.EMERALD, 7)),
-            new LootTableObject(10, new ItemStack(Material.EMERALD, 10)),
-            new LootTableObject(30, new ItemStack(Material.EMERALD, 5)),
-            new LootTableObject(40, new ItemStack(Material.EMERALD, 4))
-    );
+    public MiningChestLootTable(Player player) {
+        this.player = player;
+        int bonus = (int) Math.ceil(DiamondBonus.bonuses.get(player));
+        lootTableItems = List.of(
+                new LootTableObject(20, new ItemStack(Material.EMERALD, 7 * bonus)),
+                new LootTableObject(10, new ItemStack(Material.EMERALD, 10 * bonus)),
+                new LootTableObject(30, new ItemStack(Material.EMERALD, 5 * bonus)),
+                new LootTableObject(40, new ItemStack(Material.EMERALD, 4 * bonus))
+        );
+    }
 
     @Override
     public float[] getChances() {

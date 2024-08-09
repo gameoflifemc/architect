@@ -1,20 +1,17 @@
 package cc.architect.loottables;
 
 import cc.architect.loottables.definitions.MiningChestLootTable;
+import cc.architect.loottables.definitions.ReplenishBedrockLootTable;
+import cc.architect.loottables.definitions.StealerLootTable;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Random;
 
 /**
- * Custom Loot Table System (I was to lazy to learn how Minecraft does it)
+ * Custom Loot Table System
 **/
 public class LootTableManager {
-
-    private static List<BaseLootTable> lootTables = List.of(
-        new MiningChestLootTable()
-    );
-
     /**
      * Get random item from a predefined loot table
      * @param lootTable An object that extends BaseLootTable

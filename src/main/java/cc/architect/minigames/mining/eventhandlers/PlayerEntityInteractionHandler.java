@@ -1,4 +1,4 @@
-package cc.architect.minigames.mining;
+package cc.architect.minigames.mining.eventhandlers;
 
 import cc.architect.loottables.LootTableManager;
 import cc.architect.loottables.definitions.MiningChestLootTable;
@@ -23,7 +23,7 @@ public class PlayerEntityInteractionHandler {
 
                 // Get if the head has a texture of a chest
                 if (Objects.equals(skullMeta.getOwner(), "SunamyMC")) {
-                    event.getPlayer().getInventory().addItem(LootTableManager.roll(new MiningChestLootTable()));
+                    event.getPlayer().getInventory().addItem(LootTableManager.roll(new MiningChestLootTable(event.getPlayer())));
 
                     Particle particle = Particle.DUST;
                     Particle.DustOptions dustOptions = new Particle.DustOptions(Color.WHITE, 4);

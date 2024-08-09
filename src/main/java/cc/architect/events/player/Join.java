@@ -1,6 +1,7 @@
 package cc.architect.events.player;
 
 import cc.architect.Architect;
+import cc.architect.bonuses.DiamondBonus;
 import cc.architect.channels.ServerName;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -15,6 +16,8 @@ public class Join implements Listener {
     public static HashMap<String, String> pendingJoin = new HashMap<>();
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+        // initialize bonus
+        DiamondBonus.initPlayer(e.getPlayer());
         // empty join message
         e.joinMessage(Component.empty());
         // get player

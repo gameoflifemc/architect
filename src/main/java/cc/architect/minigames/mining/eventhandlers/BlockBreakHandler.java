@@ -1,34 +1,68 @@
-package cc.architect.minigames.mining;
+package cc.architect.minigames.mining.eventhandlers;
 
+import cc.architect.bonuses.DiamondBonus;
 import cc.architect.heads.HeadLoader;
 import cc.architect.loottables.definitions.MiningChestLootTable;
-import cc.architect.objects.Messages;
 import cc.architect.managers.Tasks;
+import cc.architect.objects.Messages;
+import com.google.common.collect.Table;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import com.google.common.collect.HashBasedTable;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static cc.architect.Utilities.rollRandom;
 
 public class BlockBreakHandler {
+    private static final List<Material> ores = List.of(
+            Material.EMERALD,
+            Material.DIAMOND
+    );
+
+    public static Table<Player, Location, Integer> minedOres = HashBasedTable.create();
+
     public static void handleBlockBreakEvent(BlockBreakEvent event) {
         Block block = event.getBlock();
         Player player = event.getPlayer();
-
+        // Prosim nekoukejte se do toho switche jestli nechcete zemřít na následky přešpagetování
         switch(block.getType()) {
             case Material.EMERALD_ORE -> {
+                if (minedOres.contains(player, block.getLocation())) {
+                    event.setCancelled(true);
+                    player.sendMessage(Messages.BLOCK_MINED);
+                    return;
+                }
                 event.setCancelled(true);
                 block.setType(Material.STONE);
                 player.getInventory().addItem(new ItemStack(Material.EMERALD));
+                minedOres.put(player, block.getLocation(), 6000);
+                Tasks.replenishBedrockTask.addBedrock(block.getLocation(), Material.EMERALD_ORE);
+            }
+
+            case Material.DIAMOND_ORE -> {
+                if (minedOres.contains(player, block.getLocation())) {
+                    event.setCancelled(true);
+                    player.sendMessage(Messages.BLOCK_MINED);
+                    return;
+                }
+                event.setCancelled(true);
+                block.setType(Material.STONE);
+                DiamondBonus.add(player, 1f/3f);
+                minedOres.put(player, block.getLocation(), -1);
+                Tasks.replenishBedrockTask.addBedrock(block.getLocation(), Material.DIAMOND_ORE);
             }
 
             case Material.STONE -> {
                 event.setCancelled(true);
                 block.setType(Material.COBBLESTONE);
                 //                           this is here to secure the server from crashing
-                if (rollRandom(3f) && MiningChestLootTable.miningChestsSpawned < 15) {
+                if (rollRandom(5f) && MiningChestLootTable.miningChestsSpawned < 15) {
                     Location spawnLocation = block.getLocation().add(0.5,-0.45f,0.5);
                     spawnTreasure(spawnLocation);
                     player.sendMessage(Messages.TREASURE_FOUND);
@@ -40,13 +74,19 @@ public class BlockBreakHandler {
             case Material.COBBLESTONE -> {
                 event.setCancelled(true);
                 block.setType(Material.BEDROCK);
-                Tasks.replenishBedrockTask.addBedrock(block.getLocation());
+                if (!Tasks.replenishBedrockTask.hasLocation(block.getLocation())) {
+                    Tasks.replenishBedrockTask.addBedrock(block.getLocation(), Material.BEDROCK);
+                }
                 if (rollRandom(5f)) {
                     spawnStealer(event);
 
                     player.sendMessage(Messages.STEAL);
                     player.playSound(player.getLocation(), Sound.ENTITY_CAT_STRAY_AMBIENT, SoundCategory.MASTER, 100f, 1f);
                 }
+            }
+
+            case Material.ANDESITE -> {
+                event.setCancelled(true);
             }
         }
     }

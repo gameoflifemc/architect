@@ -9,9 +9,9 @@ import java.util.List;
 
 public class ReplenishBedrockLootTable extends BaseLootTable {
     private List<LootTableObject> lootTableItems = List.of(
-            new LootTableObject(10, new ItemStack(Material.COBBLESTONE)),
-            new LootTableObject(70, new ItemStack(Material.STONE)),
-            new LootTableObject(20, new ItemStack(Material.EMERALD_ORE))
+            new LootTableObject(15, new ItemStack(Material.COBBLESTONE)),
+            new LootTableObject(84.9f, new ItemStack(Material.STONE)),
+            new LootTableObject(0.1f, new ItemStack(Material.EMERALD_ORE))
     );
 
     @Override

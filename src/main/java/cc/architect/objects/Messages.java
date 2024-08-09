@@ -16,6 +16,7 @@ public class Messages {
             .color(TextColor.fromHexString("#00FF00"));
     public static final Component STEAL = Component.text("Looks like someone's trying to steal your treasure, catch him and you'll get it back")
             .color(TextColor.fromHexString("#FF0000"));
+    public static final Component BLOCK_MINED = Component.text("You can't mine this block, because you've already mined it.").color(TextColor.fromHexString("#FF0000"));
     public static Component SEND_INVITE_SENDER(String player) {
         return Component.text("You sent invite to player " + player + ".");
     }
