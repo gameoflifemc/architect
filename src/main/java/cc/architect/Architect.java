@@ -9,8 +9,6 @@ import cc.architect.heads.HeadLoader;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import net.kyori.adventure.util.TriState;
 import net.luckperms.api.LuckPerms;
@@ -27,11 +25,13 @@ import java.util.List;
 
 public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
-    public static final LuckPerms LUCKPERMS = LuckPermsProvider.get();
+    public static LuckPerms LUCKPERMS;
     @Override
     public void onEnable() {
         // plugin
         PLUGIN = this;
+        // luckperms
+        LUCKPERMS = LuckPermsProvider.get();
         // configurations
         Configurations.load();
         // commands
@@ -84,16 +84,5 @@ public final class Architect extends JavaPlugin {
         // welcome
         this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!
-    }
-    @Override
-    public void onDisable() {
-        // send players to limbo to prevent error disconnect messages
-        this.getServer().getOnlinePlayers().forEach(p -> {
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF(BaseChannels.CONNECT);
-            out.writeUTF(BaseChannels.LIMBO);
-            p.sendPluginMessage(this,BaseChannels.PUBLIC,out.toByteArray());
-        });
-        // ...and we're done!
     }
 }

@@ -1,22 +1,35 @@
 package cc.architect.managers;
 
-import cc.architect.Utilities;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class Routines {
     public static void enterGame(Player p) {
-        Utilities.worldMove(p,"village");
+        worldMove(p,"village");
+        Actions.resetPoints(p);
     }
     public static void enterMine(Player p) {
-        Utilities.worldMove(p,"mine");
+        worldMove(p,"mine");
+        Actions.resetPoints(p);
     }
     public static void enterFarm(Player p) {
-        Utilities.worldMove(p,"farm");
+        worldMove(p,"farm");
+        Actions.resetPoints(p);
     }
     public static void enterDream(Player p) {
-        Utilities.worldMove(p,"dream");
+        worldMove(p,"dream");
+        Actions.resetPoints(p);
     }
     public static void endGame(Player p) {
-        Utilities.worldMove(p,"world");
+        worldMove(p,"world");
+        Actions.resetPoints(p);
+    }
+    private static void worldMove(Player player, String worldName) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            return;
+        }
+        player.teleport(world.getSpawnLocation());
     }
 }

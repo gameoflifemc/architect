@@ -19,7 +19,7 @@ public class Interact implements Listener {
         if (block == null) {
             return;
         }
-        if (block.getType() != Material.STONE_BUTTON) {
+        if (block.getType() != Material.POLISHED_BLACKSTONE_BUTTON) {
             return;
         }
         Player p = e.getPlayer();

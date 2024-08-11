@@ -7,13 +7,10 @@ import java.util.HashMap;
 public class Actions {
     public static HashMap<Player, Boolean> canSeePoints = new HashMap<>();
     public static void removePoint(Player p) {
-        //if (!points.containsKey(p)) {
-        //    return;
-        //}
-        //points.computeIfPresent(p,(k, currentPoints) -> currentPoints - 1);
+        Meta.addValue(p,"actions",-1);
     }
     public static void resetPoints(Player p) {
-        //points.put(p, 10);
+        Meta.setValue(p,"actions","0");
         showPoints(p);
     }
     public static void hidePoints(Player p) {
