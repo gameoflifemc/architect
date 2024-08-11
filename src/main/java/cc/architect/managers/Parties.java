@@ -26,7 +26,7 @@ import static org.bukkit.Bukkit.getPlayerExact;
 public class Parties {
     public static final int MAX_INVITE_TIME = 60; // 60 seconds
     //receiver -> sender, taskid
-    public static Map<String, PartyInvite> invites = new HashMap<>();
+    public static final Map<String, PartyInvite> invites = new HashMap<>();
     public static void sendInvite(Player sender, String receiverName) {
         /*if(IS_IN_PARTY.contains(sender.getName())){
             sender.sendMessage(Messages.SEND_INVITE_CANNOT_MAKE_PARTY);

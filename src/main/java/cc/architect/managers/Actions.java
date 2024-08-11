@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class Actions {
-    public static HashMap<Player, Boolean> canSeePoints = new HashMap<>();
+    public static final HashMap<Player, Boolean> canSeePoints = new HashMap<>();
     public static void removePoint(Player p) {
         Meta.addValue(p,"actions",-1);
     }

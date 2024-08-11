@@ -19,9 +19,9 @@ import static cc.architect.channels.ServerName.getServerName;
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayerFinder implements PluginMessageListener {
-    public static Map<String, Consumer<String>> playerServerQueue = new HashMap<>();
+    public static final Map<String, Consumer<String>> playerServerQueue = new HashMap<>();
     @Override
-    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if(!channel.equals(BaseChannels.PUBLIC)){
             return;
         }

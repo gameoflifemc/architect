@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.HashMap;
 
 public class Join implements Listener {
-    public static HashMap<String, String> pendingJoin = new HashMap<>();
+    public static final HashMap<String, String> pendingJoin = new HashMap<>();
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         // initialize bonus

@@ -1,11 +1,18 @@
 package cc.architect.objects;
 
-public class PartyInvite {
-    private String sender;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+public class PartyInvite {
+    private final String sender;
+
+    @Setter
     private String receiverServer="0";
+    @Setter
     private String senderServer="0";
 
+    @Setter
     private int taskID;
 
     public PartyInvite(String sender) {
@@ -21,35 +28,7 @@ public class PartyInvite {
         this.receiverServer = receiverServer;
         this.senderServer = senderServer;
     }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public String getReceiverServer() {
-        return receiverServer;
-    }
-
-    public void setReceiverServer(String receiverServer) {
-        this.receiverServer = receiverServer;
-    }
-
-    public String getSenderServer() {
-        return senderServer;
-    }
-
-    public void setSenderServer(String senderServer) {
-        this.senderServer = senderServer;
-    }
-
-    public int getTaskID() {
-        return taskID;
-    }
-
-    public void setTaskID(int taskID) {
-        this.taskID = taskID;
-    }
-
+    
     public boolean isSameServer(){
         return receiverServer.equals(senderServer);
     }

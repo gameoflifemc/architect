@@ -11,9 +11,9 @@ import java.util.Map;
 * Manages the cycles for the farming minigame
 **/
 public class CycleManager {
-    public static Map<Player, CycleManager> activeCycleManagers = new HashMap<>();
+    public static final Map<Player, CycleManager> activeCycleManagers = new HashMap<>();
 
-    public Player player;
+    public final Player player;
     public int state;
 
     public CycleManager(Player player) {

@@ -14,13 +14,11 @@ public class PlayerEntityInteractionHandler {
     public static void handleEvent(PlayerInteractAtEntityEvent event) {
 
         // Get if the entity is an ArmorStand
-        if (event.getRightClicked() instanceof ArmorStand) {
-            ArmorStand treasure = (ArmorStand) event.getRightClicked();
-
+        if (event.getRightClicked() instanceof ArmorStand treasure) {
+            
             // Get if the ArmorStand has a PlayerHead
-            if (treasure.getEquipment().getHelmet().getItemMeta() instanceof SkullMeta) {
-                SkullMeta skullMeta = (SkullMeta) treasure.getEquipment().getHelmet().getItemMeta();
-
+            if (treasure.getEquipment().getHelmet().getItemMeta() instanceof SkullMeta skullMeta) {
+                
                 // Get if the head has a texture of a chest
                 if (Objects.equals(skullMeta.getOwner(), "SunamyMC")) {
                     event.getPlayer().getInventory().addItem(LootTableManager.roll(new MiningChestLootTable(event.getPlayer())));

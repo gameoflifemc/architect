@@ -23,7 +23,7 @@ public class BlockBreakHandler {
             Material.DIAMOND
     );
 
-    public static Table<Player, Location, Integer> minedOres = HashBasedTable.create();
+    public static final Table<Player, Location, Integer> minedOres = HashBasedTable.create();
 
     public static void handleBlockBreakEvent(BlockBreakEvent event) {
         Block block = event.getBlock();
@@ -83,9 +83,7 @@ public class BlockBreakHandler {
                 }
             }
 
-            case Material.ANDESITE -> {
-                event.setCancelled(true);
-            }
+            case Material.ANDESITE -> event.setCancelled(true);
         }
     }
 

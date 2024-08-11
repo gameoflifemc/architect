@@ -17,7 +17,7 @@ import static cc.architect.channels.BaseChannels.getBasicMessage;
 import static cc.architect.channels.BaseChannels.sendToDefaultChannel;
 
 public class PlayerLister implements PluginMessageListener {
-    public static List<Consumer<List<String>>> queue = new ArrayList<>();
+    public static final List<Consumer<List<String>>> queue = new ArrayList<>();
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if(!channel.equals(BaseChannels.PUBLIC)){

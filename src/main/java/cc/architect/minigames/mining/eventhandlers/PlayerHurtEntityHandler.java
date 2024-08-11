@@ -10,8 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class PlayerHurtEntityHandler {
     public static void handleEvent(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Ocelot) {
-            if (event.getDamager() instanceof Player) {
-                Player player = (Player) event.getDamager();
+            if (event.getDamager() instanceof Player player) {
                 player.getInventory().addItem(LootTableManager.roll(new StealerLootTable(player)));
 
                 event.getEntity().getPassengers().forEach(Entity::remove);

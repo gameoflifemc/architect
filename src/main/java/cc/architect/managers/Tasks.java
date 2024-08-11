@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import static cc.architect.Architect.PLUGIN;
 
 public class Tasks {
-    public static ReplenishBedrock replenishBedrockTask = new ReplenishBedrock();
+    public static final ReplenishBedrock replenishBedrockTask = new ReplenishBedrock();
     public static void registerTasks() {
         BukkitScheduler scheduler = PLUGIN.getServer().getScheduler();
         scheduler.runTaskTimer(PLUGIN, replenishBedrockTask,1,1800);

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DiamondBonus {
-    public static Map<Player, Float> bonuses = new HashMap<>();
+    public static final Map<Player, Float> bonuses = new HashMap<>();
 
     public static void initPlayer(Player player) {
         if (!bonuses.containsKey(player)) {

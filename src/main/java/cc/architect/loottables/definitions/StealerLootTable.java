@@ -11,7 +11,7 @@ import java.util.List;
 
 public class StealerLootTable extends BaseLootTable {
 
-    public Player player;
+    public final Player player;
 
     private final List<LootTableObject> lootTableItems;
 

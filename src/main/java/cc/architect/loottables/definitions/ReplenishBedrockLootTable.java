@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class ReplenishBedrockLootTable extends BaseLootTable {
-    private List<LootTableObject> lootTableItems = List.of(
+    private final List<LootTableObject> lootTableItems = List.of(
             new LootTableObject(15, new ItemStack(Material.COBBLESTONE)),
             new LootTableObject(84.9f, new ItemStack(Material.STONE)),
             new LootTableObject(0.1f, new ItemStack(Material.EMERALD_ORE))

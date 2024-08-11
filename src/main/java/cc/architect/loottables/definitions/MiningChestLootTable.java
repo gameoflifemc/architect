@@ -12,7 +12,7 @@ import java.util.List;
 public class MiningChestLootTable extends BaseLootTable {
 
     public static int miningChestsSpawned = 0;
-    public Player player;
+    public final Player player;
     private final List<LootTableObject> lootTableItems;
 
     public MiningChestLootTable(Player player) {

@@ -14,7 +14,7 @@ import static cc.architect.channels.BaseChannels.sendToDefaultChannel;
 public class ServerName implements PluginMessageListener {
     public static String name = null;
     @Override
-    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if(!channel.equals(BaseChannels.PUBLIC)){
             return;
         }

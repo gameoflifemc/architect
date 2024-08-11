@@ -44,5 +44,5 @@ public class Messages {
     public static Component PLAYER_NOT_ONLINE(String player) {
         return Component.text("Player " + player + " is currently offline.");
     }
-    public static Component SEND_INVITE_ERROR = Component.text("Error sending invite please try again later.");
+    public static final Component SEND_INVITE_ERROR = Component.text("Error sending invite please try again later.");
 }

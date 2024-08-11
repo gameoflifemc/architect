@@ -23,7 +23,7 @@ import static cc.architect.managers.Parties.hasInvite;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class PartyChannelManager implements PluginMessageListener {
-    public static Map<String, ImmutablePair<String,String>> playerInvitesQueue = new HashMap<>();
+    public static final Map<String, ImmutablePair<String,String>> playerInvitesQueue = new HashMap<>();
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
         if (!channel.equals(BaseChannels.PUBLIC)) {
