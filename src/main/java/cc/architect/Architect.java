@@ -7,12 +7,14 @@ import cc.architect.events.entity.PlayerHurtEntity;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
 import cc.architect.managers.Configurations;
-import cc.architect.objects.Messages;
 import cc.architect.managers.Tasks;
+import cc.architect.objects.Messages;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import net.kyori.adventure.util.TriState;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.WorldCreator;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
+    public static final LuckPerms LUCKPERMS = LuckPermsProvider.get();
     @Override
     public void onEnable() {
         // plugin

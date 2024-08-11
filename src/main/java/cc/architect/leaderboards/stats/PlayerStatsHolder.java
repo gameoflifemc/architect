@@ -1,11 +1,10 @@
 package cc.architect.leaderboards.stats;
 
+import cc.architect.Architect;
+import cc.architect.managers.Meta;
 import lombok.Getter;
 import lombok.Setter;
-import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
-
-import cc.architect.Utilities;
 
 import java.util.UUID;
 
@@ -21,7 +20,7 @@ public class PlayerStatsHolder {
     public PlayerStatsHolder() {}
     public PlayerStatsHolder(UUID uuid) {
         this.uuid = uuid;
-        User user = LuckPermsProvider.get().getUserManager().getUser(uuid);
+        User user = Architect.LUCKPERMS.getUserManager().getUser(uuid);
         if(user == null) {
             return;
         }
@@ -45,7 +44,7 @@ public class PlayerStatsHolder {
         String val;
         String data = user.getCachedData().getMetaData().getMetaValue(key);
         if(data == null) {
-            Utilities.setMeta(user, key, "0");
+            Meta.setValue(user, key, "0");
             val = "0";
         } else {
             val = data;

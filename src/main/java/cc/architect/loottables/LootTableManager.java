@@ -1,11 +1,7 @@
 package cc.architect.loottables;
 
-import cc.architect.loottables.definitions.MiningChestLootTable;
-import cc.architect.loottables.definitions.ReplenishBedrockLootTable;
-import cc.architect.loottables.definitions.StealerLootTable;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.Random;
 
 /**

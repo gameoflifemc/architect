@@ -1,7 +1,5 @@
 package cc.architect.minigames.farming;
 
-import cc.architect.Architect;
-import cc.architect.managers.Tasks;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +23,7 @@ public class CycleManager {
 
     public void start() {
         state = 0;
-        Tasks.scheduler.runTaskLater(Architect.PLUGIN, new ShiftSeasons(this), 2400);
+        //Tasks.scheduler.runTaskLater(Architect.PLUGIN, new ShiftSeasons(this), 2400);
     }
 
     public void moveToNextSeason() {

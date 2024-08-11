@@ -1,11 +1,7 @@
 package cc.architect;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.NodeType;
-import net.luckperms.api.node.types.MetaNode;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.DataInputStream;
@@ -50,40 +46,11 @@ public class Utilities {
         float randFloat = random.nextFloat() * 100;
         return randFloat <= percentage;
     }
-    public void addMetaData(Player player, String key, int value) {
-        LuckPerms lp = LuckPermsProvider.get();
-        
-        // obtain CachedMetaData - the easiest way is via the PlayerAdapter
-        // of course, you can get it via a User too if the player is offline.
-        CachedMetaData metaData = lp.getPlayerAdapter(Player.class).getMetaData(player);
-        
-        // query & parse the meta value
-        int current = metaData.getMetaValue(key,Integer::parseInt).orElse(0);
-        
-        // obtain a User instance (by any means! see above for other ways)
-        User user = lp.getPlayerAdapter(Player.class).getUser(player);
-        
-        // create a new MetaNode holding the level value
-        // of course, this can have context/expiry/etc too!
-        MetaNode node = MetaNode.builder(key, Integer.toString(current + value)).build();
-        
-        // clear any existing meta nodes with the same key - we want to override
-        user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(key)));
-        // add the new node
-        user.data().add(node);
-        
-        // save!
-        lp.getUserManager().saveUser(user);
-    }
-    public static void addMetaValue(User user, String key, int value) {
-        int val = user.getCachedData().getMetaData().getMetaValue(key, Integer::parseInt).orElse(0);
-        setMeta(user, key, Integer.toString(val + value));
-    }
-
-    public static void setMeta(User user, String key, String value) {
-        MetaNode node = MetaNode.builder(key, value).build();
-        user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(key)));
-        user.data().add(node);
-        LuckPermsProvider.get().getUserManager().saveUser(user);
+    public static void worldMove(Player player, String worldName) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            return;
+        }
+        player.teleport(world.getSpawnLocation());
     }
 }

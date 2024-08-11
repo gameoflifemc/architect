@@ -5,17 +5,15 @@ import cc.architect.heads.HeadLoader;
 import cc.architect.loottables.definitions.MiningChestLootTable;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import com.google.common.collect.HashBasedTable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static cc.architect.Utilities.rollRandom;
 

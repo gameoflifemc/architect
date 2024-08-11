@@ -4,10 +4,7 @@ import cc.architect.minigames.mining.eventhandlers.BlockBreakHandler;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-
 public class MineOresTimer implements Runnable {
-
     @Override
     public void run() {
         Player[] players = BlockBreakHandler.minedOres.rowKeySet().toArray(new Player[0]);

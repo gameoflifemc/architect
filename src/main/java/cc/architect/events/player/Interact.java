@@ -1,10 +1,7 @@
 package cc.architect.events.player;
 
-import cc.architect.routines.Pregame;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import cc.architect.managers.Routines;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,12 +22,7 @@ public class Interact implements Listener {
         if (block.getType() != Material.STONE_BUTTON) {
             return;
         }
-        World world = Bukkit.getWorld("playground");
-        if (world == null) {
-            return;
-        }
         Player p = e.getPlayer();
-        p.teleport(new Location(world,0.5,127.0,0.5,0,0));
-        Pregame.welcome(p);
+        Routines.enterGame(p);
     }
 }
