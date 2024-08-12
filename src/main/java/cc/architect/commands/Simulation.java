@@ -2,6 +2,7 @@ package cc.architect.commands;
 
 import cc.architect.leaderboards.stats.PlayerStatsHolder;
 import cc.architect.leaderboards.stats.StatsSorter;
+import cc.architect.managers.Actions;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -23,7 +24,47 @@ public class Simulation {
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             // register command
             event.registrar().register(Commands.literal("simulation")
-                //teleports player to world spawn of its world
+                .then(Commands.literal("points")
+                    .then(Commands.literal("remove")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .executes(ctx -> {
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                if (p == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                // remove point
+                                Actions.removePoint(p);
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
+                    )
+                    .then(Commands.literal("hide")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .executes(ctx -> {
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                if (p == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                // reset points
+                                Actions.hidePoints(p);
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
+                    )
+                    .then(Commands.literal("show")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .executes(ctx -> {
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                if (p == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                // reset points
+                                Actions.showPoints(p);
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
+                    )
+                )
                 .then(Commands.literal("world")
                     .then(Commands.argument("world",StringArgumentType.word())
                         .suggests((ctx, builder) -> {

@@ -1,7 +1,7 @@
 package cc.architect.events.player;
 
+import cc.architect.managers.Meta;
 import cc.architect.managers.Routines;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,10 +19,20 @@ public class Interact implements Listener {
         if (block == null) {
             return;
         }
-        if (block.getType() != Material.POLISHED_BLACKSTONE_BUTTON) {
-            return;
-        }
         Player p = e.getPlayer();
-        Routines.enterGame(p);
+        switch (block.getType()) {
+            case CRIMSON_BUTTON:
+                Routines.toFarm(p);
+                break;
+            case WARPED_BUTTON:
+                Routines.toMine(p);
+                break;
+            case POLISHED_BLACKSTONE_BUTTON:
+                if (Meta.check(p,"last_location")) {
+                    break;
+                }
+                Routines.startGame(p);
+                break;
+        }
     }
 }

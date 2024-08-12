@@ -3,7 +3,7 @@ package cc.architect;
 import cc.architect.channels.*;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
-import cc.architect.events.entity.PlayerHurtEntity;
+import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
 import cc.architect.managers.Configurations;
@@ -13,6 +13,7 @@ import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import net.kyori.adventure.util.TriState;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -20,18 +21,22 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
 
 public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
     public static LuckPerms LUCKPERMS;
+    public static BukkitScheduler SCHEDULER;
     @Override
     public void onEnable() {
         // plugin
         PLUGIN = this;
         // luckperms
         LUCKPERMS = LuckPermsProvider.get();
+        // scheduler
+        SCHEDULER = Bukkit.getScheduler();
         // configurations
         Configurations.load();
         // commands
@@ -44,13 +49,13 @@ public final class Architect extends JavaPlugin {
         Tasks.registerTasks();
         // events
         List<Listener> events = List.of(
-            new Chat(),
+            new AsyncChat(),
             new Interact(),
             new Join(),
             new Quit(),
             new BlockBreak(),
-            new PlayerEntityInteraction(),
-            new PlayerHurtEntity(),
+            new InteractAtEntity(),
+            new DamageByEntity(),
             new SpawnLocation()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();

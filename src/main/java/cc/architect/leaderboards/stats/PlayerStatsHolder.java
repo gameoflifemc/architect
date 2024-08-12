@@ -1,10 +1,10 @@
 package cc.architect.leaderboards.stats;
 
-import cc.architect.Architect;
 import cc.architect.managers.Meta;
 import lombok.Getter;
 import lombok.Setter;
-import net.luckperms.api.model.user.User;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -14,41 +14,27 @@ public class PlayerStatsHolder {
     public int score;
     public int debt;
     public int netWorth;
-
     public String name;
     public UUID uuid;
     public PlayerStatsHolder() {}
     public PlayerStatsHolder(UUID uuid) {
         this.uuid = uuid;
-        User user = Architect.LUCKPERMS.getUserManager().getUser(uuid);
-        if(user == null) {
+        Player p = Bukkit.getPlayer(uuid);
+        if (p == null) {
             return;
         }
-        name = user.getUsername();
-
-        this.money = Integer.parseInt(getValue(user,"money"));
-        this.score = Integer.parseInt(getValue(user,"score"));
-        this.debt = Integer.parseInt(getValue(user,"debt"));
-        this.netWorth = Integer.parseInt(getValue(user,"netWorth"));
+        name = p.getName();
+        this.money = Integer.parseInt(Meta.get(p,"money"));
+        this.score = Integer.parseInt(Meta.get(p,"score"));
+        this.debt = Integer.parseInt(Meta.get(p,"debt"));
+        this.netWorth = Integer.parseInt(Meta.get(p,"netWorth"));
     }
     public PlayerStatsHolder(int money, int score, int debt, int netWorth, UUID uuid, String name) {
         this.money = money;
         this.score = score;
         this.debt = debt;
         this.netWorth = netWorth;
-
         this.uuid = uuid;
         this.name = name;
-    }
-    public String getValue(User user, String key) {
-        String val;
-        String data = user.getCachedData().getMetaData().getMetaValue(key);
-        if(data == null) {
-            Meta.setValue(user, key, "0");
-            val = "0";
-        } else {
-            val = data;
-        }
-        return val;
     }
 }

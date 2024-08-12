@@ -7,7 +7,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class BlockBreak implements Listener {
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        BlockBreakHandler.handleBlockBreakEvent(event);
+    public void onBlockBreak(BlockBreakEvent e) {
+        BlockBreakHandler.handleBlockBreakEvent(e);
     }
 }

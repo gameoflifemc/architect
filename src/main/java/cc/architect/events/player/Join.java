@@ -10,32 +10,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.HashMap;
-
 public class Join implements Listener {
-    public static final HashMap<String, String> pendingJoin = new HashMap<>();
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        // initialize bonus
-        DiamondBonus.initPlayer(e.getPlayer());
         // empty join message
         e.joinMessage(Component.empty());
         // get player
         Player p = e.getPlayer();
-        // get player name
-        String pName = p.getName();
+        // initialize bonus
+        DiamondBonus.initPlayer(p);
         // get server name
         if (ServerName.getServerName() == null) {
             Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,ServerName::requestServerName,5);
-        }
-        // organize pending joins
-        if (pendingJoin.containsKey(pName)){
-            Player pending = Bukkit.getPlayerExact(pendingJoin.get(pName));
-            if (pending == null) {
-                return;
-            }
-            p.teleport(pending.getLocation());
-            pendingJoin.remove(pName);
         }
     }
 }

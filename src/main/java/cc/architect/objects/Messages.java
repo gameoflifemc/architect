@@ -17,14 +17,17 @@ public class Messages {
     public static final Component STEAL = Component.text("Looks like someone's trying to steal your treasure, catch him and you'll get it back")
             .color(TextColor.fromHexString("#FF0000"));
     public static final Component BLOCK_MINED = Component.text("You can't mine this block, because you've already mined it.").color(TextColor.fromHexString("#FF0000"));
+    public static final Component SEND_INVITE_ERROR = Component.text("Error sending invite please try again later.");
+    public static final Component SEND_INVITE_EXPIRED = Component.text("Your invite expired.");
+    public static final Component SEND_INVITE_NONE = Component.text("You have no active invite.");
+    public static final Component WELCOME_BACK = Component.text("Vítej zpět v Game of Life! Dej nám chviličku a hned budeš zpět ve hře.")
+            .color(TextColor.fromHexString("#2970ED"));
     public static Component SEND_INVITE_SENDER(String player) {
         return Component.text("You sent invite to player " + player + ".");
     }
     public static Component SEND_INVITE_RECEIVER(String player) {
         return Component.text("You got invite from player " + player + ". type /party accept to join.");
     }
-    public static final Component SEND_INVITE_EXPIRED = Component.text("Your invite expired.");
-    public static final Component SEND_INVITE_NONE = Component.text("You have no active invite.");
     public static Component SEND_INVITE_PLAYER_HAS_INVITE(String player) {
         return Component.text("Player " + player + " already has invite.");
     }
@@ -44,5 +47,4 @@ public class Messages {
     public static Component PLAYER_NOT_ONLINE(String player) {
         return Component.text("Player " + player + " is currently offline.");
     }
-    public static final Component SEND_INVITE_ERROR = Component.text("Error sending invite please try again later.");
 }

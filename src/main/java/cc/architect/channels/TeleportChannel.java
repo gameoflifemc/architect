@@ -1,7 +1,6 @@
 package cc.architect.channels;
 
 import cc.architect.Utilities;
-import cc.architect.events.player.Join;
 import cc.architect.managers.Parties;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -27,7 +26,6 @@ public class TeleportChannel implements PluginMessageListener {
         DataInputStream messageData = getForwardMessageData(in);
         String receiver = Utilities.readUTF(messageData);
         String sender = Utilities.readUTF(messageData);
-        Join.pendingJoin.put(receiver, sender);
         Parties.setPartiesMap(receiver, sender);
     }
 }

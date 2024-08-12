@@ -5,9 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
-public class PlayerEntityInteraction implements Listener {
+public class InteractAtEntity implements Listener {
     @EventHandler
-    public void playerInteraction(PlayerInteractAtEntityEvent event) {
-        PlayerEntityInteractionHandler.handleEvent(event);
+    public void onInteractAtEntity(PlayerInteractAtEntityEvent e) {
+        PlayerEntityInteractionHandler.handleEvent(e);
     }
 }

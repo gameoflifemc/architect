@@ -5,9 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class PlayerHurtEntity implements Listener {
+public class DamageByEntity implements Listener {
     @EventHandler
-    public void playerHurtEntity(EntityDamageByEntityEvent event) {
-         PlayerHurtEntityHandler.handleEvent(event);
+    public void onDamageByEntity(EntityDamageByEntityEvent e) {
+         PlayerHurtEntityHandler.handleEvent(e);
     }
 }
