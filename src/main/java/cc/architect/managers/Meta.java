@@ -7,6 +7,8 @@ import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class Meta {
     public static boolean check(Player player, String key) {
         return check(toUser(player), key);
@@ -22,13 +24,27 @@ public class Meta {
         map.clear(NodeType.META.predicate(n -> n.getMetaKey().equals(key)));
         Architect.LUCKPERMS.getUserManager().saveUser(user);
     }
+    public static String getSafe(UUID player, String key, String defau) {
+        String val = get(player,key);
+        if(val == null) {
+            set(player, key, defau);
+            val = defau;
+        }
+        return val;
+    }
     public static String get(Player player, String key) {
+        return get(toUser(player), key);
+    }
+    public static String get(UUID player, String key) {
         return get(toUser(player), key);
     }
     private static String get(User user, String key) {
         return user.getCachedData().getMetaData().getMetaValue(key);
     }
     public static void set(Player player, String key, String value) {
+        set(toUser(player), key, value);
+    }
+    public static void set(UUID player, String key, String value) {
         set(toUser(player), key, value);
     }
     private static void set(User user, String key, String value) {
@@ -46,5 +62,8 @@ public class Meta {
     }
     private static User toUser(Player player) {
         return Architect.LUCKPERMS.getPlayerAdapter(Player.class).getUser(player);
+    }
+    public static User toUser(UUID player) {
+        return Architect.LUCKPERMS.getUserManager().getUser(player);
     }
 }

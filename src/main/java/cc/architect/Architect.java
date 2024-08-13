@@ -6,6 +6,7 @@ import cc.architect.commands.Simulation;
 import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
+import cc.architect.leaderboards.InitLeaderBoards;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
@@ -86,6 +87,8 @@ public final class Architect extends JavaPlugin {
         for (String world : worlds) {
             new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();
         }
+
+        InitLeaderBoards.init();
         // welcome
         this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!

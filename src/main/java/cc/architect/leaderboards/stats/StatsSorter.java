@@ -17,7 +17,8 @@ public class StatsSorter {
         return stats;
     }
 
-    public static void listAll(List<PlayerStatsHolder> stats, StatComparator comparator) {
+    public static List<PlayerStatsHolder> listAll(List<PlayerStatsHolder> stats, StatComparator comparator) {
         stats.sort((a,b) -> comparator.get(b) - comparator.get(a));
+        return stats;
     }
 }
