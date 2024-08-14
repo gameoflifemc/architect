@@ -3,7 +3,9 @@ package cc.architect;
 import cc.architect.channels.*;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
+import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
+import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
 import cc.architect.leaderboards.InitLeaderBoards;
@@ -50,13 +52,18 @@ public final class Architect extends JavaPlugin {
         Tasks.registerTasks();
         // events
         List<Listener> events = List.of(
+            // entity
+            new Damage(),
+            new DamageByEntity(),
+            // misc
+            new FoodLevelChange(),
+            // player
             new AsyncChat(),
+            new BlockBreak(),
             new Interact(),
+            new InteractAtEntity(),
             new Join(),
             new Quit(),
-            new BlockBreak(),
-            new InteractAtEntity(),
-            new DamageByEntity(),
             new SpawnLocation()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
@@ -68,9 +75,9 @@ public final class Architect extends JavaPlugin {
         List<PluginMessageListener> channels = List.of(
             new PartyChannelManager(),
             new PlayerFinder(),
+            new PlayerLister(),
             new ServerName(),
-            new TeleportChannel(),
-            new PlayerLister()
+            new TeleportChannel()
         );
         for (PluginMessageListener channel : channels) {
             messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,channel);
@@ -81,8 +88,7 @@ public final class Architect extends JavaPlugin {
             "village",
             "mine",
             "farm",
-            "dream",
-            "buildings"
+            "dream"
         );
         for (String world : worlds) {
             new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();

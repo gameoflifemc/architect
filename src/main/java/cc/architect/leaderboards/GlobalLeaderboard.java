@@ -2,20 +2,16 @@ package cc.architect.leaderboards;
 
 import cc.architect.Utilities;
 import cc.architect.leaderboards.stats.StatsCaching;
-import me.caps123987.monitorapi.displays.DisplayTextComponent;
 import me.caps123987.monitorapi.displays.InteractiveDisplay;
 import me.caps123987.monitorapi.displays.RenderMode;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Location;
-import org.bukkit.util.Transformation;
-import org.bukkit.util.Vector;
-import org.joml.Vector3f;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.UUID;
 
 import static org.bukkit.Bukkit.getPlayer;
 

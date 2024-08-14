@@ -1,6 +1,7 @@
 package cc.architect.events.player;
 
-import cc.architect.managers.Meta;
+import cc.architect.managers.Game;
+import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -21,17 +22,20 @@ public class Interact implements Listener {
         }
         Player p = e.getPlayer();
         switch (block.getType()) {
+            case BAMBOO_BUTTON:
+                Movers.toVillage(p);
+                break;
             case CRIMSON_BUTTON:
-                Routines.toFarm(p);
+                Movers.toFarm(p);
                 break;
             case WARPED_BUTTON:
-                Routines.toMine(p);
+                Movers.toMine(p);
                 break;
             case POLISHED_BLACKSTONE_BUTTON:
-                if (Meta.check(p,"last_location")) {
+                if (Routines.current.containsKey(p)) {
                     break;
                 }
-                Routines.startGame(p);
+                Game.begin(p);
                 break;
         }
     }

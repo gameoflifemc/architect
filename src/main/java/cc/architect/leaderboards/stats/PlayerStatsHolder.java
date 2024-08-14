@@ -3,8 +3,6 @@ package cc.architect.leaderboards.stats;
 import cc.architect.managers.Meta;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 

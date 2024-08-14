@@ -4,27 +4,24 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
 
-import static java.lang.Math.cos;
-
 public class Utilities {
     public static final Map<Character, Integer> charWidth = Map.of(
-            'I',3,
-            'f',4,
-            'i',1,
-            'k',4,
-            'l',2,
-            't',3,
-            ' ',3,
-            'í',2,
-            'ť',3,
-            '.',1
+        'I',3,
+        'f',4,
+        'i',1,
+        'k',4,
+        'l',2,
+        't',3,
+        ' ',3,
+        'í',2,
+        'ť',3,
+        '.',1
     );
     public static String readUTF(DataInputStream dataStream) {
         try {
@@ -33,13 +30,11 @@ public class Utilities {
             throw new RuntimeException(e);
         }
     }
-
     public static boolean rollRandom(float percentage) {
         Random random = new Random();
         float randFloat = random.nextFloat() * 100;
         return randFloat <= percentage;
     }
-
     public static Component getSpacedComponent(Component first, Component last, Component spacer, int length) {
         Component builder = Component.text("");
         int textLen = getPixelLength(
@@ -67,12 +62,9 @@ public class Utilities {
 
         return builder;
     }
-
     public static Component getDottedComponent(Component first, Component last, int length) {
         return getSpacedComponent(first, last, Component.text(".", TextColor.color(40,40,40)),length);
     }
-
-
     public static int getPixelLength(String s){
         return getPixelLength(s,false);
     }

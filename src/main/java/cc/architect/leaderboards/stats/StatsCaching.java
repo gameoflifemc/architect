@@ -1,9 +1,6 @@
 package cc.architect.leaderboards.stats;
 
-import cc.architect.Architect;
 import cc.architect.managers.Meta;
-import com.google.common.collect.Lists;
-import net.luckperms.api.model.user.User;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;

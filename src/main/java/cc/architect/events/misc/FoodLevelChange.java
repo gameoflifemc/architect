@@ -7,7 +7,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 public class FoodLevelChange implements Listener {
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent e) {
-        // disable hunger system
+        // disable vanilla hunger mechanic
         e.setCancelled(true);
     }
 }
