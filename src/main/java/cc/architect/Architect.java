@@ -1,14 +1,15 @@
 package cc.architect;
 
 import cc.architect.channels.*;
+import cc.architect.commands.Discord;
 import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
+import cc.architect.commands.Unstuck;
 import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
-import cc.architect.leaderboards.InitLeaderBoards;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
@@ -44,8 +45,10 @@ public final class Architect extends JavaPlugin {
         Configurations.load();
         // commands
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
-        Simulation.register(manager);
+        Discord.register(manager);
         Party.register(manager);
+        Simulation.register(manager);
+        Unstuck.register(manager);
         // heads
         HeadLoader.load();
         // tasks
@@ -64,6 +67,7 @@ public final class Architect extends JavaPlugin {
             new InteractAtEntity(),
             new Join(),
             new Quit(),
+            new Respawn(),
             new SpawnLocation(),
             new BlockPlace()
         );

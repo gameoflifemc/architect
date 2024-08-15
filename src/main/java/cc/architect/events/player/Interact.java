@@ -5,6 +5,7 @@ import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
 import cc.architect.minigames.farming.eventhandlers.FarmingPlayerInteractEventHandler;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class Interact implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
+        e.setCancelled(true);
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
@@ -26,19 +28,22 @@ public class Interact implements Listener {
         switch (block.getType()) {
             case BAMBOO_BUTTON:
                 Movers.toVillage(p);
-                break;
+                return;
             case CRIMSON_BUTTON:
                 Movers.toFarm(p);
-                break;
+                return;
             case WARPED_BUTTON:
                 Movers.toMine(p);
-                break;
+                return;
             case POLISHED_BLACKSTONE_BUTTON:
                 if (Routines.current.containsKey(p)) {
-                    break;
+                    return;
                 }
                 Game.begin(p);
-                break;
+                return;
+        }
+        if (block.getBlockData() instanceof Door) {
+            e.setCancelled(false);
         }
     }
 }

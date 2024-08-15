@@ -8,8 +8,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class BlockBreak implements Listener {
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        MiningBlockBreakHandler.handleBlockBreakEvent(event);
-        FarmingBlockBreakEventHandler.handleEvent(event);
+    public void onBlockBreak(BlockBreakEvent e) {
+        e.setCancelled(true);
+        MiningBlockBreakHandler.handleBlockBreakEvent(e);
+        FarmingBlockBreakEventHandler.handleEvent(e);
     }
 }

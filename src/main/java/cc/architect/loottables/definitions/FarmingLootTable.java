@@ -1,10 +1,8 @@
 package cc.architect.loottables.definitions;
 
-import cc.architect.bonuses.DiamondBonus;
 import cc.architect.loottables.BaseLootTable;
 import cc.architect.loottables.LootTableObject;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

@@ -1,16 +1,18 @@
 package cc.architect.managers;
 
-import cc.architect.objects.Messages;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Game {
+    private static final PotionEffect HUNGER = new PotionEffect(PotionEffectType.HUNGER,PotionEffect.INFINITE_DURATION,0,false,false);
+    private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.WITHER,PotionEffect.INFINITE_DURATION,0,false,false);
+    private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
     public static void begin(Player p) {
-        Actions.showPoints(p);
+        Game.showHud(p);
         Routines.next(p);
     }
     public static void resume(Player p) {
-        // welcome back message
-        p.sendMessage(Messages.WELCOME_BACK);
         // sync action points
         Actions.syncPoints(p);
     }
@@ -18,6 +20,16 @@ public class Game {
         // finish day
         Routines.finishDay(p);
         // hide action points
-        Actions.hidePoints(p);
+        Game.hideHud(p);
+    }
+    public static void hideHud(Player p) {
+        p.addPotionEffect(WITHER);
+        p.addPotionEffect(HUNGER);
+        p.removePotionEffect(PotionEffectType.REGENERATION);
+    }
+    public static void showHud(Player p) {
+        p.removePotionEffect(PotionEffectType.WITHER);
+        p.removePotionEffect(PotionEffectType.HUNGER);
+        p.addPotionEffect(REGENERATION);
     }
 }
