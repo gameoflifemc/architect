@@ -44,14 +44,16 @@ public class GlobalLeaderboard {
         board.setChangeToOnePlayer((display)->{
             Component builder = Component.text("");
 
+            int pos = 1;
             for(Pair<String, Integer> tops : StatsCaching.tops.get(page)){
                 builder = builder.append(
                     Utilities.getDottedComponent(
-                        Component.text(tops.getLeft()+" "),
+                        Component.text(pos+". "+tops.getLeft()+" "),
                         Component.text(tops.getRight(), Style.style(TextDecoration.BOLD)),
                         170)
                 );
                 builder = builder.appendNewline();
+                pos++;
             }
 
             for(int i = 0; i < 10 - StatsCaching.tops.get(page).size(); i++){
@@ -60,8 +62,8 @@ public class GlobalLeaderboard {
 
             builder = builder.append(
                 Utilities.getDottedComponent(
-                    Component.text(getPlayer(uuid).getName()+" ", Style.style(TextDecoration.BOLD)),
-                    Component.text(StatsCaching.positions.get(page).get(uuid), Style.style(TextDecoration.BOLD)),
+                    Component.text(StatsCaching.positions.get(page).get(uuid).getRight()+". " +getPlayer(uuid).getName()+" ", Style.style(TextDecoration.BOLD)),
+                    Component.text(StatsCaching.positions.get(page).get(uuid).getLeft(), Style.style(TextDecoration.BOLD)),
                     170)
             );
 

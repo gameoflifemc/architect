@@ -122,14 +122,12 @@ public class Party {
             );
             event.registrar().register(Commands.literal("setTime")
                     .then(Commands.argument("time",StringArgumentType.word())
-                        .then(Commands.argument("interpolate",StringArgumentType.word())
-                            .executes(ctx -> {
-                                Player sender = (Player) ctx.getSource().getSender();
-                                long time = Long.parseLong(StringArgumentType.getString(ctx,"time"));
-                                Time.addInterpolateTime(sender,time);
-                                return Command.SINGLE_SUCCESS;
-                            })
-                        )
+                        .executes(ctx -> {
+                            Player sender = (Player) ctx.getSource().getSender();
+                            long time = Long.parseLong(StringArgumentType.getString(ctx,"time"));
+                            Time.addInterpolateTime(sender,time);
+                            return Command.SINGLE_SUCCESS;
+                        })
                     )
                 .build()
             );

@@ -1,9 +1,12 @@
 package cc.architect.leaderboards.stats;
 
 import cc.architect.managers.Meta;
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Setter @Getter
@@ -32,5 +35,15 @@ public class PlayerStatsHolder {
         this.emeralds_daily = emeralds_daily;
         this.name = name;
         this.uuid = uuid;
+    }
+
+    public PlayerStatsHolder(int max){
+        Random rand = new Random();
+        this.uuid = UUID.randomUUID();
+        this.score_total = rand.nextInt(max);
+        this.emeralds_total = rand.nextInt(max);
+        this.days_total = rand.nextInt(max);
+        this.score_daily = rand.nextInt(max);
+        this.emeralds_daily = rand.nextInt(max);
     }
 }

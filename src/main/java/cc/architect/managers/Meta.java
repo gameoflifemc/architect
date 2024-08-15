@@ -64,6 +64,6 @@ public class Meta {
         return Architect.LUCKPERMS.getPlayerAdapter(Player.class).getUser(player);
     }
     public static User toUser(UUID player) {
-        return Architect.LUCKPERMS.getUserManager().getUser(player);
+        return Architect.LUCKPERMS.getUserManager().loadUser(player).join();
     }
 }
