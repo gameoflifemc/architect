@@ -23,6 +23,7 @@ public class CycleManager {
     public static Map<Player, Map<Location, Boolean>> profits = new HashMap<>();
     public final Player player;
     public int state;
+    public static List<Location> tilledLand = new ArrayList<>();
 
     public CycleManager(Player player) {
         activeCycleManagers.put(player, this);
@@ -63,6 +64,9 @@ public class CycleManager {
                 player.sendMessage(Messages.FARMING_END);
                 activeCycleManagers.remove(player);
                 profits.remove(player);
+                for (Location location : tilledLand) {
+                    location.getBlock().setType(Material.DIRT);
+                }
             }
         }
     }

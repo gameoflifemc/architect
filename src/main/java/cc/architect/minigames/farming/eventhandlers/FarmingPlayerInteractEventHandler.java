@@ -29,6 +29,9 @@ public class FarmingPlayerInteractEventHandler {
                     return;
                 }
                 if (event.getItem().getType().equals(Material.IRON_HOE)) {
+                    if (CycleManager.tilledLand.contains(event.getClickedBlock().getLocation())) {
+                        CycleManager.tilledLand.add(event.getClickedBlock().getLocation());
+                    }
                     if (Utilities.rollRandom(5)) {
                         player.getInventory().addItem(LootTableManager.roll(new FarmingLootTable()));
                         player.sendMessage(Messages.FARMING_TREASURE);
