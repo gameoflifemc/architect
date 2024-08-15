@@ -3,6 +3,7 @@ package cc.architect.events.player;
 import cc.architect.managers.Game;
 import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
+import cc.architect.minigames.farming.eventhandlers.FarmingPlayerInteractEventHandler;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,7 @@ public class Interact implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
+        FarmingPlayerInteractEventHandler.handleEvent(e);
         Block block = e.getClickedBlock();
         if (block == null) {
             return;

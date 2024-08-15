@@ -7,7 +7,7 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class PlayerHurtEntityHandler {
+public class MiningPlayerHurtEntityHandler {
     public static void handleEvent(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Ocelot) {
             if (event.getDamager() instanceof Player player) {

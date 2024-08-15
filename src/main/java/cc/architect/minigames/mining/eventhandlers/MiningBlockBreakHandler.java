@@ -17,7 +17,7 @@ import java.util.List;
 
 import static cc.architect.Utilities.rollRandom;
 
-public class BlockBreakHandler {
+public class MiningBlockBreakHandler {
     private static final List<Material> ores = List.of(
             Material.EMERALD,
             Material.DIAMOND
@@ -28,7 +28,7 @@ public class BlockBreakHandler {
     public static void handleBlockBreakEvent(BlockBreakEvent event) {
         Block block = event.getBlock();
         Player player = event.getPlayer();
-        // Prosim nekoukejte se do toho switche jestli nechcete zemřít na následky přešpagetování
+
         switch(block.getType()) {
             case Material.EMERALD_ORE -> {
                 if (minedOres.contains(player, block.getLocation())) {

@@ -64,7 +64,8 @@ public final class Architect extends JavaPlugin {
             new InteractAtEntity(),
             new Join(),
             new Quit(),
-            new SpawnLocation()
+            new SpawnLocation(),
+            new BlockPlace()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {
@@ -94,7 +95,7 @@ public final class Architect extends JavaPlugin {
             new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();
         }
 
-        InitLeaderBoards.init();
+        //InitLeaderBoards.init();
         // welcome
         this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!

@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Objects;
 
-public class PlayerEntityInteractionHandler {
+public class MiningPlayerEntityInteractionHandler {
     public static void handleEvent(PlayerInteractAtEntityEvent event) {
 
         // Get if the entity is an ArmorStand
