@@ -4,6 +4,7 @@ import cc.architect.managers.Game;
 import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
 import cc.architect.minigames.farming.eventhandlers.FarmingPlayerInteractEventHandler;
+import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
@@ -15,7 +16,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class Interact implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        e.setCancelled(true);
+        Player p = e.getPlayer();
+        if (!p.getGameMode().equals(GameMode.CREATIVE)) {
+            e.setCancelled(true);
+        }
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
@@ -24,7 +28,6 @@ public class Interact implements Listener {
         if (block == null) {
             return;
         }
-        Player p = e.getPlayer();
         switch (block.getType()) {
             case BAMBOO_BUTTON:
                 Movers.toVillage(p);

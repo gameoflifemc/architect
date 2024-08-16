@@ -5,20 +5,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Time {
-    public static void setAbsoluteTime(Player p, long time){
+    public static void setAbsoluteTime(Player p, long time) {
         p.setPlayerTime(time,false);
     }
-    public static void setRelativeTime(Player p, long time){
-        p.setPlayerTime(time,true);
-    }
-    public static void addInterpolateTime(Player p, long time){
+    public static void addInterpolateTime(Player p, long time) {
         long finalTime = p.getPlayerTimeOffset() + time;
-        setRelativeTime(p,-(p.getWorld().getTime() - p.getPlayerTimeOffset()));
-        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> setAbsoluteTime(p, finalTime),time);
-    }
-    public static void setInterpolateTime(Player p, long time){
-        setRelativeTime(p,-(p.getWorld().getTime() - p.getPlayerTimeOffset()));
-        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> setAbsoluteTime(p, time),time);
+        p.setPlayerTime(-(p.getWorld().getTime() - p.getPlayerTimeOffset()),true);
+        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> Time.setAbsoluteTime(p, finalTime),time);
     }
 }
 
