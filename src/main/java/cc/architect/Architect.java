@@ -62,15 +62,14 @@ public final class Architect extends JavaPlugin {
             // misc
             new FoodLevelChange(),
             // player
-            new AsyncChat(),
             new BlockBreak(),
+            new BlockPlace(),
             new Interact(),
             new InteractAtEntity(),
             new Join(),
             new Quit(),
             new Respawn(),
-            new SpawnLocation(),
-            new BlockPlace()
+            new SpawnLocation()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {

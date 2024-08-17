@@ -1,11 +1,9 @@
 package cc.architect.leaderboards.stats;
 
 import cc.architect.managers.Meta;
-import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 

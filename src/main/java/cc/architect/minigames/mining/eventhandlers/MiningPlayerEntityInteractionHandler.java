@@ -3,6 +3,7 @@ package cc.architect.minigames.mining.eventhandlers;
 import cc.architect.loottables.LootTableManager;
 import cc.architect.loottables.definitions.MiningChestLootTable;
 import org.bukkit.Color;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -18,9 +19,12 @@ public class MiningPlayerEntityInteractionHandler {
             
             // Get if the ArmorStand has a PlayerHead
             if (treasure.getEquipment().getHelmet().getItemMeta() instanceof SkullMeta skullMeta) {
-                
+                OfflinePlayer owner = skullMeta.getOwningPlayer();
+                if (owner == null) {
+                    return;
+                }
                 // Get if the head has a texture of a chest
-                if (Objects.equals(skullMeta.getOwner(), "SunamyMC")) {
+                if (Objects.equals(owner.getName(),"SunamyMC")) {
                     event.getPlayer().getInventory().addItem(LootTableManager.roll(new MiningChestLootTable(event.getPlayer())));
 
                     Particle particle = Particle.DUST;
