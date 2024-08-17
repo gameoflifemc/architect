@@ -2,6 +2,7 @@ package cc.architect.leaderboards.stats;
 
 import cc.architect.Architect;
 import cc.architect.managers.Meta;
+import cc.architect.objects.Messages;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 
@@ -24,7 +25,7 @@ public class StatsCaching {
         Architect.SCHEDULER.runTaskAsynchronously(Architect.PLUGIN,()->{
             positions.clear();
             tops.clear();
-            Bukkit.broadcastMessage("Cache starting");
+            Architect.PLUGIN.getComponentLogger().info("Caching stats");
             List<UUID> players = Players.getAllPlayers();
             List<PlayerStatsHolder> statsHolders = new ArrayList<>();
 
@@ -40,7 +41,7 @@ public class StatsCaching {
                 addTops(statsHolders, pair.getRight(), pair.getLeft(), 10);
             }
 
-            Bukkit.broadcastMessage("Cache ending");
+            Architect.PLUGIN.getComponentLogger().info("Caching ended");
         });
     }
     public static void addPostions(List<PlayerStatsHolder> statsHolders, StatComparator comp, String name) {

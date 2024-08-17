@@ -10,6 +10,7 @@ import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
+import cc.architect.leaderboards.InitLeaderBoards;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
@@ -99,7 +100,7 @@ public final class Architect extends JavaPlugin {
             new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();
         }
 
-        //InitLeaderBoards.init();
+        InitLeaderBoards.init();
         // welcome
         this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!

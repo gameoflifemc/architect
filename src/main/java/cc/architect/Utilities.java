@@ -68,6 +68,13 @@ public class Utilities {
     public static int getPixelLength(String s){
         return getPixelLength(s,false);
     }
+
+    /**
+     * returns the pixel length of a string
+     * @param s text
+     * @param isBold if the text is bold (it will add 1 to everyting)
+     * @return
+     */
     public static int getPixelLength(String s, boolean isBold){
         int currentLength = 0;
         for(char ch : s.toCharArray()){
