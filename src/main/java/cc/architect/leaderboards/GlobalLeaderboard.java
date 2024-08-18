@@ -3,6 +3,7 @@ package cc.architect.leaderboards;
 import cc.architect.Utilities;
 import cc.architect.leaderboards.stats.StatsCaching;
 import me.caps123987.monitorapi.displays.DisplayButtonComponent;
+import me.caps123987.monitorapi.displays.DisplayTextComponent;
 import me.caps123987.monitorapi.displays.InteractiveDisplay;
 import me.caps123987.monitorapi.displays.RenderMode;
 import me.caps123987.monitorapi.messages.DisplayMessages;
@@ -12,9 +13,12 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Location;
+import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.bukkit.Bukkit.getPlayer;
@@ -24,20 +28,32 @@ public class GlobalLeaderboard {
         InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS);
         setupMainBoard(board);
         DisplayButtonComponent durationButton = new DisplayButtonComponent(new Vector(-2.2,-.75,0));
-        setupDurationButton(board, durationButton, "duration","_total","_daily",Messages.durationTotal,Messages.durationDaily);
+        setupSortButtons(board, durationButton, "duration","_total","_daily",Messages.durationTotal,Messages.durationDaily);
 
         DisplayButtonComponent typeButton = new DisplayButtonComponent(new Vector(2.2,-.75,0));
-        setupDurationButton(board, typeButton, "type","score","emeralds",Messages.typeScore,Messages.typeEmeralds);
+        setupSortButtons(board, typeButton, "type","score","emeralds",Messages.typeScore,Messages.typeEmeralds);
+
+        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,3,0.05));
+        header.setOnSpawnCallback((display, uuid) -> {
+            header.setDisplayText(Component.text("Leaderboard", Style.style(TextDecoration.BOLD,TextColor.color(220,220,20))),uuid);
+            header.setChangeToAllPlayers((display1, uuid1) -> display1.setTransformation(
+                    new Transformation(
+                            display1.getTransformation().getTranslation(),
+                            display1.getTransformation().getLeftRotation(),
+                            new Vector3f(2.5f,2.5f,2.5f),
+                            display1.getTransformation().getRightRotation()
+                    )
+            ));
+        });
 
         DisplayMessages.CLICK_COOLDOWN = Component.text("Prosím zpomal");
         board.addComponent(durationButton);
         board.addComponent(typeButton);
+        board.addComponent(header);
         board.create(l);
     }
 
     public static void setupMainBoard(InteractiveDisplay board) {
-        board.setHeader(Component.text("                                                 "));
-        board.enableHeader();
         board.setChangeToAllPlayers((display) -> {
             display.setLineWidth(3000);
         });
@@ -79,11 +95,13 @@ public class GlobalLeaderboard {
             for(int i = 0; i < 10 - StatsCaching.tops.get(page).size(); i++){
                 builder = builder.appendNewline();
             }
+            Map<UUID,Pair<Integer, Integer>> positions = StatsCaching.positions.get(page);
+            Pair<Integer, Integer> stats = positions.getOrDefault(uuid, Pair.of(0,positions.size()));
 
             builder = builder.append(
                 Utilities.getDottedComponent(
-                    Component.text(StatsCaching.positions.get(page).get(uuid).getRight()+". " +getPlayer(uuid).getName()+" ", Style.style(TextDecoration.BOLD)),
-                    Component.text(StatsCaching.positions.get(page).get(uuid).getLeft(), Style.style(TextDecoration.BOLD)),
+                    Component.text(stats.getRight()+". " +getPlayer(uuid).getName()+" ", Style.style(TextDecoration.BOLD)),
+                    Component.text(stats.getLeft(), Style.style(TextDecoration.BOLD)),
                     250)
             );
 
@@ -91,7 +109,7 @@ public class GlobalLeaderboard {
         },uuid);
     }
 
-    public static void setupDurationButton(InteractiveDisplay board, DisplayButtonComponent comp, String mapName
+    public static void setupSortButtons(InteractiveDisplay board, DisplayButtonComponent comp, String mapName
             , String switch1, String switch2, Component switch1C, Component switch2C) {
         comp.setOnSpawnCallback((display,uuid)->{
             comp.setChangeToOnePlayer((display1)->{
@@ -100,6 +118,7 @@ public class GlobalLeaderboard {
         });
 
         comp.enableCooldown();
+        comp.getComponentInteraction().setInteractionWidth(2.5f);
         comp.setCooldownTime(5);
         comp.onClick((display, event)->{
             UUID uuid = event.getPlayer().getUniqueId();

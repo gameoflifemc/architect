@@ -24,7 +24,7 @@ public class Meta {
         map.clear(NodeType.META.predicate(n -> n.getMetaKey().equals(key)));
         Architect.LUCKPERMS.getUserManager().saveUser(user);
     }
-    public static String getSafe(UUID player, String key, String defau) {
+    public static String getSafe(User player, String key, String defau) {
         String val = get(player,key);
         if(val == null) {
             set(player, key, defau);

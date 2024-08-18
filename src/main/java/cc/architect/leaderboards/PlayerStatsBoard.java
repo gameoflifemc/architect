@@ -37,19 +37,17 @@ public class PlayerStatsBoard {
     }
 
     public static void setupBoard(InteractiveDisplay board){
-        board.setHeader(Component.text("                                             "));
-        board.enableHeader();
         board.setChangeToAllPlayers((display)->{display.setLineWidth(300);});
 
         board.setOnSpawnCallback((display, uuid) -> {
             PlayerStatsHolder stats = new PlayerStatsHolder(uuid);
 
             board.setDisplayText(Arrays.asList(
-                    Utilities.getDottedComponent(Component.text("Celkové score "), Component.text(stats.getScore_total(), Style.style(TextDecoration.BOLD)), 160),
-                    Utilities.getDottedComponent(Component.text("Celkový počet emeraldů "), Component.text(stats.getEmeralds_total(), Style.style(TextDecoration.BOLD)), 160),
-                    Utilities.getDottedComponent(Component.text("Dnešní score "), Component.text(stats.getScore_daily(), Style.style(TextDecoration.BOLD)), 160),
-                    Utilities.getDottedComponent(Component.text("Dnešní počet emeraldů "), Component.text(stats.getEmeralds_daily(), Style.style(TextDecoration.BOLD)), 160),
-                    Utilities.getDottedComponent(Component.text("Počet strávených dnů "), Component.text(stats.getDays_total(), Style.style(TextDecoration.BOLD)), 160)
+                    Utilities.getDottedComponent(Component.text("Celkové score "), Component.text(stats.getScore_total(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Celkový počet emeraldů "), Component.text(stats.getEmeralds_total(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Dnešní score "), Component.text(stats.getScore_daily(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Dnešní počet emeraldů "), Component.text(stats.getEmeralds_daily(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Počet strávených dnů "), Component.text(stats.getDays_total(), Style.style(TextDecoration.BOLD)), 250)
                 ),uuid);
         });
     }

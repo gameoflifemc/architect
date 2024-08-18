@@ -3,6 +3,8 @@ package cc.architect.commands;
 import cc.architect.leaderboards.stats.StatsCaching;
 import cc.architect.managers.Actions;
 import cc.architect.managers.Movers;
+import cc.architect.minigames.travel.wraper.TravelRegistry;
+import cc.architect.minigames.travel.wraper.TravelMinigame;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -65,10 +67,30 @@ public class Simulation {
                     })
                 )
                 .then(Commands.literal("update")
-                        .executes(ctx -> {
-                            StatsCaching.cacheStats();
-                            return Command.SINGLE_SUCCESS;
-                        })
+                    .executes(ctx -> {
+                        StatsCaching.cacheStats();
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+                .then(Commands.literal("travel")
+                    .then(Commands.argument("player",StringArgumentType.word())
+                        .then(Commands.argument("world",StringArgumentType.word())
+                            .executes(ctx -> {
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                String world = StringArgumentType.getString(ctx,"world");
+                                if (p == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                TravelMinigame minigame = TravelRegistry.get(world);
+                                if(minigame == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                minigame.playerEnter(p.getUniqueId());
+
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
+                    )
                 )
                 .build()
             );

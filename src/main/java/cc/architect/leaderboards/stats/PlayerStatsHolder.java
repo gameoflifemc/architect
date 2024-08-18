@@ -3,9 +3,12 @@ package cc.architect.leaderboards.stats;
 import cc.architect.managers.Meta;
 import lombok.Getter;
 import lombok.Setter;
+import net.luckperms.api.model.user.User;
 
 import java.util.Random;
 import java.util.UUID;
+
+import static cc.architect.managers.Meta.toUser;
 
 @Setter @Getter
 public class PlayerStatsHolder {
@@ -18,12 +21,13 @@ public class PlayerStatsHolder {
     public UUID uuid;
     public PlayerStatsHolder() {}
     public PlayerStatsHolder(UUID uuid) {
+        User user = toUser(uuid);
         this.uuid = uuid;
-        this.score_total = Integer.parseInt(Meta.getSafe(uuid,"score_total","0"));
-        this.emeralds_total = Integer.parseInt(Meta.getSafe(uuid,"emeralds_total","0"));
-        this.days_total = Integer.parseInt(Meta.getSafe(uuid,"days_total","0"));
-        this.score_daily = Integer.parseInt(Meta.getSafe(uuid,"score_daily","0"));
-        this.emeralds_daily = Integer.parseInt(Meta.getSafe(uuid,"emeralds_daily","0"));
+        this.score_total = Integer.parseInt(Meta.getSafe(user,"score_total","0"));
+        this.emeralds_total = Integer.parseInt(Meta.getSafe(user,"emeralds_total","0"));
+        this.days_total = Integer.parseInt(Meta.getSafe(user,"days_total","0"));
+        this.score_daily = Integer.parseInt(Meta.getSafe(user,"score_daily","0"));
+        this.emeralds_daily = Integer.parseInt(Meta.getSafe(user,"emeralds_daily","0"));
     }
     public PlayerStatsHolder(int score_total, int emeralds_total, int days_total, int score_daily, int emeralds_daily, String name, UUID uuid) {
         this.score_total = score_total;

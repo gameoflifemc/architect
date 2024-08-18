@@ -49,13 +49,6 @@ public class Party {
                             Parties.sendInvite(sender,receiver);
                             return Command.SINGLE_SUCCESS;
                         })
-                        /*.suggests((ctx, builder) ->{
-                            builder.suggest("test");
-                            getPlayerList((playerList) -> {
-                                playerList.forEach(builder::suggest);
-                            });
-                            return builder.buildFuture();
-                        })*/
                     )
                 )
                 .then(Commands.literal("accept")
@@ -80,44 +73,6 @@ public class Party {
                         return Command.SINGLE_SUCCESS;
                     })
                 )
-                /*.then(Commands.literal("leave")
-                        .executes(ctx -> {
-                            if (ctx.getSource() == null) {
-                                return Command.SINGLE_SUCCESS;
-                            }
-                            Player receiver = (Player) ctx.getSource().getSender();
-
-                            PartyManager.leaveParty(receiver.getName());
-                            return Command.SINGLE_SUCCESS;
-                        })
-                )
-                .then(Commands.literal("test")
-                    .executes(ctx -> {
-                        if (ctx.getSource() == null) {
-                            return Command.SINGLE_SUCCESS;
-                        }
-                        Player receiver = (Player) ctx.getSource().getSender();
-                        requestServerName();
-                        Bukkit.broadcastMessage(getServer().getName());
-                        return Command.SINGLE_SUCCESS;
-                    })
-                )
-                .then(Commands.literal("findplayer")
-                    .then(Commands.argument("player",StringArgumentType.word())
-                        .executes(ctx -> {
-                            Player sender = (Player) ctx.getSource().getSender();
-                            String receiver = StringArgumentType.getString(ctx,"player");
-                            if (receiver == null) {
-                                return Command.SINGLE_SUCCESS;
-                            }
-                            sender.sendMessage("Searching for player "+receiver);
-                            PlayerFinder.getPlayerServer(receiver,(serverName) -> {
-                                sender.sendMessage("Player "+receiver+" found on server "+serverName);
-                            });
-                            return Command.SINGLE_SUCCESS;
-                        })
-                    )
-                )*/
                 .build()
             );
             event.registrar().register(Commands.literal("setTime")

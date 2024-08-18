@@ -13,6 +13,7 @@ import cc.architect.heads.HeadLoader;
 import cc.architect.leaderboards.InitLeaderBoards;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Tasks;
+import cc.architect.minigames.travel.wraper.TravelRegistry;
 import cc.architect.objects.Messages;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import net.kyori.adventure.util.TriState;
@@ -93,13 +94,18 @@ public final class Architect extends JavaPlugin {
             "village",
             "mine",
             "farm",
-            "dream"
+            "dream",
+            "travel"
         );
         for (String world : worlds) {
             new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();
         }
 
+        //sets up and creates leaderboards
         InitLeaderBoards.init();
+
+        //sets up travel minigames
+        TravelRegistry.init();
         // welcome
         this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!
