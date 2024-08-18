@@ -1,7 +1,5 @@
 package cc.architect.events.player;
 
-import cc.architect.minigames.travel.wraper.TravelPlayerQuitListener;
-import cc.architect.managers.Compasses;
 import cc.architect.tasks.player.Autosave;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -12,14 +10,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class Quit implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-
-        TravelPlayerQuitListener.handerPlayerQuitEvent(e);
         // empty quit message
         e.quitMessage(Component.empty());
         // get player
         Player p = e.getPlayer();
-        // delete compass
-        Compasses.remove(p);
         // save last location
         Autosave.location(p);
         // save emeralds

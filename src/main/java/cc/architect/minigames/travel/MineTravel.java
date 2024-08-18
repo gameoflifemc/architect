@@ -1,13 +1,12 @@
 package cc.architect.minigames.travel;
 
-import cc.architect.minigames.travel.wraper.TravelMinigame;
+import cc.architect.minigames.travel.wraper.BasicTravelMinigame;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import java.util.UUID;
 
-public class MineTravel extends TravelMinigame {
+public class MineTravel extends BasicTravelMinigame {
     public MineTravel() {
         super(Bukkit.getWorld("mine"));
     }
@@ -34,6 +33,6 @@ public class MineTravel extends TravelMinigame {
 
     @Override
     public Location teleportToLocation() {
-        return new Location(endWorld, 0, 0, 0);
+        return new Location(endWorld, 32, -60, -106,-54,0);
     }
 }

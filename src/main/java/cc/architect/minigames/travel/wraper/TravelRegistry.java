@@ -1,5 +1,6 @@
 package cc.architect.minigames.travel.wraper;
 
+import cc.architect.Architect;
 import cc.architect.minigames.travel.MineTravel;
 
 import java.util.HashMap;
@@ -17,5 +18,13 @@ public class TravelRegistry {
 
     public static void init() {
         register("mine", new MineTravel());
+
+        createTask();
+    }
+
+    private static void createTask(){
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()->{
+            minigames.values().forEach(TravelMinigame::handeExit);
+        },0,10);
     }
 }
