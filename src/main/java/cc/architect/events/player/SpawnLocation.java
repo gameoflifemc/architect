@@ -1,5 +1,6 @@
 package cc.architect.events.player;
 
+import cc.architect.Architect;
 import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
 import org.bukkit.Bukkit;
@@ -34,9 +35,9 @@ public class SpawnLocation implements Listener {
             if (world == null) {
                 return;
             }
-            loc = world.getSpawnLocation().add(0.5,0,0.5);
+            loc = world.getSpawnLocation().add(0.5, 0, 0.5);
             // hide hud
-            Game.hideHud(p);
+            Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.hideHud(p),1);
         }
         e.setSpawnLocation(loc);
     }

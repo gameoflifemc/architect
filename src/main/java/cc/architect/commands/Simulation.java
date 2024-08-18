@@ -15,8 +15,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import static cc.architect.leaderboards.PlayerStatsBoard.createStatsLeaderBoard;
-
 public class Simulation {
     public static void register(LifecycleEventManager<Plugin> manager) {
         // create and register command
@@ -55,16 +53,6 @@ public class Simulation {
                             return Command.SINGLE_SUCCESS;
                         })
                     )
-                )
-                .then(Commands.literal("test")
-                    .executes(ctx -> {
-                        Player p = Bukkit.getPlayer(ctx.getSource().getSender().getName());
-                        if (p == null) {
-                            return Command.SINGLE_SUCCESS;
-                        }
-                        createStatsLeaderBoard(p.getLocation());
-                        return Command.SINGLE_SUCCESS;
-                    })
                 )
                 .then(Commands.literal("update")
                     .executes(ctx -> {

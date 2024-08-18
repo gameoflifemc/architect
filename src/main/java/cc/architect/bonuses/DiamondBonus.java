@@ -1,22 +1,17 @@
 package cc.architect.bonuses;
 
+import cc.architect.objects.HashMaps;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class DiamondBonus {
-    public static final Map<Player, Float> bonuses = new HashMap<>();
-
     public static void initPlayer(Player player) {
-        if (!bonuses.containsKey(player)) {
-            bonuses.put(player, 1f);
+        if (!HashMaps.BONUSES.containsKey(player)) {
+            HashMaps.BONUSES.put(player, 1f);
         }
     }
-
     public static void add(Player player, float amount) {
-        float current = bonuses.get(player);
-        bonuses.remove(player);
-        bonuses.put(player, amount+current);
+        float current = HashMaps.BONUSES.get(player);
+        HashMaps.BONUSES.remove(player);
+        HashMaps.BONUSES.put(player, amount+current);
     }
 }

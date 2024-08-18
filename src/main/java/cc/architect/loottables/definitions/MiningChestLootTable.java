@@ -1,8 +1,8 @@
 package cc.architect.loottables.definitions;
 
-import cc.architect.bonuses.DiamondBonus;
 import cc.architect.loottables.BaseLootTable;
 import cc.architect.loottables.LootTableObject;
+import cc.architect.objects.HashMaps;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +17,7 @@ public class MiningChestLootTable extends BaseLootTable {
 
     public MiningChestLootTable(Player player) {
         this.player = player;
-        int bonus = (int) Math.ceil(DiamondBonus.bonuses.get(player));
+        int bonus = (int) Math.ceil(HashMaps.BONUSES.get(player));
         lootTableItems = List.of(
                 new LootTableObject(20, new ItemStack(Material.EMERALD, 7 * bonus)),
                 new LootTableObject(10, new ItemStack(Material.EMERALD, 10 * bonus)),

@@ -11,6 +11,7 @@ import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
 import cc.architect.leaderboards.InitLeaderBoards;
+import cc.architect.managers.Compasses;
 import cc.architect.managers.Configurations;
 import cc.architect.managers.Tasks;
 import cc.architect.minigames.travel.wraper.TravelRegistry;
@@ -51,10 +52,6 @@ public final class Architect extends JavaPlugin {
         Party.register(manager);
         Simulation.register(manager);
         Unstuck.register(manager);
-        // heads
-        HeadLoader.load();
-        // tasks
-        Tasks.registerTasks();
         // events
         List<Listener> events = List.of(
             // entity
@@ -68,6 +65,7 @@ public final class Architect extends JavaPlugin {
             new Interact(),
             new InteractAtEntity(),
             new Join(),
+            new Move(),
             new Quit(),
             new Respawn(),
             new SpawnLocation()
@@ -100,7 +98,13 @@ public final class Architect extends JavaPlugin {
         for (String world : worlds) {
             new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();
         }
-
+        // tasks
+        Tasks.registerTasks();
+        // heads
+        HeadLoader.load();
+        // compasses
+        Compasses.prepare();
+        // leaderboards
         //sets up and creates leaderboards
         InitLeaderBoards.init();
 

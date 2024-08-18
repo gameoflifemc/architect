@@ -2,18 +2,16 @@ package cc.architect.managers;
 
 import cc.architect.Architect;
 import cc.architect.events.player.SpawnLocation;
+import cc.architect.objects.HashMaps;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-
 public class Routines {
-    public static final HashMap<Player, Integer> current = new HashMap<>();
     public static void next(Player p) {
         Movers.transition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> transport(p),100);
     }
     private static void transport(Player p) {
-        int current = Routines.current.getOrDefault(p,0);
+        int current = HashMaps.ROUTINES.getOrDefault(p,0);
         switch (current) {
             case 0:
                 morning(p);
@@ -31,7 +29,7 @@ public class Routines {
                 finishDay(p);
                 return;
         }
-        Routines.current.put(p, current + 1);
+        HashMaps.ROUTINES.put(p, current + 1);
         Actions.resetPoints(p);
     }
     private static void morning(Player p) {
@@ -52,6 +50,6 @@ public class Routines {
         Meta.clear(p,SpawnLocation.META);
         Meta.clear(p,Actions.META);
         Actions.pointsCache.remove(p);
-        Routines.current.remove(p);
+        HashMaps.ROUTINES.remove(p);
     }
 }

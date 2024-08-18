@@ -2,8 +2,8 @@ package cc.architect.events.player;
 
 import cc.architect.managers.Game;
 import cc.architect.managers.Movers;
-import cc.architect.managers.Routines;
 import cc.architect.minigames.farming.eventhandlers.FarmingPlayerInteractEventHandler;
+import cc.architect.objects.HashMaps;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Door;
@@ -39,7 +39,7 @@ public class Interact implements Listener {
                 Movers.toMine(p);
                 return;
             case POLISHED_BLACKSTONE_BUTTON:
-                if (Routines.current.containsKey(p)) {
+                if (HashMaps.ROUTINES.containsKey(p)) {
                     return;
                 }
                 Game.begin(p);
