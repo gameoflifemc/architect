@@ -17,11 +17,11 @@ public class Interact implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (!p.getGameMode().equals(GameMode.CREATIVE)) {
-            e.setCancelled(true);
-        }
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
+        }
+        if (p.getGameMode().equals(GameMode.ADVENTURE)) {
+            e.setCancelled(true);
         }
         FarmingPlayerInteractEventHandler.handleEvent(e);
         Block block = e.getClickedBlock();

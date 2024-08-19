@@ -23,7 +23,6 @@ public class StatsCaching {
         Architect.SCHEDULER.runTaskAsynchronously(Architect.PLUGIN,()->{
             positions.clear();
             tops.clear();
-            Architect.PLUGIN.getComponentLogger().info("Caching stats");
             List<UUID> players = Players.getAllPlayers();
             List<PlayerStatsHolder> statsHolders = new ArrayList<>();
 
@@ -38,8 +37,6 @@ public class StatsCaching {
                 addPostions(StatsSorter.listAll(statsHolders, pair.getRight()),pair.getRight(),pair.getLeft());
                 addTops(statsHolders, pair.getRight(), pair.getLeft(), 10);
             }
-
-            Architect.PLUGIN.getComponentLogger().info("Caching ended");
         });
     }
     public static void addPostions(List<PlayerStatsHolder> statsHolders, StatComparator comp, String name) {

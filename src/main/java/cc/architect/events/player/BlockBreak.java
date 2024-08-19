@@ -10,10 +10,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class BlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-            e.setCancelled(true);
+        if (e.getPlayer().getGameMode().equals(GameMode.ADVENTURE)) {
+            MiningBlockBreakHandler.handleBlockBreakEvent(e);
+            FarmingBlockBreakEventHandler.handleEvent(e);
         }
-        MiningBlockBreakHandler.handleBlockBreakEvent(e);
-        FarmingBlockBreakEventHandler.handleEvent(e);
     }
 }

@@ -5,8 +5,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Game {
-    private static final PotionEffect HUNGER = new PotionEffect(PotionEffectType.HUNGER,PotionEffect.INFINITE_DURATION,0,false,false);
-    private static final PotionEffect WITHER = new PotionEffect(PotionEffectType.WITHER,PotionEffect.INFINITE_DURATION,0,false,false);
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
     public static void begin(Player p) {
         Game.showHud(p);
@@ -23,13 +21,11 @@ public class Game {
         Game.hideHud(p);
     }
     public static void hideHud(Player p) {
-        p.addPotionEffect(WITHER);
-        p.addPotionEffect(HUNGER);
+        
         p.removePotionEffect(PotionEffectType.REGENERATION);
     }
     public static void showHud(Player p) {
-        p.removePotionEffect(PotionEffectType.WITHER);
-        p.removePotionEffect(PotionEffectType.HUNGER);
+        
         p.addPotionEffect(REGENERATION);
     }
 }

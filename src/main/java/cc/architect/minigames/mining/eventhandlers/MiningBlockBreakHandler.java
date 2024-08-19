@@ -8,6 +8,7 @@ import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -24,29 +25,29 @@ public class MiningBlockBreakHandler {
         Block block = event.getBlock();
         Player player = event.getPlayer();
         switch (block.getType()) {
-            case Material.COAL_ORE -> {
+            case COAL_ORE -> {
                 ore(player,block,Material.COAL_ORE,Material.COAL,1000);
             }
-            case Material.COPPER_ORE -> {
+            case COPPER_ORE -> {
                 ore(player,block,Material.COPPER_ORE,Material.COPPER_INGOT,1000);
             }
-            case Material.IRON_ORE -> {
+            case IRON_ORE -> {
                 ore(player,block,Material.IRON_ORE,Material.RAW_IRON,2000);
             }
-            case Material.GOLD_ORE -> {
+            case GOLD_ORE -> {
                 ore(player,block,Material.GOLD_ORE,Material.RAW_GOLD,3000);
             }
-            case Material.REDSTONE_ORE -> {
+            case REDSTONE_ORE -> {
                 ore(player,block,Material.REDSTONE_ORE,Material.REDSTONE,3000);
             }
-            case Material.LAPIS_ORE -> {
+            case LAPIS_ORE -> {
                 ore(player,block,Material.LAPIS_ORE,Material.LAPIS_LAZULI,3000);
             }
-            case Material.DIAMOND_ORE -> {
+            case DIAMOND_ORE -> {
                 ore(player,block,Material.DIAMOND_ORE,Material.DIAMOND,5000);
-                DiamondBonus.add(player, 1f/3f);
+                DiamondBonus.add(player,1f/3f);
             }
-            case Material.EMERALD_ORE -> {
+            case EMERALD_ORE -> {
                 ore(player,block,Material.EMERALD_ORE,Material.EMERALD,6000);
             }
             case STONE, ANDESITE, GRANITE -> {
@@ -59,7 +60,7 @@ public class MiningBlockBreakHandler {
             case COBBLESTONE -> {
                 block.setType(Material.BEDROCK);
                 if (!Tasks.replenishBedrockTask.hasLocation(block.getLocation())) {
-                    Tasks.replenishBedrockTask.addBedrock(block.getLocation(), Material.BEDROCK);
+                    Tasks.replenishBedrockTask.addBedrock(block.getLocation(),Material.BEDROCK);
                 }
                 if (rollRandom(5f)) {
                     spawnStealer(player,block);
@@ -73,6 +74,7 @@ public class MiningBlockBreakHandler {
             return;
         }
         b.setType(Material.STONE);
+        p.getInventory().getItemInMainHand().damage(1,p);
         p.getInventory().addItem(new ItemStack(drop));
         minedOres.put(p,b.getLocation(),timer);
         Tasks.replenishBedrockTask.addBedrock(b.getLocation(),ore);

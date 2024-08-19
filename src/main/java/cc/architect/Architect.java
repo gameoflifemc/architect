@@ -105,10 +105,8 @@ public final class Architect extends JavaPlugin {
         // compasses
         Compasses.prepare();
         // leaderboards
-        //sets up and creates leaderboards
         InitLeaderBoards.init();
-
-        //sets up travel minigames
+        // travel mini-games
         TravelRegistry.init();
         // welcome
         this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
