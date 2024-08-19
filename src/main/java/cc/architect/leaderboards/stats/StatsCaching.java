@@ -29,9 +29,6 @@ public class StatsCaching {
             for (UUID player : players) {
                 statsHolders.add(new PlayerStatsHolder(player));
             }
-            for (int i = 0;i<2000;i++){
-                statsHolders.add(new PlayerStatsHolder(500000));
-            }
 
             for(Pair<String, StatComparator> pair : comparators){
                 addPostions(StatsSorter.listAll(statsHolders, pair.getRight()),pair.getRight(),pair.getLeft());
