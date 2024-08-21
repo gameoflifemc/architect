@@ -64,6 +64,7 @@ public final class Architect extends JavaPlugin {
             // player
             new BlockBreak(),
             new BlockPlace(),
+            new ChangedWorld(),
             new Interact(),
             new InteractAtEntity(),
             new Join(),
@@ -108,7 +109,7 @@ public final class Architect extends JavaPlugin {
         // heads
         HeadLoader.load();
         // compasses
-        Compasses.prepare();
+        Compasses.setupValues();
         // leaderboards
         InitLeaderBoards.init();
         // travel mini-games
