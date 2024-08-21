@@ -6,10 +6,6 @@ import org.bukkit.Bukkit;
 public class Compass implements Runnable {
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            int yaw = Math.round(p.getYaw());
-            Compasses.update(p,yaw);
-        });
+        Bukkit.getOnlinePlayers().forEach(Compasses::updateValues);
     }
-    
 }

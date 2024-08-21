@@ -4,6 +4,7 @@ import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
 import cc.architect.channels.ServerName;
 import cc.architect.managers.Compasses;
+import cc.architect.objects.Compass;
 import cc.architect.objects.HashMaps;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -28,7 +29,9 @@ public class Join implements Listener {
         // create compass
         if (!HashMaps.COMPASSES.containsKey(p)) {
             // create compass
-            Compasses.create(p);
+            HashMaps.COMPASSES.put(p, new Compass(p));
+            // setup locations
+            Compasses.setupLocations(p);
         }
         // initialize bonus
         DiamondBonus.initPlayer(p);

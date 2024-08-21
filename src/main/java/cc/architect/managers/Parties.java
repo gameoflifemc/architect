@@ -184,8 +184,8 @@ public class Parties {
         setPartiesMap(receiver, sender);
     }
     public static void otherServerAcceptHandler(String receiver, String sender, PartyInvite invite){
-        //sends message about teleporting the player on the server
-        //plus the server name of the player that is being teleported for PARTIES and CANNOT_MAKE_PARTY
+        // sends message about teleporting the player on the server
+        // plus the server name of the player that is being teleported for PARTIES and CANNOT_MAKE_PARTY
         BaseChannels.prepareForwardMessage();
         DataOutputStream messageOut = BaseChannels.getForwardMessageData();
         try {
@@ -194,25 +194,23 @@ public class Parties {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        BaseChannels.sendForwardMessage(invite.getSenderServer(), BaseChannels.TELEPORT);
-        //connecting to other server
+        BaseChannels.sendForwardMessage(invite.getSenderServer(),BaseChannels.TELEPORT);
+        // connecting to other server
         ByteArrayDataOutput out = getBasicMessage(BaseChannels.CONNECT);
         out.writeUTF(invite.getSenderServer());
-        Bukkit.broadcastMessage(invite.getSenderServer());
         Player p = getPlayerExact(receiver);
         if (p == null) {
             return;
         }
         sendToDefaultChannelPlayer(out,p);
     }
-    public static void setPartiesMap(String receiver, String sender){
+    public static void setPartiesMap(String receiver, String sender) {
         IS_IN_PARTY.add(receiver);
         IS_IN_PARTY.add(sender);
-        if(!PARTIES.containsKey(sender)) {
-            PARTIES.put(sender, new PartyHolder(sender, receiver));
-        }else{
+        if (!PARTIES.containsKey(sender)) {
+            PARTIES.put(sender, new PartyHolder(sender,receiver));
+        } else {
             PARTIES.get(sender).addMember(receiver);
         }
-        Bukkit.broadcastMessage(PARTIES.get(sender).toString());
     }
 }
