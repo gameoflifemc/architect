@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 public class Damage implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
+
         // get cause of damage
         DamageCause cause = e.getCause();
         // disable wither damage

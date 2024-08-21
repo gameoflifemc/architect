@@ -8,7 +8,6 @@ import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;

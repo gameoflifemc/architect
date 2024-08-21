@@ -7,6 +7,8 @@ import cc.architect.commands.Simulation;
 import cc.architect.commands.Unstuck;
 import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
+import cc.architect.events.entity.Death;
+import cc.architect.events.entity.Remove;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
@@ -68,7 +70,10 @@ public final class Architect extends JavaPlugin {
             new Move(),
             new Quit(),
             new Respawn(),
-            new SpawnLocation()
+            new SpawnLocation(),
+            new PlayerDeath(),
+            new Death(),
+            new Remove()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {

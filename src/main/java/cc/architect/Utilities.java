@@ -4,6 +4,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -81,5 +84,9 @@ public class Utilities {
             currentLength += charWidth.getOrDefault(ch,5)+(isBold?2:1);
         }
         return currentLength;
+    }
+
+    public static <T extends Entity> T createEntity(Class<T> clazz) {
+        return Bukkit.getWorlds().getFirst().createEntity(new Location(Bukkit.getWorlds().getFirst(),0,0,0), clazz);
     }
 }
