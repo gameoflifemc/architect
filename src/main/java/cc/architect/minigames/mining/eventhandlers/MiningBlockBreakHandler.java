@@ -28,7 +28,7 @@ public class MiningBlockBreakHandler {
                 ore(player,block,Material.COAL_ORE,Material.COAL,1000);
             }
             case COPPER_ORE -> {
-                ore(player,block,Material.COPPER_ORE,Material.COPPER_INGOT,1000);
+                ore(player,block,Material.COPPER_ORE,Material.RAW_COPPER,1000);
             }
             case IRON_ORE -> {
                 ore(player,block,Material.IRON_ORE,Material.RAW_IRON,2000);
