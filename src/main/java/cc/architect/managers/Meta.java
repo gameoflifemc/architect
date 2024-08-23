@@ -58,7 +58,11 @@ public class Meta {
     }
     private static void add(User user, String key, int value) {
         int current = user.getCachedData().getMetaData().getMetaValue(key,Integer::parseInt).orElse(0);
-        set(user, key, Integer.toString(current + value));
+        int next = current + value;
+        if (next < 0) {
+            next = 0;
+        }
+        set(user, key, Integer.toString(next));
     }
     private static User toUser(Player player) {
         return Architect.LUCKPERMS.getPlayerAdapter(Player.class).getUser(player);

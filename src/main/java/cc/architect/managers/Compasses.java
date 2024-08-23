@@ -3,7 +3,7 @@ package cc.architect.managers;
 import cc.architect.objects.Compass;
 import cc.architect.objects.Fonts;
 import cc.architect.objects.HashMaps;
-import cc.architect.objects.RoughLocation;
+import cc.architect.records.RoughLocation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.TextColor;
@@ -28,19 +28,19 @@ public class Compasses {
         // add locations based on world
         switch (p.getWorld().getName()) {
             case "village":
-                roughLocations.add(new RoughLocation("village","_M_",0,0));
+                roughLocations.add(new RoughLocation("village","_M_",48,159));
+                roughLocations.add(new RoughLocation("village","_F_",-37,160));
+                roughLocations.add(new RoughLocation("village","_B_",25,-37));
                 break;
             case "mine":
-                roughLocations.add(new RoughLocation("mine","_M_",0,0));
+                roughLocations.add(new RoughLocation("mine","_M_",12,-12));
                 break;
             case "farm":
-                roughLocations.add(new RoughLocation("farm","_M_",0,0));
-                break;
-            case "dream":
-                roughLocations.add(new RoughLocation("dream","_M_",0,0));
+                roughLocations.add(new RoughLocation("farm","_F_",7,-7));
                 break;
             case "travel":
                 roughLocations.add(new RoughLocation("travel","_M_",0,0));
+                roughLocations.add(new RoughLocation("travel","_F_",0,0));
                 break;
         }
         HashMaps.WORLD_LOCATIONS.put(p,roughLocations);

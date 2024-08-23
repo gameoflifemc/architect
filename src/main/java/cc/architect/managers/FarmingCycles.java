@@ -1,9 +1,10 @@
-package cc.architect.minigames.farming;
+package cc.architect.managers;
 
 import cc.architect.Architect;
 import cc.architect.loottables.LootTableManager;
 import cc.architect.loottables.definitions.FarmingCropLootTable;
 import cc.architect.objects.Messages;
+import cc.architect.tasks.farming.ShiftSeasons;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,14 +19,14 @@ import java.util.Map;
 /**
 * Manages the cycles for the farming minigame
 **/
-public class CycleManager {
-    public static final Map<Player, CycleManager> activeCycleManagers = new HashMap<>();
+public class FarmingCycles {
+    public static final Map<Player, FarmingCycles> activeCycleManagers = new HashMap<>();
     public static Map<Player, Map<Location, Boolean>> profits = new HashMap<>();
     public final Player player;
     public int state;
     public static List<Location> tilledLand = new ArrayList<>();
 
-    public CycleManager(Player player) {
+    public FarmingCycles(Player player) {
         activeCycleManagers.put(player, this);
         this.player = player;
     }
@@ -110,8 +111,8 @@ public class CycleManager {
 
     public static List<Location> getLocations() {
         List<Location> locations = new ArrayList<>();
-        for (Player player1 : CycleManager.profits.keySet()) {
-            locations.addAll(CycleManager.profits.get(player1).keySet());
+        for (Player player1 : FarmingCycles.profits.keySet()) {
+            locations.addAll(FarmingCycles.profits.get(player1).keySet());
         }
         return locations;
     }

@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-public class BaseChannels {
+public class Base {
     public static final String PUBLIC = "BungeeCord";
     public static final String CONNECT = "Connect";
     public static final String PLAYER_LIST = "PlayerList";
@@ -28,10 +28,10 @@ public class BaseChannels {
     public static ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
     public static DataOutputStream msgOut = new DataOutputStream(msgBytes);
     public static void sendToDefaultChannel(ByteArrayDataOutput out){
-        Iterables.getFirst(Bukkit.getOnlinePlayers(),null).sendPluginMessage(Architect.PLUGIN,BaseChannels.PUBLIC,out.toByteArray());
+        Iterables.getFirst(Bukkit.getOnlinePlayers(),null).sendPluginMessage(Architect.PLUGIN, Base.PUBLIC,out.toByteArray());
     }
     public static void sendToDefaultChannelPlayer(ByteArrayDataOutput out,Player player){
-        player.sendPluginMessage(Architect.PLUGIN,BaseChannels.PUBLIC,out.toByteArray());
+        player.sendPluginMessage(Architect.PLUGIN, Base.PUBLIC,out.toByteArray());
     }
     public static ByteArrayDataOutput getBasicMessage(String subChannel){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -46,7 +46,7 @@ public class BaseChannels {
         return msgOut;
     }
     public static void sendForwardMessage(String server, String channel){
-        ByteArrayDataOutput out = getBasicMessage(BaseChannels.FORWARD);
+        ByteArrayDataOutput out = getBasicMessage(Base.FORWARD);
         out.writeUTF(server);
         out.writeUTF(channel);
         out.writeShort(msgBytes.toByteArray().length);
@@ -54,7 +54,7 @@ public class BaseChannels {
         sendToDefaultChannel(out);
     }
     public static void sendForwardMessage(String server, String channel, Player player){
-        ByteArrayDataOutput out = getBasicMessage(BaseChannels.FORWARD);
+        ByteArrayDataOutput out = getBasicMessage(Base.FORWARD);
         out.writeUTF(server);
         out.writeUTF(channel);
         out.writeShort(msgBytes.toByteArray().length);

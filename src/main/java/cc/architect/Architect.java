@@ -1,28 +1,29 @@
 package cc.architect;
 
+import cc.architect.channels.Teleport;
 import cc.architect.channels.*;
 import cc.architect.commands.Discord;
-import cc.architect.commands.Party;
 import cc.architect.commands.Simulation;
 import cc.architect.commands.Unstuck;
+import cc.architect.events.block.Break;
+import cc.architect.events.block.Place;
 import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
-import cc.architect.events.entity.Death;
-import cc.architect.events.entity.Remove;
+import cc.architect.events.entity.RemoveFromWorld;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.heads.HeadLoader;
 import cc.architect.leaderboards.InitLeaderBoards;
 import cc.architect.managers.Compasses;
-import cc.architect.managers.Configurations;
 import cc.architect.managers.Tasks;
-import cc.architect.minigames.travel.wraper.TravelRegistry;
+import cc.architect.minigames.travel.wrapper.TravelRegistry;
 import cc.architect.objects.Messages;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import net.kyori.adventure.util.TriState;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -38,6 +39,8 @@ public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
     public static LuckPerms LUCKPERMS;
     public static BukkitScheduler SCHEDULER;
+    public static World MINE;
+    public static World FARM;
     @Override
     public void onEnable() {
         // plugin
@@ -46,12 +49,10 @@ public final class Architect extends JavaPlugin {
         LUCKPERMS = LuckPermsProvider.get();
         // scheduler
         SCHEDULER = Bukkit.getScheduler();
-        // configurations
-        Configurations.load();
         // commands
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         Discord.register(manager);
-        Party.register(manager);
+        cc.architect.commands.Party.register(manager);
         Simulation.register(manager);
         Unstuck.register(manager);
         // events
@@ -59,12 +60,16 @@ public final class Architect extends JavaPlugin {
             // entity
             new Damage(),
             new DamageByEntity(),
+            new cc.architect.events.entity.Death(),
+            new RemoveFromWorld(),
             // misc
             new FoodLevelChange(),
             // player
-            new BlockBreak(),
-            new BlockPlace(),
+            new Break(),
+            new Place(),
             new ChangedWorld(),
+            new Death(),
+            new DropItem(),
             new Interact(),
             new InteractAtEntity(),
             new Join(),
@@ -72,9 +77,7 @@ public final class Architect extends JavaPlugin {
             new Quit(),
             new Respawn(),
             new SpawnLocation(),
-            new PlayerDeath(),
-            new Death(),
-            new Remove()
+            new cc.architect.events.player.Teleport()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {
@@ -83,26 +86,33 @@ public final class Architect extends JavaPlugin {
         // channels
         Messenger messenger = this.getServer().getMessenger();
         List<PluginMessageListener> channels = List.of(
-            new PartyChannelManager(),
+            new Party(),
             new PlayerFinder(),
             new PlayerLister(),
             new ServerName(),
-            new TeleportChannel()
+            new Teleport()
         );
         for (PluginMessageListener channel : channels) {
-            messenger.registerIncomingPluginChannel(this,BaseChannels.PUBLIC,channel);
+            messenger.registerIncomingPluginChannel(this,Base.PUBLIC,channel);
         }
-        messenger.registerOutgoingPluginChannel(this,BaseChannels.PUBLIC);
+        messenger.registerOutgoingPluginChannel(this,Base.PUBLIC);
         // worlds
         List<String> worlds = List.of(
             "village",
             "mine",
             "farm",
-            "dream",
             "travel"
         );
-        for (String world : worlds) {
-            new WorldCreator(world).keepSpawnLoaded(TriState.FALSE).createWorld();
+        for (String worldName : worlds) {
+            World world = new WorldCreator(worldName).keepSpawnLoaded(TriState.FALSE).createWorld();
+            switch (worldName) {
+                case "mine":
+                    MINE = world;
+                    break;
+                case "farm":
+                    FARM = world;
+                    break;
+            }
         }
         // tasks
         Tasks.registerTasks();

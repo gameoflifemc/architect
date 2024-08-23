@@ -6,6 +6,11 @@ import org.bukkit.Bukkit;
 public class Compass implements Runnable {
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(Compasses::updateValues);
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            if (p.getWorld().getName().equals("world")) {
+                return;
+            }
+            Compasses.updateValues(p);
+        });
     }
 }

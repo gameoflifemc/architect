@@ -1,4 +1,4 @@
-package cc.architect.minigames.travel.wraper;
+package cc.architect.minigames.travel.wrapper;
 
 import org.bukkit.World;
 

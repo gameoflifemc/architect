@@ -1,6 +1,6 @@
 package cc.architect.minigames.travel.mine;
 
-import cc.architect.minigames.travel.wraper.BasicTravelMinigame;
+import cc.architect.minigames.travel.wrapper.BasicTravelMinigame;
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

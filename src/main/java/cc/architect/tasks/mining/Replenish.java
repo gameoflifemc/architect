@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
 * Replenish bedrock in the mining minigame
 **/
-public class ReplenishBedrock implements Runnable {
+public class Replenish implements Runnable {
     private final HashMap<Location, Material> minedBlocks = new HashMap<>();
     @Override
     public void run() {

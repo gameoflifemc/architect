@@ -8,9 +8,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class HeadLoader {
     public static ItemStack CHEST;
     public static void load() {
-        loadChest();
-    }
-    private static void loadChest() {
         CHEST = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) CHEST.getItemMeta();
         meta.setOwningPlayer(Bukkit.getOfflinePlayer("SunamyMC"));

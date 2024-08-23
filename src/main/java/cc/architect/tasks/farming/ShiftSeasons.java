@@ -1,5 +1,6 @@
-package cc.architect.minigames.farming;
+package cc.architect.tasks.farming;
 
+import cc.architect.managers.FarmingCycles;
 import org.bukkit.entity.Player;
 
 public class ShiftSeasons implements Runnable {
@@ -11,6 +12,6 @@ public class ShiftSeasons implements Runnable {
 
     @Override
     public void run() {
-        CycleManager.activeCycleManagers.get(player).moveToNextSeason();
+        FarmingCycles.activeCycleManagers.get(player).moveToNextSeason();
     }
 }

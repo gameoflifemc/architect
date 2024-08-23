@@ -1,5 +1,6 @@
 package cc.architect.objects;
 
+import cc.architect.records.RoughLocation;
 import org.bukkit.entity.Player;
 
 import java.util.*;

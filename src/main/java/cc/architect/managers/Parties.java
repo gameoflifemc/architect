@@ -1,7 +1,7 @@
 package cc.architect.managers;
 
 import cc.architect.Architect;
-import cc.architect.channels.BaseChannels;
+import cc.architect.channels.Base;
 import cc.architect.objects.Messages;
 import cc.architect.objects.PartyHolder;
 import cc.architect.objects.PartyInvite;
@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cc.architect.channels.BaseChannels.getBasicMessage;
-import static cc.architect.channels.BaseChannels.sendToDefaultChannelPlayer;
-import static cc.architect.channels.PartyChannelManager.sendRemoteInviteRequest;
+import static cc.architect.channels.Base.getBasicMessage;
+import static cc.architect.channels.Base.sendToDefaultChannelPlayer;
+import static cc.architect.channels.Party.sendRemoteInviteRequest;
 import static cc.architect.objects.HashMaps.IS_IN_PARTY;
 import static cc.architect.objects.HashMaps.PARTIES;
 import static cc.architect.objects.PartyHolder.getMemberParty;
@@ -186,17 +186,17 @@ public class Parties {
     public static void otherServerAcceptHandler(String receiver, String sender, PartyInvite invite){
         // sends message about teleporting the player on the server
         // plus the server name of the player that is being teleported for PARTIES and CANNOT_MAKE_PARTY
-        BaseChannels.prepareForwardMessage();
-        DataOutputStream messageOut = BaseChannels.getForwardMessageData();
+        Base.prepareForwardMessage();
+        DataOutputStream messageOut = Base.getForwardMessageData();
         try {
             messageOut.writeUTF(receiver);
             messageOut.writeUTF(sender);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        BaseChannels.sendForwardMessage(invite.getSenderServer(),BaseChannels.TELEPORT);
+        Base.sendForwardMessage(invite.getSenderServer(), Base.TELEPORT);
         // connecting to other server
-        ByteArrayDataOutput out = getBasicMessage(BaseChannels.CONNECT);
+        ByteArrayDataOutput out = getBasicMessage(Base.CONNECT);
         out.writeUTF(invite.getSenderServer());
         Player p = getPlayerExact(receiver);
         if (p == null) {

@@ -42,6 +42,6 @@ public class Autosave implements Runnable {
             }
         }
         // save emeralds
-        Meta.set(p,"emeralds", String.valueOf(emeralds.get()));
+        Meta.set(p,"emeralds_total", String.valueOf(emeralds.get()));
     }
 }

@@ -13,7 +13,7 @@ public class Actions {
         // get current value
         int current = Actions.pointsCache.get(p);
         // if player has no points, move to next routine
-        if (current == 0) {
+        if (current <= 2) {
             Routines.next(p);
         } else {
             // calculate new value

@@ -13,14 +13,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static cc.architect.channels.BaseChannels.getBasicMessage;
-import static cc.architect.channels.BaseChannels.sendToDefaultChannel;
+import static cc.architect.channels.Base.getBasicMessage;
+import static cc.architect.channels.Base.sendToDefaultChannel;
 
 public class PlayerLister implements PluginMessageListener {
     public static final List<Consumer<List<String>>> queue = new ArrayList<>();
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
-        if(!channel.equals(BaseChannels.PUBLIC)){
+        if(!channel.equals(Base.PUBLIC)){
             return;
         }
 
@@ -29,7 +29,7 @@ public class PlayerLister implements PluginMessageListener {
         String subChannel = request.readUTF();
 
         //checks if request is from BaseChannels.GET_PLAYER_SERVER_CHANNEL
-        if(!subChannel.equals(BaseChannels.PLAYER_LIST)){
+        if(!subChannel.equals(Base.PLAYER_LIST)){
             return;
         }
 
@@ -44,7 +44,7 @@ public class PlayerLister implements PluginMessageListener {
         queue.add(consumer);
 
         Bukkit.getConsoleSender().sendMessage("Requesting player list...");
-        ByteArrayDataOutput out = getBasicMessage(BaseChannels.PLAYER_LIST);
+        ByteArrayDataOutput out = getBasicMessage(Base.PLAYER_LIST);
         out.writeUTF("ALL");
         sendToDefaultChannel(out);
     }
