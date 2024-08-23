@@ -1,11 +1,12 @@
 package cc.architect.minigames.travel.mine;
 
 import cc.architect.Architect;
+import cc.architect.minigames.travel.wrapper.Factory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.EntityEquipment;
@@ -23,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class ZombieFactory {
+public class ZombieFactory extends Factory {
     public static LootTable nullTable = new LootTable() {
         @Override
         public @NotNull Collection<ItemStack> populateLoot(@Nullable Random random, @NotNull LootContext context) {
@@ -40,7 +41,7 @@ public class ZombieFactory {
             return new NamespacedKey(Architect.PLUGIN,"null");
         }
     };
-    public static Entity createMinerZombie(Location loc) {
+    public void create(Location loc) {
         Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
 
         zombie.setAggressive(true);
@@ -49,6 +50,7 @@ public class ZombieFactory {
         zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10);
         zombie.setRemoveWhenFarAway(false);
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE,1, false, false));
+        zombie.setShouldBurnInDay(false);
 
         EntityEquipment equipment = ((LivingEntity)zombie).getEquipment();
         equipment.setItemInMainHand(new ItemStack(Material.IRON_PICKAXE,1));
@@ -62,8 +64,11 @@ public class ZombieFactory {
         equipment.setDropChance(EquipmentSlot.OFF_HAND,0.25f);
         equipment.setDropChance(EquipmentSlot.HEAD,0);
         zombie.setLootTable(nullTable);
-
-        return zombie;
+        zombie.addScoreboardTag("minerZ");
     }
 
+    @Override
+    public EntityType entityType() {
+        return EntityType.ZOMBIE;
+    }
 }

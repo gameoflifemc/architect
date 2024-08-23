@@ -1,8 +1,8 @@
 package cc.architect.minigames.travel.wrapper;
 
 import cc.architect.Architect;
+import cc.architect.minigames.travel.farm.mine.FarmTravel;
 import cc.architect.minigames.travel.mine.MineTravel;
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -21,7 +21,7 @@ public class TravelRegistry {
 
     public static void init() {
         register("mine", new MineTravel());
-        //register("farm", new FarmTravel());
+        register("farm", new FarmTravel());
 
         createTask();
     }
@@ -33,15 +33,16 @@ public class TravelRegistry {
     }
 
     public static void entityDeath(EntityDeathEvent event) {
-        ((MineTravel)minigames.get("mine")).entityDeath(event);
-    }
-
-    public static void entityRemove(EntityRemoveFromWorldEvent event) {
-        ((MineTravel)minigames.get("mine")).entityRemove(event);
+        for(TravelMinigame minigame : minigames.values()) {
+            if(minigame instanceof BasicTravelMinigame basicTravelMinigame) {
+                basicTravelMinigame.entityDeath(event);
+            }
+        }
     }
 
     public static void playerDeath(PlayerDeathEvent e) {
         e.getPlayer().getInventory().remove(MineTravel.sword.getType());
         e.getPlayer().getInventory().remove(MineTravel.shard.getType());
+        e.getPlayer().getInventory().remove(FarmTravel.scrap.getType());
     }
 }
