@@ -1,4 +1,4 @@
-package cc.architect.minigames.travel.farm.mine;
+package cc.architect.minigames.travel.farm;
 
 import cc.architect.minigames.travel.mine.ZombieFactory;
 import cc.architect.minigames.travel.wrapper.Factory;
@@ -35,6 +35,8 @@ public class BoggedFactory extends Factory {
         equipment.setDropChance(EquipmentSlot.OFF_HAND,0.25f);
         equipment.setDropChance(EquipmentSlot.HEAD,0);
         bogged.setLootTable(ZombieFactory.nullTable);
+        bogged.addScoreboardTag("farmB");
+
     }
 
     @Override

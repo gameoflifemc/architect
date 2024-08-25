@@ -1,4 +1,4 @@
-package cc.architect.minigames.travel.farm.mine;
+package cc.architect.minigames.travel.farm;
 
 import cc.architect.minigames.travel.wrapper.BasicTravelMinigame;
 import cc.architect.minigames.travel.wrapper.Factory;
