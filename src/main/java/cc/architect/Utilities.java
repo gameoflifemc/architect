@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
@@ -71,12 +70,10 @@ public class Utilities {
     public static int getPixelLength(String s){
         return getPixelLength(s,false);
     }
-
     /**
      * returns the pixel length of a string
      * @param s text
      * @param isBold if the text is bold (it will add 1 to everyting)
-     * @return
      */
     public static int getPixelLength(String s, boolean isBold){
         int currentLength = 0;
@@ -85,8 +82,7 @@ public class Utilities {
         }
         return currentLength;
     }
-
     public static <T extends Entity> T createEntity(Class<T> clazz) {
-        return Bukkit.getWorlds().getFirst().createEntity(new Location(Bukkit.getWorlds().getFirst(),0,0,0), clazz);
+        return Architect.WORLD.createEntity(new Location(Architect.WORLD,0,0,0),clazz);
     }
 }

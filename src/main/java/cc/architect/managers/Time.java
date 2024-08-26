@@ -5,13 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Time {
-    public static void setAbsoluteTime(Player p, long time) {
+    public static void get(Player p, long time) {
+        p.getPlayerTimeOffset();
+    }
+    public static void setAbsolute(Player p, long time) {
         p.setPlayerTime(time,false);
     }
-    public static void addInterpolateTime(Player p, long time) {
-        long finalTime = p.getPlayerTimeOffset() + time;
-        p.setPlayerTime(-(p.getWorld().getTime() - p.getPlayerTimeOffset()),true);
-        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> Time.setAbsoluteTime(p, finalTime),time);
+    public static void interpolate(Player p, long time) {
+        long offset = p.getPlayerTimeOffset();
+        long finalTime = offset + time;
+        p.setPlayerTime(-(p.getWorld().getTime() - offset),true);
+        Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,() -> Time.setAbsolute(p,finalTime),time);
     }
 }
 

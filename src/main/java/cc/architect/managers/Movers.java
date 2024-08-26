@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.time.Duration;
 
 public class Movers {
-    private static final Location SPAWN = new Location(Bukkit.getWorld("village"),0.5,0,0.5,0,0);
+    private static final Location LOADING_AREA = new Location(Bukkit.getWorld("village"),0.5,0,0.5,0,0);
     private static final Title TITLE1 = Title.title(Component.empty(),Component.text("0").font(Fonts.LOADING),
         Title.Times.times(Duration.ofMillis(500),Duration.ofMillis(1500),Duration.ZERO)
     );
@@ -29,24 +29,28 @@ public class Movers {
         }
         p.teleport(world.getSpawnLocation().add(0.5,0,0.5));
     }
-    public static void transition(Player p) {
+    public static void showTransition(Player p) {
         p.showTitle(TITLE1);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
             p.showTitle(TITLE2);
-            p.teleport(SPAWN);
+            p.teleport(LOADING_AREA);
         },20);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> p.showTitle(TITLE3),120);
     }
+    public static void toSpawn(Player p) {
+        Movers.showTransition(p);
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"world"),100);
+    }
     public static void toVillage(Player p) {
-        transition(p);
+        Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"village"),100);
     }
     public static void toMine(Player p) {
-        transition(p);
+        Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"mine"),100);
     }
     public static void toFarm(Player p) {
-        transition(p);
+        Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"farm"),100);
     }
 }

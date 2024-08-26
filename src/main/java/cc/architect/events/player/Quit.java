@@ -1,6 +1,6 @@
 package cc.architect.events.player;
 
-import cc.architect.objects.HashMaps;
+import cc.architect.managers.Game;
 import cc.architect.tasks.player.Autosave;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -15,11 +15,13 @@ public class Quit implements Listener {
         e.quitMessage(Component.empty());
         // get player
         Player p = e.getPlayer();
-        // delete compass
-        HashMaps.COMPASSES.remove(p);
         // save last location
         Autosave.location(p);
         // save emeralds
         Autosave.emeralds(p);
+        // remove player from lobby
+        Game.exitLobby(p);
+        // remove player from game
+        Game.exit(p);
     }
 }

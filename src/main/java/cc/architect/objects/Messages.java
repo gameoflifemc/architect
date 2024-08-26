@@ -4,23 +4,20 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 
 public class Messages {
+    // colors
+    public static final TextColor BASE = TextColor.fromHexString("#2970ED");
     public static final TextColor GREEN = TextColor.fromHexString("#00FF00");
     public static final TextColor RED = TextColor.fromHexString("#FF0000");
-    public static final Component PLUGIN_WELCOME = Component.text("Core Architect protocol running, the Game of Life is ready to begin.")
-        .color(TextColor.fromHexString("#2970ED"));
-    public static final Component SEND_INVITE_CANNOT_MAKE_PARTY = Component.text("You can't make party.");
-    public static final Component PLAYER_IN_PARTY = Component.text("Player is already in party.");
+    // messages
+    public static final Component PLUGIN_WELCOME = Component.text("Core Architect protocol running, the Game of Life is ready to begin.").color(BASE);
+    public static final Component SERVER_FULL = Component.text("Systém zaplněn.").color(RED);
     public static final Component NOT_IN_PARTY = Component.text("You are not in party.");
     public static final Component YOU_LEFT_PARTY_LEADER_LEAVE = Component.text("Leader left party, you not in party.");
     public static final Component YOU_LEFT_PARTY_MEMBERS_EMPTY = Component.text("You left party, party is empty.");
     public static final Component YOU_LEFT_PARTY = Component.text("You left party.");
-    public static final Component TREASURE_FOUND = Component.text("Našel jsi poklad! Otevřeš ho pravým tlačítkem myši. Rychle, než ti ho někdo ukradne!")
-            .color(GREEN);
-    public static final Component TREASURE_FOUND_AUTO_OPEN = Component.text("Našel jsi haldu ležících emeraldů, které se ti nyní přidali do inventáře.")
-        .color(GREEN);
-    public static final Component STEAL = Component.text("Našel jsi poklad, ale snaží se útéct! Rychle ho chytni, než ti uteče. Stačí na něj kliknout levým tlačítkem myši.")
-            .color(TextColor.fromHexString("#FF0000"));
-    public static final Component BLOCK_MINED = Component.text("You can't mine this block, because you've already mined it.").color(TextColor.fromHexString("#FF0000"));
+    public static final Component TREASURE_FOUND = Component.text("Našel jsi poklad! Otevřeš ho pravým tlačítkem myši. Rychle, než ti ho někdo ukradne!").color(GREEN);
+    public static final Component TREASURE_FOUND_AUTO_OPEN = Component.text("Našel jsi haldu ležících emeraldů, které se ti nyní přidali do inventáře.").color(GREEN);
+    public static final Component STEAL = Component.text("Našel jsi poklad, ale snaží se útéct! Rychle ho chytni, než ti uteče. Stačí na něj kliknout levým tlačítkem myši.").color(RED);
     public static final Component FARMING_TILL = Component.text("You've received your hoe, go and convert as much land into farmland as you can. You have 15 seconds to do so.").color(GREEN);
     public static final Component FARMING_SEEDS = Component.text("Hopefully you have at least some farmland. But now you have to place some seeds. You have 15 seconds to do so.").color(GREEN);
     public static final Component FARMING_FERTILIZE = Component.text("After planting your seeds you should fertilize them. You have 15 seconds for that.").color(GREEN);
@@ -38,7 +35,6 @@ public class Messages {
         return Component.text("You got invite from player " + player + ". type /party accept to join.");
     }
     public static final Component SEND_INVITE_EXPIRED = Component.text("Your invite expired.");
-    public static final Component SEND_INVITE_NONE = Component.text("You have no active invite.");
     public static Component SEND_INVITE_PLAYER_HAS_INVITE(String player) {
         return Component.text("Player " + player + " already has invite.");
     }

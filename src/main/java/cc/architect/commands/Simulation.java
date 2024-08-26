@@ -1,8 +1,8 @@
 package cc.architect.commands;
 
-import cc.architect.managers.Actions;
 import cc.architect.managers.Meta;
 import cc.architect.managers.Movers;
+import cc.architect.managers.Routines;
 import cc.architect.minigames.travel.wrapper.TravelMinigame;
 import cc.architect.minigames.travel.wrapper.TravelRegistry;
 import com.mojang.brigadier.Command;
@@ -31,8 +31,20 @@ public class Simulation {
                                 if (p == null) {
                                     return Command.SINGLE_SUCCESS;
                                 }
-                                // remove point
-                                Actions.removePoint(p);
+                                // get current value
+                                int current = Integer.parseInt(Meta.get(p,Meta.ACTIONS));
+                                // if player has no points, move to next routine
+                                if (current <= 2) {
+                                    Routines.switchToNext(p);
+                                    p.setFoodLevel(0);
+                                } else {
+                                    // calculate new value
+                                    int next = current - 2;
+                                    // update database
+                                    Meta.set(p,Meta.ACTIONS,String.valueOf(next));
+                                    // update player
+                                    p.setFoodLevel(next);
+                                }
                                 return Command.SINGLE_SUCCESS;
                             })
                         )

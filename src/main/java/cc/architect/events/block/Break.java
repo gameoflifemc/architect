@@ -2,10 +2,10 @@ package cc.architect.events.block;
 
 import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
-import cc.architect.heads.HeadLoader;
 import cc.architect.loottables.LootTableManager;
 import cc.architect.loottables.definitions.MiningChestLootTable;
 import cc.architect.managers.FarmingCycles;
+import cc.architect.managers.Items;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
 import cc.architect.tasks.farming.Mushrooms;
@@ -128,7 +128,7 @@ public class Break implements Listener {
                     Location spawn = location.clone().add(0.5,-0.45f,0.5);
                     World world = spawn.getWorld();
                     ArmorStand armorStand = (ArmorStand) world.spawnEntity(spawn, EntityType.ARMOR_STAND);
-                    armorStand.getEquipment().setHelmet(HeadLoader.CHEST);
+                    armorStand.getEquipment().setHelmet(Items.CHEST);
                     armorStand.setInvisible(true);
                     armorStand.setGravity(false);
                     p.sendMessage(Messages.TREASURE_FOUND);

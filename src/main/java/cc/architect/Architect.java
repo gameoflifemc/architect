@@ -12,9 +12,9 @@ import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.entity.RemoveFromWorld;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
-import cc.architect.heads.HeadLoader;
 import cc.architect.leaderboards.InitLeaderBoards;
 import cc.architect.managers.Compasses;
+import cc.architect.managers.Items;
 import cc.architect.managers.Tasks;
 import cc.architect.minigames.travel.wrapper.TravelRegistry;
 import cc.architect.objects.Messages;
@@ -39,6 +39,7 @@ public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
     public static LuckPerms LUCKPERMS;
     public static BukkitScheduler SCHEDULER;
+    public static World WORLD;
     public static World MINE;
     public static World FARM;
     @Override
@@ -49,6 +50,8 @@ public final class Architect extends JavaPlugin {
         LUCKPERMS = LuckPermsProvider.get();
         // scheduler
         SCHEDULER = Bukkit.getScheduler();
+        // world
+        WORLD = Bukkit.getWorld("world");
         // commands
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         Discord.register(manager);
@@ -57,6 +60,9 @@ public final class Architect extends JavaPlugin {
         Unstuck.register(manager);
         // events
         List<Listener> events = List.of(
+            // block
+            new Break(),
+            new Place(),
             // entity
             new Damage(),
             new DamageByEntity(),
@@ -65,8 +71,6 @@ public final class Architect extends JavaPlugin {
             // misc
             new FoodLevelChange(),
             // player
-            new Break(),
-            new Place(),
             new ChangedWorld(),
             new Death(),
             new DropItem(),
@@ -116,8 +120,8 @@ public final class Architect extends JavaPlugin {
         }
         // tasks
         Tasks.registerTasks();
-        // heads
-        HeadLoader.load();
+        // items
+        Items.loadAll();
         // compasses
         Compasses.setupValues();
         // leaderboards

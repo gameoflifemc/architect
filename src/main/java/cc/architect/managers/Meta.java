@@ -10,6 +10,10 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class Meta {
+    public static final String LAST_LOCATION = "last_location";
+    public static final String ACTIONS = "actions";
+    public static final String ROUTINE = "routine";
+    public static final String DAYS = "days";
     public static boolean check(Player player, String key) {
         return check(toUser(player), key);
     }
@@ -24,13 +28,16 @@ public class Meta {
         map.clear(NodeType.META.predicate(n -> n.getMetaKey().equals(key)));
         Architect.LUCKPERMS.getUserManager().saveUser(user);
     }
-    public static String getSafe(User player, String key, String defau) {
-        String val = get(player,key);
-        if(val == null) {
-            set(player, key, defau);
-            val = defau;
+    public static String getSafe(Player player, String key, String defaultValue) {
+        return getSafe(toUser(player), key, defaultValue);
+    }
+    public static String getSafe(User player, String key, String defaultValue) {
+        String value = get(player,key);
+        if (value == null) {
+            set(player,key,defaultValue);
+            return defaultValue;
         }
-        return val;
+        return value;
     }
     public static String get(Player player, String key) {
         return get(toUser(player), key);

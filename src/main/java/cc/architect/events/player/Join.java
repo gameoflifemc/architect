@@ -1,10 +1,9 @@
 package cc.architect.events.player;
 
 import cc.architect.Architect;
-import cc.architect.bonuses.DiamondBonus;
 import cc.architect.channels.ServerName;
-import cc.architect.objects.Compass;
-import cc.architect.objects.HashMaps;
+import cc.architect.managers.Game;
+import cc.architect.objects.Messages;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -22,19 +21,14 @@ public class Join implements Listener {
         Player p = e.getPlayer();
         // check if server is full
         if (Bukkit.getOnlinePlayers().size() >= MAX_PLAYERS && !p.hasPermission("architect.priority")) {
-            p.kick(Component.text("Systém zaplněn."));
+            p.kick(Messages.SERVER_FULL);
             return;
         }
-        // create compass
-        if (!HashMaps.COMPASSES.containsKey(p)) {
-            // create compass
-            HashMaps.COMPASSES.put(p, new Compass(p));
-        }
-        // initialize bonus
-        DiamondBonus.initPlayer(p);
         // get server name
         if (ServerName.getServerName() == null) {
             Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,ServerName::requestServerName,5);
         }
+        // enter lobby
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.enterLobby(p),1);
     }
 }

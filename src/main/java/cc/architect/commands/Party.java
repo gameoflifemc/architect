@@ -80,7 +80,7 @@ public class Party {
                         .executes(ctx -> {
                             Player sender = (Player) ctx.getSource().getSender();
                             long time = Long.parseLong(StringArgumentType.getString(ctx,"time"));
-                            Time.addInterpolateTime(sender,time);
+                            Time.interpolate(sender,time);
                             return Command.SINGLE_SUCCESS;
                         })
                     )
