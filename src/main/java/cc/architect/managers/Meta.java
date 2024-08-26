@@ -11,9 +11,12 @@ import java.util.UUID;
 
 public class Meta {
     public static final String LAST_LOCATION = "last_location";
+    public static final String LAST_TIME = "last_time";
     public static final String ACTIONS = "actions";
     public static final String ROUTINE = "routine";
     public static final String DAYS = "days";
+    public static final String EMERALDS_TOTAL = "emeralds_total";
+    public static final String SCORE_TOTAL = "score_total";
     public static boolean check(Player player, String key) {
         return check(toUser(player), key);
     }

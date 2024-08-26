@@ -35,18 +35,21 @@ public class Routines {
     }
     private static void startMorning(Player p) {
         Movers.toVillage(p);
-        Time.setAbsolute(p,0);
-        Time.interpolate(p,6000);
+        Time.interpolate(p,0,9000);
     }
     private static void startEvening(Player p) {
         Movers.toVillage(p);
+        Time.interpolate(p,9000,18000);
     }
     public static void finishDay(Player p) {
         // remove everything concerning the given day, but keep stuff concerning the whole game
         Meta.clear(p,Meta.LAST_LOCATION);
-        Meta.clear(p,Meta.ROUTINE);
+        Meta.clear(p,Meta.LAST_TIME);
         Meta.clear(p,Meta.ACTIONS);
+        Meta.clear(p,Meta.ROUTINE);
+        // move to spawn
         Movers.toSpawn(p);
+        // increment days
         Meta.add(p,Meta.DAYS,1);
         // exit game
         Game.exit(p);

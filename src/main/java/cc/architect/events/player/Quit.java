@@ -17,6 +17,8 @@ public class Quit implements Listener {
         Player p = e.getPlayer();
         // save last location
         Autosave.location(p);
+        // save last time
+        Autosave.time(p);
         // save emeralds
         Autosave.emeralds(p);
         // remove player from lobby

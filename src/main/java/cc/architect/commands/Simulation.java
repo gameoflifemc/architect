@@ -60,7 +60,7 @@ public class Simulation {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     // write to database
-                                    Meta.add(p,"score_total",IntegerArgumentType.getInteger(ctx,"amount"));
+                                    Meta.add(p,Meta.SCORE_TOTAL,IntegerArgumentType.getInteger(ctx,"amount"));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )

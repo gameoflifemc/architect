@@ -1,5 +1,6 @@
 package cc.architect.managers;
 
+import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
 import cc.architect.objects.Compass;
 import cc.architect.objects.HashMaps;
@@ -22,13 +23,24 @@ public class Game {
     }
     public static void resume(Player p) {
         Game.enter(p);
-        // teleport to last location
-        String[] data = Meta.get(p,Meta.LAST_LOCATION).split(",");
-        World world = Bukkit.getWorld(data[0]);
-        if (world == null) {
-            return;
-        }
-        p.teleport(new Location(world,Double.parseDouble(data[1]),Double.parseDouble(data[2]),Double.parseDouble(data[3]),Float.parseFloat(data[4]),Float.parseFloat(data[5])));
+        Movers.showTransition(p);
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
+            // teleport to last location
+            String[] data = Meta.get(p, Meta.LAST_LOCATION).split(",");
+            World world = Bukkit.getWorld(data[0]);
+            if (world == null) {
+                return;
+            }
+            p.teleport(new Location(world, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]), Float.parseFloat(data[4]), Float.parseFloat(data[5])));
+            switch (Meta.get(p,Meta.ROUTINE)) {
+                case "0":
+                    Time.interpolate(p,Long.parseLong(Meta.get(p,Meta.LAST_TIME)),9000);
+                    break;
+                case "1":
+                    Time.interpolate(p,Long.parseLong(Meta.get(p,Meta.LAST_TIME)),18000);
+                    break;
+            }
+        },100);
     }
     public static void end(Player p) {
     }

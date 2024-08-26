@@ -14,6 +14,7 @@ public class Autosave implements Runnable {
     public void run() {
         Bukkit.getOnlinePlayers().forEach(p -> {
             location(p);
+            time(p);
             emeralds(p);
         });
     }
@@ -29,7 +30,11 @@ public class Autosave implements Runnable {
         // turn location into data
         String data = world + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + "," + loc.getPitch();
         // save player location
-        Meta.set(p,"last_location",data);
+        Meta.set(p,Meta.LAST_LOCATION,data);
+    }
+    public static void time(Player p) {
+        // save player time
+        Meta.set(p,Meta.LAST_TIME,String.valueOf(p.getPlayerTime()));
     }
     public static void emeralds(Player p) {
         // create atomic integer for emeralds
@@ -42,6 +47,6 @@ public class Autosave implements Runnable {
             }
         }
         // save emeralds
-        Meta.set(p,"emeralds_total", String.valueOf(emeralds.get()));
+        Meta.set(p,Meta.EMERALDS_TOTAL, String.valueOf(emeralds.get()));
     }
 }
