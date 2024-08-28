@@ -42,21 +42,21 @@ public class FarmingCycles {
         switch (state) {
             case 1 -> {
                 player.getInventory().remove(Material.IRON_HOE);
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " wheat_seeds[can_place_on={predicates:[{blocks:\"farmland\"}],show_in_tooltip:true}] 64");
+                Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + player.getName() + " wheat_seeds[can_place_on={predicates:[{blocks:\"farmland\"}],show_in_tooltip:true}] 64");
                 profits.put(player, new HashMap<>());
                 player.sendMessage(Messages.FARMING_SEEDS);
                 shift(15);
             }
             case 2 -> {
                 player.getInventory().remove(Material.WHEAT_SEEDS);
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " bone_meal[can_place_on={predicates:[{blocks:\"wheat\"}],show_in_tooltip:true}] 64");
+                Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + player.getName() + " bone_meal[can_place_on={predicates:[{blocks:\"wheat\"}],show_in_tooltip:true}] 64");
                 player.sendMessage(Messages.FARMING_FERTILIZE);
                 shift(15);
             }
             case 3 -> {
                 growCrops();
                 player.getInventory().remove(Material.BONE_MEAL);
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " diamond_hoe[minecraft:can_break={blocks:[\"minecraft:wheat\", \"minecraft:nether_wart\", \"brown_mushroom\", \"red_mushroom\"]}, minecraft:unbreakable={}]");
+                Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + player.getName() + " diamond_hoe[minecraft:can_break={blocks:[\"minecraft:wheat\", \"minecraft:nether_wart\", \"brown_mushroom\", \"red_mushroom\"]}, minecraft:unbreakable={}]");
                 player.sendMessage(Messages.FARMING_HARVEST);
                 shift(60);
             }

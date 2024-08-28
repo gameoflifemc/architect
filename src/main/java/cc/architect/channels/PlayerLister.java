@@ -1,9 +1,9 @@
 package cc.architect.channels;
 
+import cc.architect.Architect;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
@@ -35,15 +35,15 @@ public class PlayerLister implements PluginMessageListener {
 
         String server = request.readUTF();
         String[] playerList = request.readUTF().split(", ");
-
-        Bukkit.getConsoleSender().sendMessage("Recieve: "+Arrays.toString(playerList));
+        
+        Architect.CONSOLE.sendMessage("Receive: "+Arrays.toString(playerList));
 
         queue.getFirst().accept(new ArrayList<>(Arrays.asList(playerList)));
     }
     public static void getPlayerList(Consumer<List<String>> consumer){
         queue.add(consumer);
 
-        Bukkit.getConsoleSender().sendMessage("Requesting player list...");
+        Architect.CONSOLE.sendMessage("Requesting player list...");
         ByteArrayDataOutput out = getBasicMessage(Base.PLAYER_LIST);
         out.writeUTF("ALL");
         sendToDefaultChannel(out);

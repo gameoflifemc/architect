@@ -11,7 +11,7 @@ public class Teleport implements Listener {
     public void onTeleport(PlayerTeleportEvent e) {
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT)) {
             if (e.getFrom().getWorld().getName().equals("mine")) {
-                e.setTo(new Location(Architect.MINE,12,-31,-16));
+                e.setTo(new Location(Architect.MINE,12,-29,-16));
             } else {
                 e.setCancelled(true);
             }

@@ -15,15 +15,11 @@ public class Quit implements Listener {
         e.quitMessage(Component.empty());
         // get player
         Player p = e.getPlayer();
-        // save last location
-        Autosave.location(p);
-        // save last time
-        Autosave.time(p);
-        // save emeralds
-        Autosave.emeralds(p);
+        // autosave player
+        Autosave.autosave(p);
         // remove player from lobby
         Game.exitLobby(p);
         // remove player from game
-        Game.exit(p);
+        Game.exitGame(p);
     }
 }

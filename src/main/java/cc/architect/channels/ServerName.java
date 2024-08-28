@@ -1,9 +1,9 @@
 package cc.architect.channels;
 
+import cc.architect.Architect;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
@@ -29,11 +29,11 @@ public class ServerName implements PluginMessageListener {
         }
 
         name = request.readUTF();
-        Bukkit.getConsoleSender().sendMessage("This server name is " + name);
+        Architect.CONSOLE.sendMessage("This server name is " + name);
     }
 
     public static void requestServerName(){
-        Bukkit.getConsoleSender().sendMessage("Requesting name...");
+        Architect.CONSOLE.sendMessage("Requesting name...");
         ByteArrayDataOutput out = getBasicMessage(Base.GET_SERVER);
         sendToDefaultChannel(out);
     }

@@ -15,4 +15,5 @@ public class HashMaps {
     public static final HashMap<String,PartyHolder> PARTIES = new HashMap<>();
     public static final Set<String> IS_IN_PARTY = new HashSet<>();
     public static final Set<Player> ACTION_BAR = new HashSet<>();
+    public static final Set<Player> SPYGLASS_USED = new HashSet<>();
 }

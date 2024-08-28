@@ -24,7 +24,7 @@ public class Place implements Listener {
         if (!FarmingCycles.activeCycleManagers.containsKey(p)) {
             return;
         }
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"give " + p.getName() + " wheat_seeds[can_place_on={predicates:[{blocks:\"farmland\"}],show_in_tooltip:true}] 1");
+        Bukkit.dispatchCommand(Architect.CONSOLE,"give " + p.getName() + " wheat_seeds[can_place_on={predicates:[{blocks:\"farmland\"}],show_in_tooltip:true}] 1");
         FarmingCycles.profits.get(p).put(b.getLocation(),false);
     }
 }

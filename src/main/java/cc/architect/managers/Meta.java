@@ -10,13 +10,26 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class Meta {
+    // autosaved data
     public static final String LAST_LOCATION = "last_location";
     public static final String LAST_TIME = "last_time";
-    public static final String ACTIONS = "actions";
-    public static final String ROUTINE = "routine";
+    // game flow data
     public static final String DAYS = "days";
-    public static final String EMERALDS_TOTAL = "emeralds_total";
+    public static final String ROUTINE = "routine";
+    // player data
+    public static final String ACTIONS = "actions";
+    public static final String FACT = "fact";
+    public static final String SAVINGS = "savings";
+    // total values
     public static final String SCORE_TOTAL = "score_total";
+    public static final String EMERALDS_TOTAL = "emeralds_total";
+    public static final String INVESTMENTS_TOTAL = "investments_total";
+    public static final String LOAN_TOTAL = "loan_total";
+    // daily values
+    public static final String SCORE_DAILY = "score_daily";
+    public static final String EMERALDS_DAILY = "emeralds_daily";
+    public static final String INVESTMENTS_DAILY = "investments_daily";
+    public static final String LOAN_DAILY = "loan_daily";
     public static boolean check(Player player, String key) {
         return check(toUser(player), key);
     }
@@ -30,9 +43,6 @@ public class Meta {
         NodeMap map = user.data();
         map.clear(NodeType.META.predicate(n -> n.getMetaKey().equals(key)));
         Architect.LUCKPERMS.getUserManager().saveUser(user);
-    }
-    public static String getSafe(Player player, String key, String defaultValue) {
-        return getSafe(toUser(player), key, defaultValue);
     }
     public static String getSafe(User player, String key, String defaultValue) {
         String value = get(player,key);
@@ -52,9 +62,6 @@ public class Meta {
         return user.getCachedData().getMetaData().getMetaValue(key);
     }
     public static void set(Player player, String key, String value) {
-        set(toUser(player), key, value);
-    }
-    public static void set(UUID player, String key, String value) {
         set(toUser(player), key, value);
     }
     private static void set(User user, String key, String value) {

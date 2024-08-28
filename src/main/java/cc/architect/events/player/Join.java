@@ -29,6 +29,6 @@ public class Join implements Listener {
             Bukkit.getScheduler().runTaskLater(Architect.PLUGIN,ServerName::requestServerName,5);
         }
         // enter lobby
-        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.enterLobby(p),1);
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.enterLobby(p),20);
     }
 }

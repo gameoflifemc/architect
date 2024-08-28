@@ -15,14 +15,27 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Game {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
-    public static void begin(Player p) {
-        Meta.set(p,Meta.DAYS,"0");
-        Game.enter(p);
+    public static void beginDay(Player p) {
+        if (!Meta.check(p,Meta.DAYS)) {
+            // prepare meta for days
+            Meta.set(p,Meta.DAYS,"0");
+            Meta.set(p,Meta.SAVINGS,"0");
+            Meta.set(p,Meta.INVESTMENTS_TOTAL,"0");
+            Meta.set(p,Meta.LOAN_TOTAL,"0");
+            Meta.set(p,Meta.EMERALDS_TOTAL,"0");
+            Meta.set(p,Meta.SCORE_TOTAL,"0");
+        }
+        // enter game
+        Game.enterGame(p);
+        // prepare meta for routine
         Meta.set(p,Meta.ROUTINE,"0");
-        Routines.switchToNext(p);
+        // move to first routine
+        Routines.startMorning(p);
     }
-    public static void resume(Player p) {
-        Game.enter(p);
+    public static void resumeDay(Player p) {
+        // enter game
+        Game.enterGame(p);
+        // show transition
         Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
             // teleport to last location
@@ -32,6 +45,7 @@ public class Game {
                 return;
             }
             p.teleport(new Location(world, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]), Float.parseFloat(data[4]), Float.parseFloat(data[5])));
+            // synchronize time
             switch (Meta.get(p,Meta.ROUTINE)) {
                 case "0":
                     Time.interpolate(p,Long.parseLong(Meta.get(p,Meta.LAST_TIME)),9000);
@@ -42,21 +56,42 @@ public class Game {
             }
         },100);
     }
-    public static void end(Player p) {
+    public static void finishDay(Player p) {
+        // remove everything concerning the given day, but keep stuff concerning the whole game
+        Meta.clear(p,Meta.LAST_LOCATION);
+        Meta.clear(p,Meta.LAST_TIME);
+        Meta.clear(p,Meta.ACTIONS);
+        Meta.clear(p,Meta.ROUTINE);
+        // move to spawn
+        Movers.toSpawn(p);
+        // increment days
+        Meta.add(p,Meta.DAYS,1);
+        // exit game
+        Game.exitGame(p);
+        // prepare player for next day
+        Game.enterLobby(p);
     }
-    private static void enter(Player p) {
+    public static void endGame(Player p) {
+    }
+    private static void enterGame(Player p) {
         Game.exitLobby(p);
+        // synchronize facts
+        Facts.synchronize(p);
         // create compass
         if (!HashMaps.COMPASSES.containsKey(p)) {
             // create compass
-            HashMaps.COMPASSES.put(p, new Compass(p));
+            HashMaps.COMPASSES.put(p,new Compass(p));
         }
         // initialize bonus
         DiamondBonus.initPlayer(p);
     }
-    public static void exit(Player p) {
+    public static void exitGame(Player p) {
+        // remove all bossbars from player
+        p.activeBossBars().forEach(bar -> bar.removeViewer(p));
         // delete compass
         HashMaps.COMPASSES.remove(p);
+        HashMaps.WORLD_LOCATIONS.remove(p);
+        HashMaps.ROTATION_LOCATIONS.remove(p);
         // remove regeneration
         p.removePotionEffect(PotionEffectType.REGENERATION);
     }
@@ -71,6 +106,8 @@ public class Game {
     public static void exitLobby(Player p) {
         // remove spyglass
         Items.removeSpyglass(p);
+        // remove player from spyglass used
+        HashMaps.SPYGLASS_USED.remove(p);
         // remove player from action bar
         HashMaps.ACTION_BAR.remove(p);
         p.sendActionBar(Component.empty());

@@ -1,15 +1,11 @@
 package cc.architect.commands;
 
-import cc.architect.managers.Avatars;
 import cc.architect.managers.Parties;
-import cc.architect.managers.Time;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -19,25 +15,6 @@ public class Party {
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             // register command
             event.registrar().register(Commands.literal("party")
-                // prints the head of a player
-                .then(Commands.literal("head")
-                    .then(Commands.argument("player",StringArgumentType.word())
-                        .executes(ctx -> {
-                            Player p = Bukkit.getPlayer(StringArgumentType.getString(ctx,"player"));
-                            if (p == null) {
-                                return Command.SINGLE_SUCCESS;
-                            }
-                            Component head;
-                            try {
-                                head = Avatars.create(p);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                            p.sendMessage(head);
-                            return Command.SINGLE_SUCCESS;
-                        })
-                    )
-                )
                 .then(Commands.literal("invite")
                     .then(Commands.argument("player",StringArgumentType.word())
                         .executes(ctx -> {

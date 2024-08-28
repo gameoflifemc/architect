@@ -10,6 +10,7 @@ import cc.architect.events.block.Place;
 import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.entity.RemoveFromWorld;
+import cc.architect.events.misc.AsyncChat;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.leaderboards.InitLeaderBoards;
@@ -25,6 +26,7 @@ import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -39,6 +41,7 @@ public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
     public static LuckPerms LUCKPERMS;
     public static BukkitScheduler SCHEDULER;
+    public static ConsoleCommandSender CONSOLE;
     public static World WORLD;
     public static World MINE;
     public static World FARM;
@@ -50,6 +53,8 @@ public final class Architect extends JavaPlugin {
         LUCKPERMS = LuckPermsProvider.get();
         // scheduler
         SCHEDULER = Bukkit.getScheduler();
+        // console
+        CONSOLE = Bukkit.getConsoleSender();
         // world
         WORLD = Bukkit.getWorld("world");
         // commands
@@ -69,6 +74,7 @@ public final class Architect extends JavaPlugin {
             new cc.architect.events.entity.Death(),
             new RemoveFromWorld(),
             // misc
+            new AsyncChat(),
             new FoodLevelChange(),
             // player
             new ChangedWorld(),

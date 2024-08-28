@@ -12,8 +12,11 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 
 public class Simulation {
@@ -61,6 +64,192 @@ public class Simulation {
                                     }
                                     // write to database
                                     Meta.add(p,Meta.SCORE_TOTAL,IntegerArgumentType.getInteger(ctx,"amount"));
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                            )
+                        )
+                    )
+                )
+                .then(Commands.literal("savings")
+                    .then(Commands.argument("put",StringArgumentType.word())
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .then(Commands.argument("amount",IntegerArgumentType.integer())
+                                .executes(ctx -> {
+                                    // check player
+                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                    if (p == null) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // check amount
+                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                    if (amount <= 0) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    PlayerInventory inventory = p.getInventory();
+                                    if (!inventory.contains(Material.EMERALD,amount)) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // remove from inventory
+                                    inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
+                                    // write to database
+                                    Meta.add(p,Meta.SAVINGS,amount);
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                            )
+                        )
+                    )
+                    .then(Commands.argument("claim",StringArgumentType.word())
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .then(Commands.argument("amount",IntegerArgumentType.integer())
+                                .executes(ctx -> {
+                                    // check player
+                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                    if (p == null) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // check amount
+                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                    if (amount <= 0) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    if (amount > 64) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    if (Integer.parseInt(Meta.get(p,Meta.SAVINGS)) < amount) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    PlayerInventory inventory = p.getInventory();
+                                    if (inventory.firstEmpty() == -1) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // add to inventory
+                                    inventory.addItem(new ItemStack(Material.EMERALD,amount));
+                                    // write to database
+                                    Meta.add(p,Meta.SAVINGS,-amount);
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                            )
+                        )
+                    )
+                )
+                .then(Commands.literal("investment")
+                    .then(Commands.argument("put",StringArgumentType.word())
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .then(Commands.argument("amount",IntegerArgumentType.integer())
+                                .executes(ctx -> {
+                                    // check player
+                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                    if (p == null) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // check amount
+                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                    if (amount <= 0) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    PlayerInventory inventory = p.getInventory();
+                                    if (!inventory.contains(Material.EMERALD,amount)) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // remove from inventory
+                                    inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
+                                    // write to database
+                                    Meta.add(p,Meta.INVESTMENTS_TOTAL,amount);
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                            )
+                        )
+                    )
+                    .then(Commands.argument("claim",StringArgumentType.word())
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .then(Commands.argument("amount",IntegerArgumentType.integer())
+                                .executes(ctx -> {
+                                    // check player
+                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                    if (p == null) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // check amount
+                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                    if (amount <= 0) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    if (amount > 64) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    if (Integer.parseInt(Meta.get(p,Meta.SAVINGS)) < amount) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    PlayerInventory inventory = p.getInventory();
+                                    if (inventory.firstEmpty() == -1) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // add to inventory
+                                    inventory.addItem(new ItemStack(Material.EMERALD,amount));
+                                    // write to database
+                                    Meta.add(p,Meta.INVESTMENTS_TOTAL,-amount);
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                            )
+                        )
+                    )
+                )
+                .then(Commands.literal("loan")
+                    .then(Commands.argument("take",StringArgumentType.word())
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .then(Commands.argument("amount",IntegerArgumentType.integer())
+                                .executes(ctx -> {
+                                    // check player
+                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                    if (p == null) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // check amount
+                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                    if (amount <= 0) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    if (amount > 64) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    if (Meta.get(p,Meta.LOAN_TOTAL).equals("0")) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    PlayerInventory inventory = p.getInventory();
+                                    if (inventory.firstEmpty() == -1) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // add to inventory
+                                    inventory.addItem(new ItemStack(Material.EMERALD,amount));
+                                    // write to database
+                                    Meta.add(p,Meta.LOAN_TOTAL,amount);
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                            )
+                        )
+                    )
+                    .then(Commands.argument("payoff",StringArgumentType.word())
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .then(Commands.argument("amount",IntegerArgumentType.integer())
+                                .executes(ctx -> {
+                                    // check player
+                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                    if (p == null) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // check amount
+                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                    if (amount <= 0) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    PlayerInventory inventory = p.getInventory();
+                                    if (!inventory.contains(Material.EMERALD,amount)) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // remove from inventory
+                                    inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
+                                    // write to database
+                                    Meta.add(p,Meta.LOAN_TOTAL,-amount);
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )

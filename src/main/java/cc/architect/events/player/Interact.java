@@ -7,6 +7,7 @@ import cc.architect.loottables.definitions.FarmingLootTable;
 import cc.architect.managers.FarmingCycles;
 import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
+import cc.architect.objects.HashMaps;
 import cc.architect.objects.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class Interact implements Listener {
@@ -37,6 +39,9 @@ public class Interact implements Listener {
             if (blockType.equals(Material.FARMLAND)) {
                 e.setCancelled(true);
             }
+            return;
+        }
+        if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
         Player p = e.getPlayer();
@@ -72,7 +77,7 @@ public class Interact implements Listener {
             if (itemMat.equals(Material.BONE_MEAL)) {
                 if (blockMat.equals(Material.WHEAT) && (FarmingCycles.profits.get(p).containsKey(location) || !FarmingCycles.getLocations().contains(location))) {
                     FarmingCycles.profits.get(p).put(location,true);
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "give " + p.getName() + " bone_meal[can_place_on={predicates:[{blocks:\"wheat\"}],show_in_tooltip:true}] 1");
+                    Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + p.getName() + " bone_meal[can_place_on={predicates:[{blocks:\"wheat\"}],show_in_tooltip:true}] 1");
                 } else {
                     p.sendMessage(Messages.FARMING_CANNOT_BONEMEAL);
                 }
@@ -84,12 +89,13 @@ public class Interact implements Listener {
         if (item == null) {
             return;
         }
-        if (item.getType().equals(Material.SPYGLASS)) {
+        if (!HashMaps.SPYGLASS_USED.contains(p) && item.getType().equals(Material.SPYGLASS)) {
             if (Meta.check(p,Meta.LAST_LOCATION)) {
-                Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.resume(p),20);
+                Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.resumeDay(p),20);
             } else {
-                Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.begin(p),20);
+                Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Game.beginDay(p),20);
             }
+            HashMaps.SPYGLASS_USED.add(p);
         }
     }
 }
