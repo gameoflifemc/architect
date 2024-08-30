@@ -6,11 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
 public class FarmTravel extends BasicTravelMinigame {
-    public static ItemStack scrap = new ItemStack(Material.NETHERITE_SCRAP);
+    public static ItemStack key = new ItemStack(Material.STICK);
     public static ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
     public List<Location> boggedLocations = List.of(
         new Location(travelWorld, 86, 127, 1),
@@ -19,6 +20,9 @@ public class FarmTravel extends BasicTravelMinigame {
     );
     public FarmTravel() {
         super(Bukkit.getWorld("farm"),40);
+        ItemMeta meta = key.getItemMeta();
+        meta.setCustomModelData(2);
+        key.setItemMeta(meta);
     }
 
     @Override
@@ -53,12 +57,12 @@ public class FarmTravel extends BasicTravelMinigame {
 
     @Override
     public List<ItemStack> getRequiredItems() {
-        return List.of(scrap);
+        return List.of(key);
     }
 
     @Override
     public List<ItemStack> getAllItems() {
-        return List.of(sword, scrap);
+        return List.of(sword, key);
     }
 
     @Override

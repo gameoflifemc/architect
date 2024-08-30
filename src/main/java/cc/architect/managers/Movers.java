@@ -53,4 +53,9 @@ public class Movers {
         Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"farm"),100);
     }
+
+    public static void toTravel(Player p, Location loc) {
+        Movers.showTransition(p);
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> p.teleport(loc),100);
+    }
 }

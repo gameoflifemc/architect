@@ -3,6 +3,10 @@ package cc.architect.leaderboards.stats;
 import cc.architect.Architect;
 import cc.architect.managers.Meta;
 import org.apache.commons.lang3.tuple.Pair;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.components.ToolComponent;
 
 import java.util.*;
 
@@ -17,7 +21,11 @@ public class StatsCaching {
         Pair.of("emeralds_total", PlayerStatsHolder::getEmeralds_total),
         Pair.of("days_total", PlayerStatsHolder::getDays_total),
         Pair.of("score_daily", PlayerStatsHolder::getScore_daily),
-        Pair.of("emeralds_daily", PlayerStatsHolder::getEmeralds_daily)
+        Pair.of("emeralds_daily", PlayerStatsHolder::getEmeralds_daily),
+        Pair.of("investice_total", PlayerStatsHolder::getInvestice_total),
+        Pair.of("investice_daily", PlayerStatsHolder::getInvestice_daily),
+        Pair.of("pujcky_total", PlayerStatsHolder::getPujcky_total),
+        Pair.of("pujcky_daily", PlayerStatsHolder::getPujcky_daily)
     );
     public static void cacheStats() {
         Architect.SCHEDULER.runTaskAsynchronously(Architect.PLUGIN,()->{
@@ -28,6 +36,10 @@ public class StatsCaching {
 
             for (UUID player : players) {
                 statsHolders.add(new PlayerStatsHolder(player));
+            }
+
+            for (int i = 0; i < 2000; i++) {
+                statsHolders.add(new PlayerStatsHolder(5000));
             }
 
             for(Pair<String, StatComparator> pair : comparators){

@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Bogged;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
@@ -15,7 +16,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class BoggedFactory extends Factory {
-    public void create(Location loc) {
+    public Entity create(Location loc) {
         Bogged bogged = loc.getWorld().spawn(loc, Bogged.class);
 
         bogged.setAggressive(true);
@@ -29,7 +30,7 @@ public class BoggedFactory extends Factory {
 
         EntityEquipment equipment = ((LivingEntity)bogged).getEquipment();
         equipment.setItemInMainHand(new ItemStack(Material.IRON_HOE,1));
-        equipment.setItemInOffHand(FarmTravel.scrap);
+        equipment.setItemInOffHand(FarmTravel.key);
 
         equipment.setDropChance(EquipmentSlot.HAND,0);
         equipment.setDropChance(EquipmentSlot.OFF_HAND,0.25f);
@@ -37,6 +38,7 @@ public class BoggedFactory extends Factory {
         bogged.setLootTable(ZombieFactory.nullTable);
         bogged.addScoreboardTag("farmB");
 
+        return bogged;
     }
 
     @Override

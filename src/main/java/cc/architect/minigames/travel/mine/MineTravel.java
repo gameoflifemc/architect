@@ -6,11 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
 public class MineTravel extends BasicTravelMinigame {
-    public static ItemStack shard = new ItemStack(Material.PRISMARINE_SHARD);
+    public static ItemStack key = new ItemStack(Material.STICK);
     public static ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
     public List<Location> zombieLocations = List.of(
         new Location(travelWorld, -42, 126, 23),
@@ -23,6 +24,9 @@ public class MineTravel extends BasicTravelMinigame {
     );
     public MineTravel() {
         super(Bukkit.getWorld("mine"),40);
+        ItemMeta meta = key.getItemMeta();
+        meta.setCustomModelData(1);
+        key.setItemMeta(meta);
     }
 
     @Override
@@ -56,11 +60,11 @@ public class MineTravel extends BasicTravelMinigame {
     }
     @Override
     public List<ItemStack> getAllItems() {
-        return List.of(shard,sword);
+        return List.of(key,sword);
     }
     @Override
     public List<ItemStack> getRequiredItems() {
-        return List.of(shard);
+        return List.of(key);
     }
 
     @Override

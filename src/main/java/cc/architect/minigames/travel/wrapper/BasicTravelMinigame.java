@@ -2,6 +2,7 @@ package cc.architect.minigames.travel.wrapper;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import static cc.architect.minigames.travel.wrapper.TravelRegistry.entities;
 import static org.bukkit.Bukkit.getPlayer;
 
 public abstract class BasicTravelMinigame extends TravelMinigame{
@@ -37,6 +39,8 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
             if(count>MAX_COUNT) return;
 
             factory().create(loc);
+            Entity e = factory().create(loc);
+            entities.put(e.getUniqueId(),e);
             count++;
         });
     }
@@ -49,7 +53,8 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
 
         if(loc.getNearbyEntities(5,5,5).stream().filter(e->!(e instanceof Player)).count()>3) return;
 
-        factory().create(loc);
+        Entity e = factory().create(loc);
+        entities.put(e.getUniqueId(),e);
         count++;
     }
 
@@ -71,7 +76,10 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
 
     public void entityDeath(EntityDeathEvent event) {
         if(!event.getEntityType().equals(factory().entityType())) return;
-        if(!event.getEntity().getLocation().getWorld().getName().equals(travelWorld.getName())) return;
+        Entity e = event.getEntity();
+        if(!e.getLocation().getWorld().getName().equals(travelWorld.getName())) return;
+
+        entities.remove(e.getUniqueId());
 
         count = Math.max(0,count-1);
     }

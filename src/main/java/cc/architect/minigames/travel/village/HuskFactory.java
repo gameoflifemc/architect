@@ -6,10 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Husk;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
@@ -42,7 +39,7 @@ public class HuskFactory extends Factory {
             return new NamespacedKey(Architect.PLUGIN,"null");
         }
     };
-    public void create(Location loc) {
+    public Entity create(Location loc) {
         Zombie husk = loc.getWorld().spawn(loc, Husk.class);
 
         husk.setAggressive(true);
@@ -55,7 +52,7 @@ public class HuskFactory extends Factory {
 
         EntityEquipment equipment = ((LivingEntity)husk).getEquipment();
         equipment.setItemInMainHand(new ItemStack(Material.WOODEN_SWORD,1));
-        equipment.setItemInOffHand(VillageTravel.stick);
+        equipment.setItemInOffHand(VillageTravel.key);
         boolean isHelmet = Math.random() > 0.7;
         if(isHelmet) {
             equipment.setHelmet(new ItemStack(Material.LEATHER_HELMET,1));
@@ -66,6 +63,8 @@ public class HuskFactory extends Factory {
         equipment.setDropChance(EquipmentSlot.HEAD,0);
         husk.setLootTable(nullTable);
         husk.addScoreboardTag("villageH");
+
+        return husk;
     }
 
     @Override

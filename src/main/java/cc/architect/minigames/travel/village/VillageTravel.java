@@ -6,11 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
 public class VillageTravel extends BasicTravelMinigame {
-    public static ItemStack stick = new ItemStack(Material.STICK);
+    public static ItemStack key = new ItemStack(Material.STICK);
     public static ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
     public List<Location> huskLocations = List.of(
         new Location(travelWorld, 239,126,-16),
@@ -22,6 +23,9 @@ public class VillageTravel extends BasicTravelMinigame {
     );
     public VillageTravel() {
         super(Bukkit.getWorld("village"),40);
+        ItemMeta meta = key.getItemMeta();
+        meta.setCustomModelData(3);
+        key.setItemMeta(meta);
     }
 
     @Override
@@ -55,11 +59,11 @@ public class VillageTravel extends BasicTravelMinigame {
     }
     @Override
     public List<ItemStack> getAllItems() {
-        return List.of(stick,sword);
+        return List.of(key,sword);
     }
     @Override
     public List<ItemStack> getRequiredItems() {
-        return List.of(stick);
+        return List.of(key);
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
@@ -41,7 +42,7 @@ public class ZombieFactory extends Factory {
             return new NamespacedKey(Architect.PLUGIN,"null");
         }
     };
-    public void create(Location loc) {
+    public Entity create(Location loc) {
         Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
 
         zombie.setAggressive(true);
@@ -54,7 +55,7 @@ public class ZombieFactory extends Factory {
 
         EntityEquipment equipment = ((LivingEntity)zombie).getEquipment();
         equipment.setItemInMainHand(new ItemStack(Material.IRON_PICKAXE,1));
-        equipment.setItemInOffHand(MineTravel.shard);
+        equipment.setItemInOffHand(MineTravel.key);
         boolean isHelmet = Math.random() > 0.7;
         if(isHelmet) {
             equipment.setHelmet(new ItemStack(Material.LEATHER_HELMET,1));
@@ -65,6 +66,8 @@ public class ZombieFactory extends Factory {
         equipment.setDropChance(EquipmentSlot.HEAD,0);
         zombie.setLootTable(nullTable);
         zombie.addScoreboardTag("minerZ");
+
+        return zombie;
     }
 
     @Override

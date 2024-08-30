@@ -27,6 +27,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -34,6 +35,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.entity.Entity;
 
 import java.util.List;
 
@@ -137,5 +139,10 @@ public final class Architect extends JavaPlugin {
         // welcome
         this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!
+    }
+
+    @Override
+    public void onDisable() {
+        TravelRegistry.entities.values().forEach(entity -> {((LivingEntity)entity).setHealth(0);});
     }
 }

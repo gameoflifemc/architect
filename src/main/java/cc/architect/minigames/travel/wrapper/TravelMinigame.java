@@ -1,6 +1,7 @@
 package cc.architect.minigames.travel.wrapper;
 
 import cc.architect.Architect;
+import cc.architect.managers.Movers;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,7 +28,7 @@ public abstract class TravelMinigame {
     public abstract boolean canExit(UUID player);
 
     public void playerEnter(UUID player) {
-        Bukkit.getPlayer(player).teleport(getStartLocation());
+        Movers.toTravel(Bukkit.getPlayer(player),getStartLocation());
         start(player);
     }
 

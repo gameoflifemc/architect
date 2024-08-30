@@ -13,7 +13,6 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Vector3f;
@@ -98,13 +97,10 @@ public class GlobalLeaderboard {
             }
             Map<UUID,Pair<Integer, Integer>> positions = StatsCaching.positions.get(page);
             Pair<Integer, Integer> stats = positions.getOrDefault(uuid, Pair.of(0,positions.size()));
-            Player p = getPlayer(uuid);
-            if (p == null){
-                return;
-            }
+
             builder = builder.append(
                 Utilities.getDottedComponent(
-                    Component.text(stats.getRight() + ". " + p.getName() +" ", Style.style(TextDecoration.BOLD)),
+                    Component.text(stats.getRight()+". " +getPlayer(uuid).getName()+" ", Style.style(TextDecoration.BOLD)),
                     Component.text(stats.getLeft(), Style.style(TextDecoration.BOLD)),
                     250)
             );
@@ -147,7 +143,8 @@ public class GlobalLeaderboard {
             renderLeaderboard(board, uuid);
         });
     }
-    public static class Messages {
+
+    public class Messages{
         public static Component durationTotal = Component.text("Klikni pro změnu na ").append(Component.text("denní", TextColor.color(255, 230,0)))
                 .appendNewline().append(Component.text("(aktuálně vidíš celkové výsledky)", TextColor.color(125,125,125)));
         public static Component durationDaily = Component.text("Klikni pro změnu na ").append(Component.text("celkové", TextColor.color(255, 230,0)))

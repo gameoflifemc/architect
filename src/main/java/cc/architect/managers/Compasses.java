@@ -39,8 +39,20 @@ public class Compasses {
                 roughLocations.add(new RoughLocation("farm","_F_",7,-7));
                 break;
             case "travel":
-                roughLocations.add(new RoughLocation("travel","_M_",0,0));
-                roughLocations.add(new RoughLocation("travel","_F_",0,0));
+                //mine
+                double x = p.getLocation().getX();
+                if(30>x){
+                    roughLocations.add(new RoughLocation("travel","_X_",-9,38));
+                }
+                //farm
+                if(30<x && x<150){
+                    roughLocations.add(new RoughLocation("travel","_X_",126,57));
+                }
+                //village
+                if(150<x){
+                    roughLocations.add(new RoughLocation("travel","_X_",175,65));
+                }
+                //roughLocations.add(new RoughLocation("travel","_F_",0,0));
                 break;
         }
         HashMaps.WORLD_LOCATIONS.put(p,roughLocations);
