@@ -69,7 +69,7 @@ public class Parties {
         //creates task for deletion of invite after expiration
         int deleteTaskId = createDeleteTask(receiver, sender);
         //creates invite
-        invites.put(receiver, new PartyInvite(sender, deleteTaskId, receiverServer, senderServer));
+        invites.put(receiver.toLowerCase(), new PartyInvite(sender, deleteTaskId, receiverServer, senderServer));
         sendInviteMessages(receiver, sender);
     }
     public static int createDeleteTask(String receiver, String sender){
@@ -95,7 +95,7 @@ public class Parties {
             return;
         }
         //accepts invite messages
-        PartyInvite invite = invites.get(receiver);
+        PartyInvite invite = invites.get(receiver.toLowerCase());
         String sender = invite.getSender();
         Bukkit.getScheduler().cancelTask(invite.getTaskID());
         if(invite.isSameServer()) {
@@ -123,7 +123,7 @@ public class Parties {
         optionMessageSend(receiver,Messages.SEND_INVITE_DENY(sender));
     }
     public static boolean hasInvite(String receiver) {
-        return invites.containsKey(receiver);
+        return invites.containsKey(receiver.toLowerCase());
     }
     public static void optionMessageSend(String player, Component message){
         Player p = getPlayerExact(player);
