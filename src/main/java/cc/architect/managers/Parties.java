@@ -3,7 +3,6 @@ package cc.architect.managers;
 import cc.architect.Architect;
 import cc.architect.channels.Base;
 import cc.architect.objects.Messages;
-import cc.architect.objects.PartyHolder;
 import cc.architect.objects.PartyInvite;
 import com.google.common.io.ByteArrayDataOutput;
 import net.kyori.adventure.text.Component;
@@ -18,9 +17,7 @@ import java.util.Map;
 import static cc.architect.channels.Base.getBasicMessage;
 import static cc.architect.channels.Base.sendToDefaultChannelPlayer;
 import static cc.architect.channels.Party.sendRemoteInviteRequest;
-import static cc.architect.objects.HashMaps.IS_IN_PARTY;
-import static cc.architect.objects.HashMaps.PARTIES;
-import static cc.architect.objects.PartyHolder.getMemberParty;
+import static org.bukkit.Bukkit.getPlayer;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class Parties {
@@ -45,13 +42,16 @@ public class Parties {
         if (receiver == null) {
             sendRemoteInviteRequest(sender, receiverName);
             return;
+        }else{
+            sender.sendMessage(Messages.PLAYER_ON_SAME_SERVER);
+            return;
         }
         //checks if player has invite
-        if(invites.containsKey(receiver.getName())){
+        /*if(invites.containsKey(receiver.getName())){
             sender.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(receiver.getName()));
             return;
         }
-        createInvite(receiver.getName(), sender.getName());
+        createInvite(receiver.getName(), sender.getName());*/
     }
     /**
      * Creates invite for player
@@ -91,6 +91,7 @@ public class Parties {
     public static void acceptInvite(String receiver) {
         //checks if player has invite
         if (!hasInvite(receiver)) {
+            getPlayerExact(receiver).sendMessage(Messages.NO_INVITE);
             return;
         }
         //accepts invite messages
@@ -110,6 +111,7 @@ public class Parties {
     public static void denyInvite(String receiver) {
         //checks if player has invite
         if (!hasInvite(receiver)) {
+            getPlayerExact(receiver).sendMessage(Messages.NO_INVITE);
             return;
         }
         //deny invite
@@ -119,48 +121,6 @@ public class Parties {
         Bukkit.getScheduler().cancelTask(invite.getTaskID());
         optionMessageSend(sender,Messages.SEND_INVITE_DENIED(receiver));
         optionMessageSend(receiver,Messages.SEND_INVITE_DENY(sender));
-    }
-
-    public static void leaveParty(String member){
-        if (!IS_IN_PARTY.contains(member)) {
-            Player p = getPlayerExact(member);
-            if (p != null) {
-                p.sendMessage(Messages.NOT_IN_PARTY);
-            }
-            return;
-        }
-        /*PartyHolder party = PARTIES.get(member);*/
-        if (PARTIES.containsKey(member)) {
-            PartyHolder party = PARTIES.get(member);
-            party.getMembers().forEach((partyMemberName) -> {
-                Player partyMember = getPlayerExact(partyMemberName);
-                if (partyMember != null) {
-                    partyMember.sendMessage(Messages.YOU_LEFT_PARTY_LEADER_LEAVE);
-                }
-                IS_IN_PARTY.remove(partyMemberName);
-            });
-            PARTIES.remove(member);
-            IS_IN_PARTY.remove(member);
-            return;
-        }
-        IS_IN_PARTY.remove(member);
-        PartyHolder party = getMemberParty(member);
-        if (party == null) {
-            return;
-        }
-        party.removeMember(member);
-        Player p = getPlayerExact(member);
-        if (p != null) {
-            p.sendMessage(Messages.YOU_LEFT_PARTY);
-        }
-        if (party.getMembers().isEmpty()) {
-            Player leader = getPlayerExact(party.getLeader());
-            if (leader != null) {
-                leader.sendMessage(Messages.YOU_LEFT_PARTY_MEMBERS_EMPTY);
-            }
-            IS_IN_PARTY.remove(party.getLeader());
-            PARTIES.remove(member);
-        }
     }
     public static boolean hasInvite(String receiver) {
         return invites.containsKey(receiver);
@@ -180,8 +140,7 @@ public class Parties {
         if (pSender == null) {
             return;
         }
-        pReceiver.teleport(pSender.getLocation());
-        setPartiesMap(receiver, sender);
+        //pReceiver.teleport(pSender.getLocation());
     }
     public static void otherServerAcceptHandler(String receiver, String sender, PartyInvite invite){
         // sends message about teleporting the player on the server
@@ -194,7 +153,7 @@ public class Parties {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Base.sendForwardMessage(invite.getSenderServer(), Base.TELEPORT);
+        //Base.sendForwardMessage(invite.getSenderServer(), Base.TELEPORT);
         // connecting to other server
         ByteArrayDataOutput out = getBasicMessage(Base.CONNECT);
         out.writeUTF(invite.getSenderServer());
@@ -203,14 +162,5 @@ public class Parties {
             return;
         }
         sendToDefaultChannelPlayer(out,p);
-    }
-    public static void setPartiesMap(String receiver, String sender) {
-        IS_IN_PARTY.add(receiver);
-        IS_IN_PARTY.add(sender);
-        if (!PARTIES.containsKey(sender)) {
-            PARTIES.put(sender, new PartyHolder(sender,receiver));
-        } else {
-            PARTIES.get(sender).addMember(receiver);
-        }
     }
 }

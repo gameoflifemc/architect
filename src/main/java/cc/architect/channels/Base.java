@@ -18,7 +18,6 @@ public class Base {
     public static final String CONNECT = "Connect";
     public static final String PLAYER_LIST = "PlayerList";
     public static final String INVITE = "Architect:Invite";
-    public static final String TELEPORT = "Architect:Teleport";
     public static final String GET_PLAYER_SERVER = "Architect:GetPlayerServer";
     public static final String FORWARD = "Forward";
     public static final String GET_SERVER = "GetServer";

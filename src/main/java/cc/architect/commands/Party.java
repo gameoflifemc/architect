@@ -14,19 +14,17 @@ public class Party {
         // create and register command
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             // register command
-            event.registrar().register(Commands.literal("party")
-                .then(Commands.literal("invite")
-                    .then(Commands.argument("player",StringArgumentType.word())
-                        .executes(ctx -> {
-                            Player sender = (Player) ctx.getSource().getSender();
-                            String receiver = StringArgumentType.getString(ctx,"player");
-                            if (receiver == null) {
-                                return Command.SINGLE_SUCCESS;
-                            }
-                            Parties.sendInvite(sender,receiver);
+            event.registrar().register(Commands.literal("invite")
+                .then(Commands.argument("player",StringArgumentType.word())
+                    .executes(ctx -> {
+                        Player sender = (Player) ctx.getSource().getSender();
+                        String receiver = StringArgumentType.getString(ctx,"player");
+                        if (receiver == null) {
                             return Command.SINGLE_SUCCESS;
-                        })
-                    )
+                        }
+                        Parties.sendInvite(sender,receiver);
+                        return Command.SINGLE_SUCCESS;
+                    })
                 )
                 .then(Commands.literal("accept")
                     .executes(ctx -> {

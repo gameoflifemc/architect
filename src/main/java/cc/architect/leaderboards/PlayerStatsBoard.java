@@ -20,7 +20,7 @@ public class PlayerStatsBoard {
     public static void createStatsLeaderBoard(Location l) {
         InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS);
         setupBoard(board);
-        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,1.35,0.05));
+        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,2.5,0.05));
         header.setOnSpawnCallback((display, uuid) -> {
             header.setDisplayText(Component.text("Tvoje statistiky", Style.style(TextDecoration.BOLD,TextColor.color(220,220,20))),uuid);
             header.setChangeToAllPlayers((display1, uuid1) -> display1.setTransformation(
@@ -44,9 +44,13 @@ public class PlayerStatsBoard {
 
             board.setDisplayText(Arrays.asList(
                     Utilities.getDottedComponent(Component.text("Celkové score "), Component.text(stats.getScore_total(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Průměrné score "), Component.text(stats.getScore_daily(), Style.style(TextDecoration.BOLD)), 250),
                     Utilities.getDottedComponent(Component.text("Celkový počet emeraldů "), Component.text(stats.getEmeralds_total(), Style.style(TextDecoration.BOLD)), 250),
-                    Utilities.getDottedComponent(Component.text("Dnešní score "), Component.text(stats.getScore_daily(), Style.style(TextDecoration.BOLD)), 250),
-                    Utilities.getDottedComponent(Component.text("Dnešní počet emeraldů "), Component.text(stats.getEmeralds_daily(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Průměrný počet emeraldů "), Component.text(stats.getEmeralds_daily(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Celková hodnota investic "), Component.text(stats.getInvestice_total(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Průměrná hodnota investic "), Component.text(stats.getInvestice_daily(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Celková hodnota půjček "), Component.text(stats.getPujcky_total(), Style.style(TextDecoration.BOLD)), 250),
+                    Utilities.getDottedComponent(Component.text("Průměrná hodnota půjček "), Component.text(stats.getPujcky_daily(), Style.style(TextDecoration.BOLD)), 250),
                     Utilities.getDottedComponent(Component.text("Počet strávených dnů "), Component.text(stats.getDays_total(), Style.style(TextDecoration.BOLD)), 250)
                 ),uuid);
         });

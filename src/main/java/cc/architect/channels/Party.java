@@ -80,11 +80,11 @@ public class Party implements PluginMessageListener {
         String uuid = Utilities.readUTF(messageData);
         String serverName = Utilities.readUTF(messageData);
 
-        if(type.equals("Request")){
+        if(type.equals(Base.REQUEST)){
             processInviteRequest(messageData, uuid, serverName);
             return;
         }
-        if(type.equals("Response")){
+        if(type.equals(Base.RESPONSE)){
             processInviteResponse(messageData, uuid, serverName);
         }
     }

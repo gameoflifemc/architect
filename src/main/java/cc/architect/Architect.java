@@ -1,6 +1,5 @@
 package cc.architect;
 
-import cc.architect.channels.Teleport;
 import cc.architect.channels.*;
 import cc.architect.commands.Discord;
 import cc.architect.commands.Simulation;
@@ -35,7 +34,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.entity.Entity;
 
 import java.util.List;
 
@@ -101,8 +99,7 @@ public final class Architect extends JavaPlugin {
             new Party(),
             new PlayerFinder(),
             new PlayerLister(),
-            new ServerName(),
-            new Teleport()
+            new ServerName()
         );
         for (PluginMessageListener channel : channels) {
             messenger.registerIncomingPluginChannel(this,Base.PUBLIC,channel);
