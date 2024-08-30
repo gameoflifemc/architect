@@ -39,7 +39,7 @@ public class Messages {
         return Component.text("Hráč " + player + " přijal tvojí pozvánku.");
     }
     public static Component SEND_INVITE_ACCEPT(String player) {
-        return Component.text("přijmul jsi pozvánku od hráče " + player + ".");
+        return Component.text("Přijmul jsi pozvánku od hráče " + player + ".");
     }
     public static Component SEND_INVITE_DENIED(String player) {
         return Component.text("Hráč " + player + " zamítnul tvojí pozvánku.");
