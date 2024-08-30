@@ -1,7 +1,7 @@
 package cc.architect.managers;
 
+import cc.architect.objects.Colors;
 import cc.architect.objects.HashMaps;
-import cc.architect.objects.Messages;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class Items {
         // load spyglass
         ItemStack spyglass = new ItemStack(Material.SPYGLASS);
         ItemMeta spyglassMeta = spyglass.getItemMeta();
-        spyglassMeta.itemName(Component.text("VR Headset").color(Messages.BASE));
+        spyglassMeta.itemName(Component.text("VR Headset").color(Colors.BASE));
         spyglassMeta.setCustomModelData(1);
         spyglassMeta.setHideTooltip(true);
         spyglass.setItemMeta(spyglassMeta);

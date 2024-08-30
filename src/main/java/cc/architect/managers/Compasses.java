@@ -15,13 +15,14 @@ import java.util.List;
 
 public class Compasses {
     private static final int ACCURACY = 360;
-    private static final int RADIUS = 14;
+    private static final int RADIUS = 30;
     private static final int DIAMETER = RADIUS * 2 + 1;
     private static final int SENSITIVITY = 5;
-    private static final String[] DIRECTIONS = new String[ACCURACY];
-    private static final TextColor[] COLORS = new TextColor[DIAMETER];
-    private static final Component EMPTY_SHORT = Component.text("__");
+    private static final Component EMPTY_SHORT = Component.text("_");
     private static final Component EMPTY_LONG = Component.text("______");
+    private static final Component[] DIRECTIONS = new Component[ACCURACY];
+    private static final TextColor[] COLORS = new TextColor[DIAMETER];
+    private static final JoinConfiguration JOIN_CONFIGURATION = JoinConfiguration.noSeparators();
     public static void setupLocations(Player p) {
         // prepare rough locations
         List<RoughLocation> roughLocations = new ArrayList<>();
@@ -30,7 +31,12 @@ public class Compasses {
             case "village":
                 roughLocations.add(new RoughLocation("village","_M_",48,159));
                 roughLocations.add(new RoughLocation("village","_F_",-37,160));
-                roughLocations.add(new RoughLocation("village","_B_",25,-37));
+                roughLocations.add(new RoughLocation("village","_B_",20,-37));
+                roughLocations.add(new RoughLocation("village","_O_",88,-61));
+                roughLocations.add(new RoughLocation("village","_C_",14,-81));
+                roughLocations.add(new RoughLocation("village","_H_",11,-113));
+                roughLocations.add(new RoughLocation("village","_P_",-14,-75));
+                roughLocations.add(new RoughLocation("village","_T_",-12,-118));
                 break;
             case "mine":
                 roughLocations.add(new RoughLocation("mine","_M_",12,-12));
@@ -63,33 +69,33 @@ public class Compasses {
         // create directions
         for (int i = 0; i < ACCURACY; i++) {
             if (i % SENSITIVITY != 0) {
-                DIRECTIONS[i] = "__";
+                DIRECTIONS[i] = EMPTY_SHORT;
                 continue;
             }
             switch (i) {
                 case 0:
-                    DIRECTIONS[i] = "__N__";
+                    DIRECTIONS[i] = Component.text("__N__");
                     break;
                 case 45:
-                    DIRECTIONS[i] = "_NE_";
+                    DIRECTIONS[i] = Component.text("_NE_");
                     break;
                 case 90:
-                    DIRECTIONS[i] = "__E__";
+                    DIRECTIONS[i] = Component.text("__E__");
                     break;
                 case 135:
-                    DIRECTIONS[i] = "_SE_";
+                    DIRECTIONS[i] = Component.text("_SE_");
                     break;
                 case 180:
-                    DIRECTIONS[i] = "__S__";
+                    DIRECTIONS[i] = Component.text("__S__");
                     break;
                 case 225:
-                    DIRECTIONS[i] = "_SW_";
+                    DIRECTIONS[i] = Component.text("_SW_");
                     break;
                 case 270:
-                    DIRECTIONS[i] = "__W__";
+                    DIRECTIONS[i] = Component.text("__W__");
                     break;
                 case 315:
-                    DIRECTIONS[i] = "_NW_";
+                    DIRECTIONS[i] = Component.text("_NW_");
                     break;
                 default:
                     String value = String.valueOf(i);
@@ -98,7 +104,7 @@ public class Compasses {
                         case 2 -> "_";
                         default -> "";
                     };
-                    DIRECTIONS[i] = filler + value + filler;
+                    DIRECTIONS[i] = Component.text(filler + value + filler);
                     break;
             }
         }
@@ -106,14 +112,9 @@ public class Compasses {
         COLORS[RADIUS] = TextColor.fromHexString("#FFFFFF");
         for (int i = 0; i < RADIUS; i++) {
             int x = i + 1;
-            String filler;
-            if (x < 10) {
-                filler = "0";
-            } else {
-                filler = "";
-            }
-            COLORS[i] = TextColor.fromHexString("#0000" + filler + x);
-            COLORS[RADIUS + x] = TextColor.fromHexString("#0000" + filler + (RADIUS - i));
+            COLORS[i] = TextColor.fromHexString("#0019" + (x <= 9 ? "0" : "") + x);
+            int y = RADIUS - i;
+            COLORS[RADIUS + x] = TextColor.fromHexString("#0019" + (y <= 9 ? "0" : "") + y);
         }
     }
     public static void updateLocations(Player p) {
@@ -159,9 +160,9 @@ public class Compasses {
             // get current index
             int current = indexes[i];
             // save directions
-            directions[i] = Component.text(DIRECTIONS[current]).color(COLORS[i]);
+            directions[i] = DIRECTIONS[current].color(COLORS[i]);
             // save locations
-            if (i != 0 && i != DIAMETER - 1 && locationMap.containsKey(current)) {
+            if (i > 5 && i < DIAMETER - 5 && locationMap.containsKey(current)) {
                 locations[i] = Component.text(locationMap.get(current).icon());
             } else if (current % SENSITIVITY == 0) {
                 locations[i] = EMPTY_LONG;
@@ -171,8 +172,7 @@ public class Compasses {
         }
         // update compass
         Compass compass = HashMaps.COMPASSES.get(p);
-        JoinConfiguration config = JoinConfiguration.noSeparators();
-        compass.getDirections().name(Component.join(config,directions).font(Fonts.COMPASS));
-        compass.getLocations().name(Component.join(config,locations).font(Fonts.COMPASS));
+        compass.getDirections().name(Component.join(JOIN_CONFIGURATION,directions).font(Fonts.COMPASS));
+        compass.getLocations().name(Component.join(JOIN_CONFIGURATION,locations).font(Fonts.COMPASS));
     }
 }
