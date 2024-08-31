@@ -17,7 +17,6 @@ import java.util.Map;
 
 import static cc.architect.channels.Base.*;
 import static cc.architect.channels.Party.sendRemoteInviteRequest;
-import static org.bukkit.Bukkit.getPlayer;
 import static org.bukkit.Bukkit.getPlayerExact;
 
 public class Parties {

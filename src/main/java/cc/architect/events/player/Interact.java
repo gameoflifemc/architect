@@ -52,7 +52,7 @@ public class Interact implements Listener {
                 return;
             }
             // decide if the event should be cancelled
-            if (p.getGameMode().equals(GameMode.ADVENTURE)) {
+            if (p.getGameMode().equals(GameMode.ADVENTURE) && !p.getWorld().getName().equals("world")) {
                 if (!(b.getBlockData() instanceof Door)) {
                     e.setCancelled(true);
                 }
@@ -83,7 +83,7 @@ public class Interact implements Listener {
                 }
             }
         }
-        if (p.getWorld() != Architect.WORLD) {
+        if (!p.getWorld().getName().equals("world")) {
             return;
         }
         if (item == null) {

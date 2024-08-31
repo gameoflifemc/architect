@@ -3,10 +3,6 @@ package cc.architect.leaderboards.stats;
 import cc.architect.Architect;
 import cc.architect.managers.Meta;
 import org.apache.commons.lang3.tuple.Pair;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.components.ToolComponent;
 
 import java.util.*;
 

@@ -14,7 +14,7 @@ public class Tasks {
     private static final int DELAY = 20;
     public static void registerTasks() {
         // compass
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Compass(),DELAY,1);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Compass(),DELAY,2);
         // action bar
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new ActionBar(),DELAY,35);
         // autosave

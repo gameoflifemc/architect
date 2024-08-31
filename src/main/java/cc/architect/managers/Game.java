@@ -4,6 +4,7 @@ import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
 import cc.architect.objects.Compass;
 import cc.architect.objects.HashMaps;
+import cc.architect.objects.Titles;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,8 +18,8 @@ public class Game {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
     public static void beginDay(Player p) {
         if (!Meta.check(p,Meta.DAYS)) {
-            // prepare meta for days
-            Meta.set(p,Meta.DAYS,"0");
+            // prepare meta
+            Meta.set(p,Meta.DAYS,"1");
             Meta.set(p,Meta.SAVINGS,"0");
             Meta.set(p,Meta.INVESTMENTS_TOTAL,"0");
             Meta.set(p,Meta.LOAN_TOTAL,"0");
@@ -27,14 +28,17 @@ public class Game {
         }
         // enter game
         Game.enterGame(p);
-        // prepare meta for routine
-        Meta.set(p,Meta.ROUTINE,"0");
+        // prepare meta
+        Meta.set(p,Meta.ROUTINE,"1");
+        Meta.set(p,Meta.ACTIONS,"20");
         // move to first routine
         Routines.startMorning(p);
     }
     public static void resumeDay(Player p) {
         // enter game
         Game.enterGame(p);
+        // synchronize action points
+        p.setFoodLevel(Integer.parseInt(Meta.get(p,Meta.ACTIONS)));
         // show transition
         Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
@@ -47,14 +51,14 @@ public class Game {
             p.teleport(new Location(world, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]), Float.parseFloat(data[4]), Float.parseFloat(data[5])));
             // synchronize time
             switch (Meta.get(p,Meta.ROUTINE)) {
-                case "0":
+                case "1":
                     Time.interpolate(p,Long.parseLong(Meta.get(p,Meta.LAST_TIME)),9000);
                     break;
-                case "1":
+                case "2":
                     Time.interpolate(p,Long.parseLong(Meta.get(p,Meta.LAST_TIME)),18000);
                     break;
             }
-        },100);
+        }, Titles.TRANSITION_TELEPORT);
     }
     public static void finishDay(Player p) {
         // remove everything concerning the given day, but keep stuff concerning the whole game
@@ -66,6 +70,8 @@ public class Game {
         Movers.toSpawn(p);
         // increment days
         Meta.add(p,Meta.DAYS,1);
+        // show title
+        p.showTitle(Titles.DAY(Meta.get(p,Meta.DAYS)));
         // exit game
         Game.exitGame(p);
         // prepare player for next day

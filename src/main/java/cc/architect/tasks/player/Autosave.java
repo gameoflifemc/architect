@@ -31,7 +31,7 @@ public class Autosave implements Runnable {
         // get last location
         Location loc = p.getLocation();
         // turn location into data
-        String data = loc.getWorld() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + "," + loc.getPitch();
+        String data = loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + "," + loc.getPitch();
         // save player location
         Meta.set(p,Meta.LAST_LOCATION,data);
     }
