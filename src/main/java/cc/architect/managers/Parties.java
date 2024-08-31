@@ -6,6 +6,7 @@ import cc.architect.objects.Messages;
 import cc.architect.objects.PartyInvite;
 import com.google.common.io.ByteArrayDataOutput;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -14,8 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cc.architect.channels.Base.getBasicMessage;
-import static cc.architect.channels.Base.sendToDefaultChannelPlayer;
+import static cc.architect.channels.Base.*;
 import static cc.architect.channels.Party.sendRemoteInviteRequest;
 import static org.bukkit.Bukkit.getPlayer;
 import static org.bukkit.Bukkit.getPlayerExact;
@@ -119,6 +119,15 @@ public class Parties {
         String sender = invite.getSender();
         invites.remove(receiver);
         Bukkit.getScheduler().cancelTask(invite.getTaskID());
+
+        //send deny message to sender
+        ByteArrayDataOutput out = getBasicMessage(Base.RAW_MESSAGE);
+        //player
+        out.writeUTF(invite.getSender());
+        //message
+        out.writeUTF(JSONComponentSerializer.json().serialize(Messages.SEND_INVITE_DENIED(receiver)));
+        sendToDefaultChannel(out);
+
         optionMessageSend(sender,Messages.SEND_INVITE_DENIED(receiver));
         optionMessageSend(receiver,Messages.SEND_INVITE_DENY(sender));
     }
@@ -145,14 +154,14 @@ public class Parties {
     public static void otherServerAcceptHandler(String receiver, String sender, PartyInvite invite){
         // sends message about teleporting the player on the server
         // plus the server name of the player that is being teleported for PARTIES and CANNOT_MAKE_PARTY
-        Base.prepareForwardMessage();
+        /*Base.prepareForwardMessage();
         DataOutputStream messageOut = Base.getForwardMessageData();
         try {
             messageOut.writeUTF(receiver);
             messageOut.writeUTF(sender);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         //Base.sendForwardMessage(invite.getSenderServer(), Base.TELEPORT);
         // connecting to other server
         ByteArrayDataOutput out = getBasicMessage(Base.CONNECT);
