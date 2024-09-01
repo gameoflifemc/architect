@@ -9,7 +9,6 @@ import cc.architect.events.block.Place;
 import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.entity.RemoveFromWorld;
-import cc.architect.events.misc.AsyncChat;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.leaderboards.InitLeaderBoards;
@@ -79,7 +78,6 @@ public final class Architect extends JavaPlugin {
             new cc.architect.events.entity.Death(),
             new RemoveFromWorld(),
             // misc
-            new AsyncChat(),
             new FoodLevelChange(),
             // player
             new ChangedWorld(),

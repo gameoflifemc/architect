@@ -5,6 +5,7 @@ import cc.architect.bonuses.DiamondBonus;
 import cc.architect.objects.Compass;
 import cc.architect.objects.HashMaps;
 import cc.architect.objects.Titles;
+import cc.architect.tasks.player.Autosave;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Game {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
+    private static final int INTEREST_DIVIDER = 5;
     public static void beginDay(Player p) {
         if (!Meta.check(p,Meta.DAYS)) {
             // prepare meta
@@ -31,6 +33,11 @@ public class Game {
         // prepare meta
         Meta.set(p,Meta.ROUTINE,"1");
         Meta.set(p,Meta.ACTIONS,"20");
+        // simulate interest
+        int investments = Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_TOTAL));
+        int loan = Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));
+        Meta.add(p,Meta.INVESTMENTS_TOTAL,investments + investments / INTEREST_DIVIDER);
+        Meta.add(p,Meta.LOAN_TOTAL,loan + loan / INTEREST_DIVIDER);
         // move to first routine
         Routines.startMorning(p);
     }
@@ -48,7 +55,7 @@ public class Game {
             if (world == null) {
                 return;
             }
-            p.teleport(new Location(world, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]), Float.parseFloat(data[4]), Float.parseFloat(data[5])));
+            p.teleport(new Location(world,Double.parseDouble(data[1]),Double.parseDouble(data[2]),Double.parseDouble(data[3]),Float.parseFloat(data[4]),Float.parseFloat(data[5])));
             // synchronize time
             switch (Meta.get(p,Meta.ROUTINE)) {
                 case "1":
@@ -61,6 +68,9 @@ public class Game {
         }, Titles.TRANSITION_TELEPORT);
     }
     public static void finishDay(Player p) {
+        // calculate game information
+        Autosave.emeralds(p);
+        Autosave.calculateHighest(p);
         // remove everything concerning the given day, but keep stuff concerning the whole game
         Meta.clear(p,Meta.LAST_LOCATION);
         Meta.clear(p,Meta.LAST_TIME);
@@ -70,14 +80,21 @@ public class Game {
         Movers.toSpawn(p);
         // increment days
         Meta.add(p,Meta.DAYS,1);
-        // show title
-        p.showTitle(Titles.DAY(Meta.get(p,Meta.DAYS)));
         // exit game
         Game.exitGame(p);
         // prepare player for next day
         Game.enterLobby(p);
     }
     public static void endGame(Player p) {
+        // remove everything concerning the whole game
+        Meta.clear(p,Meta.DAYS);
+        Meta.clear(p,Meta.SAVINGS);
+        Meta.clear(p,Meta.INVESTMENTS_TOTAL);
+        Meta.clear(p,Meta.LOAN_TOTAL);
+        Meta.clear(p,Meta.EMERALDS_TOTAL);
+        Meta.clear(p,Meta.SCORE_TOTAL);
+        // show title
+        p.sendMessage(Component.text("Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu."));
     }
     private static void enterGame(Player p) {
         Game.exitLobby(p);

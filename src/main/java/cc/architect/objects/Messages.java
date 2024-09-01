@@ -7,7 +7,7 @@ public class Messages {
     public static final Component SERVER_FULL = Component.text("Systém zaplněn.").color(Colors.RED);
     public static final Component TREASURE_FOUND = Component.text("Našel jsi poklad! Otevřeš ho pravým tlačítkem myši. Rychle, než ti ho někdo ukradne!").color(Colors.GREEN);
     public static final Component TREASURE_FOUND_AUTO_OPEN = Component.text("Našel jsi haldu ležících emeraldů, které se ti nyní přidali do inventáře.").color(Colors.GREEN);
-    public static final Component STEAL = Component.text("Našel jsi poklad, ale snaží se útéct! Rychle ho chytni, než ti uteče. Stačí na něj kliknout levým tlačítkem myši.").color(Colors.RED);
+    public static final Component STEAL = Component.text("Našel jsi poklad, ale snaží se útéct! Rychle ho chytni, než ti uteče. Stačí na něj kliknout levým tlačítkem myši.").color(Colors.GREEN);
     public static final Component FARMING_TILL = Component.text("You've received your hoe, go and convert as much land into farmland as you can. You have 15 seconds to do so.").color(Colors.GREEN);
     public static final Component FARMING_SEEDS = Component.text("Hopefully you have at least some farmland. But now you have to place some seeds. You have 15 seconds to do so.").color(Colors.GREEN);
     public static final Component FARMING_FERTILIZE = Component.text("After planting your seeds you should fertilize them. You have 15 seconds for that.").color(Colors.GREEN);

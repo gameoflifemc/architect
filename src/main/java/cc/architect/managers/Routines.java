@@ -18,7 +18,10 @@ public class Routines {
                 if (Meta.get(p,Meta.DAYS).equals("11")) {
                     // end game
                     Game.endGame(p);
+                    return;
                 }
+                // show title
+                p.showTitle(Titles.DAY(Meta.get(p,Meta.DAYS)));
                 return;
         }
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
@@ -32,12 +35,15 @@ public class Routines {
     }
     public static void startMorning(Player p) {
         Movers.toVillage(p);
-        Time.interpolate(p,0,9000);
-        p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Ráno"));
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
+            Time.interpolate(p,0,9000);
+            p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Ráno"));
+        },Titles.TRANSITION_TELEPORT);
     }
     private static void startEvening(Player p) {
-        Movers.toVillage(p);
-        Time.interpolate(p,9000,18000);
-        p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Večer"));
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
+            Time.interpolate(p,9000,18000);
+            p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Večer"));
+        },Titles.TRANSITION_TELEPORT);
     }
 }

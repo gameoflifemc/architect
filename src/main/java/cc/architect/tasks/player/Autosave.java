@@ -26,6 +26,7 @@ public class Autosave implements Runnable {
         emeralds(p);
         facts(p);
         calculateDaily(p);
+        calculateHighest(p);
     }
     private static void location(Player p) {
         // get last location
@@ -39,7 +40,7 @@ public class Autosave implements Runnable {
         // save player time
         Meta.set(p,Meta.LAST_TIME,String.valueOf(p.getPlayerTime()));
     }
-    private static void emeralds(Player p) {
+    public static void emeralds(Player p) {
         // create atomic integer for emeralds
         AtomicInteger emeralds = new AtomicInteger();
         emeralds.set(0);
@@ -50,7 +51,6 @@ public class Autosave implements Runnable {
             }
         }
         int others = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
-        
         // save emeralds
         Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(emeralds.addAndGet(others)));
     }
@@ -75,5 +75,12 @@ public class Autosave implements Runnable {
         Meta.set(p,Meta.EMERALDS_DAILY,String.valueOf(emeralds / days));
         Meta.set(p,Meta.INVESTMENTS_DAILY,String.valueOf(investments / days));
         Meta.set(p,Meta.LOAN_DAILY,String.valueOf(loan / days));
+    }
+    public static void calculateHighest(Player p) {
+        // calculate highest and save to database
+        Meta.set(p,Meta.SCORE_HIGHEST,Meta.get(p,Meta.SCORE_TOTAL));
+        Meta.set(p,Meta.EMERALDS_HIGHEST,Meta.get(p,Meta.EMERALDS_TOTAL));
+        Meta.set(p,Meta.INVESTMENTS_HIGHEST,Meta.get(p,Meta.INVESTMENTS_TOTAL));
+        Meta.set(p,Meta.LOAN_HIGHEST,Meta.get(p,Meta.LOAN_TOTAL));
     }
 }

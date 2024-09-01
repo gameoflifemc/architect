@@ -1,7 +1,6 @@
 package cc.architect.events.player;
 
 import cc.architect.managers.Game;
-import cc.architect.minigames.travel.wrapper.TravelRegistry;
 import cc.architect.tasks.player.Autosave;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;

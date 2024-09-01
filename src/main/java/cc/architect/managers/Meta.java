@@ -25,6 +25,11 @@ public class Meta {
     public static final String EMERALDS_TOTAL = "emeralds_total";
     public static final String INVESTMENTS_TOTAL = "investments_total";
     public static final String LOAN_TOTAL = "loan_total";
+    // highest values
+    public static final String SCORE_HIGHEST = "score_highest";
+    public static final String EMERALDS_HIGHEST = "emeralds_highest";
+    public static final String INVESTMENTS_HIGHEST = "investments_highest";
+    public static final String LOAN_HIGHEST = "loan_highest";
     // daily values
     public static final String SCORE_DAILY = "score_daily";
     public static final String EMERALDS_DAILY = "emeralds_daily";

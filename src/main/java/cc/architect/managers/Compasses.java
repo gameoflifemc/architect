@@ -30,7 +30,7 @@ public class Compasses {
         switch (p.getWorld().getName()) {
             case "village":
                 roughLocations.add(new RoughLocation("village","_M_",48,159));
-                roughLocations.add(new RoughLocation("village","_F_",-37,160));
+                //roughLocations.add(new RoughLocation("village","_F_",-37,160));
                 roughLocations.add(new RoughLocation("village","_B_",20,-37));
                 roughLocations.add(new RoughLocation("village","_O_",88,-61));
                 roughLocations.add(new RoughLocation("village","_C_",14,-81));
@@ -40,25 +40,26 @@ public class Compasses {
                 break;
             case "mine":
                 roughLocations.add(new RoughLocation("mine","_M_",12,-12));
+                roughLocations.add(new RoughLocation("mine","_V_",2,-126));
                 break;
             case "farm":
                 roughLocations.add(new RoughLocation("farm","_F_",7,-7));
+                roughLocations.add(new RoughLocation("mine","_V_",14,-14));
                 break;
             case "travel":
                 //mine
-                double x = p.getLocation().getX();
-                if(30>x){
-                    roughLocations.add(new RoughLocation("travel","_X_",-9,38));
+                double x = p.getX();
+                if (30 > x){
+                    roughLocations.add(new RoughLocation("travel","_M_",-9,38));
                 }
                 //farm
-                if(30<x && x<150){
-                    roughLocations.add(new RoughLocation("travel","_X_",126,57));
+                else if (30 < x && x < 150){
+                    roughLocations.add(new RoughLocation("travel","_F_",126,57));
                 }
                 //village
-                if(150<x){
-                    roughLocations.add(new RoughLocation("travel","_X_",175,65));
+                else if (150 < x){
+                    roughLocations.add(new RoughLocation("travel","_V_",175,65));
                 }
-                //roughLocations.add(new RoughLocation("travel","_F_",0,0));
                 break;
         }
         HashMaps.WORLD_LOCATIONS.put(p,roughLocations);

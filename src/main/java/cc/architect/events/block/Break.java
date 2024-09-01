@@ -12,10 +12,12 @@ import cc.architect.tasks.farming.Mushrooms;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -156,8 +158,11 @@ public class Break implements Listener {
     }
     private static void ore(Player p, Block b, Material ore, Material drop, int timer) {
         b.setType(Material.STONE);
-        p.getInventory().getItemInMainHand().damage(1,p);
-        p.getInventory().addItem(new ItemStack(drop));
+        PlayerInventory inventory = p.getInventory();
+        ItemStack item = inventory.getItemInMainHand();
+        item.damage(1,p);
+        int amount = item.getEnchantmentLevel(Enchantment.FORTUNE) + 1;
+        inventory.addItem(new ItemStack(drop, amount));
         Tasks.replenishBedrockTask.addBedrock(b.getLocation(),ore);
     }
     private static boolean canHarvest(Player player, Block block) {

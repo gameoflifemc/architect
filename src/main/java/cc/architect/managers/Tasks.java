@@ -2,8 +2,6 @@ package cc.architect.managers;
 
 import cc.architect.Architect;
 import cc.architect.leaderboards.stats.StatsCaching;
-import cc.architect.tasks.farming.Mushrooms;
-import cc.architect.tasks.farming.StartFarmingMinigame;
 import cc.architect.tasks.mining.Replenish;
 import cc.architect.tasks.player.ActionBar;
 import cc.architect.tasks.player.Autosave;
@@ -14,7 +12,7 @@ public class Tasks {
     private static final int DELAY = 20;
     public static void registerTasks() {
         // compass
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Compass(),DELAY,2);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Compass(),DELAY,1);
         // action bar
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new ActionBar(),DELAY,35);
         // autosave
@@ -22,8 +20,8 @@ public class Tasks {
         // mining
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN, replenishBedrockTask,DELAY,1800);
         // farming
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new StartFarmingMinigame(),DELAY,10);
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Mushrooms(),DELAY,20);
+        //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new StartFarmingMinigame(),DELAY,10);
+        //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Mushrooms(),DELAY,20);
         // stats
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,StatsCaching::cacheStats,DELAY,24000);
     }

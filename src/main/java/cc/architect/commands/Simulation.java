@@ -5,12 +5,14 @@ import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
 import cc.architect.minigames.travel.wrapper.TravelMinigame;
 import cc.architect.minigames.travel.wrapper.TravelRegistry;
+import cc.architect.objects.Colors;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -48,6 +50,7 @@ public class Simulation {
                                     // update player
                                     p.setFoodLevel(next);
                                 }
+                                p.sendMessage(Component.text("Akční bod byl úspěšně využit.").color(Colors.GREEN));
                                 return Command.SINGLE_SUCCESS;
                             })
                         )
@@ -62,8 +65,10 @@ public class Simulation {
                                     if (p == null) {
                                         return Command.SINGLE_SUCCESS;
                                     }
+                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
                                     // write to database
-                                    Meta.add(p,Meta.SCORE_TOTAL,IntegerArgumentType.getInteger(ctx,"amount"));
+                                    Meta.add(p,Meta.SCORE_TOTAL,amount);
+                                    p.sendMessage(Component.text("+ " + amount + " bodů skóre. Celkem " + Meta.get(p,Meta.SCORE_TOTAL) + " bodů skóre.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -93,6 +98,7 @@ public class Simulation {
                                     inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.SAVINGS,amount);
+                                    p.sendMessage(Component.text("Úspěšně uloženo " + amount + " emeraldů. Celkem je nyní uloženo " + Meta.get(p,Meta.SAVINGS) + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -113,9 +119,11 @@ public class Simulation {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     if (amount > 64) {
+                                        p.sendMessage(Component.text("Values more than 64 are not accepted.").color(Colors.RED));
                                         return Command.SINGLE_SUCCESS;
                                     }
-                                    if (Integer.parseInt(Meta.get(p,Meta.SAVINGS)) < amount) {
+                                    String savings = Meta.get(p,Meta.SAVINGS);
+                                    if (Integer.parseInt(savings) < amount) {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     PlayerInventory inventory = p.getInventory();
@@ -126,6 +134,7 @@ public class Simulation {
                                     inventory.addItem(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.SAVINGS,-amount);
+                                    p.sendMessage(Component.text("Úspěšně vybráno " + amount + " emeraldů. Celkem je nyní uloženo " + savings + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -155,6 +164,7 @@ public class Simulation {
                                     inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.INVESTMENTS_TOTAL,amount);
+                                    p.sendMessage(Component.text("Úspěšně zainvestováno " + amount + " emeraldů. V investicích je nyní celkem " + Meta.get(p,Meta.INVESTMENTS_TOTAL) + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -175,9 +185,11 @@ public class Simulation {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     if (amount > 64) {
+                                        p.sendMessage(Component.text("Values more than 64 are not accepted.").color(Colors.RED));
                                         return Command.SINGLE_SUCCESS;
                                     }
-                                    if (Integer.parseInt(Meta.get(p,Meta.SAVINGS)) < amount) {
+                                    String investments = Meta.get(p,Meta.INVESTMENTS_TOTAL);
+                                    if (Integer.parseInt(investments) < amount) {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     PlayerInventory inventory = p.getInventory();
@@ -188,6 +200,7 @@ public class Simulation {
                                     inventory.addItem(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.INVESTMENTS_TOTAL,-amount);
+                                    p.sendMessage(Component.text("Úspěšně vyzvednuto " + amount + " emeraldů. V investicích je nyní celkem " + investments + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -210,9 +223,7 @@ public class Simulation {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     if (amount > 64) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    if (Meta.get(p,Meta.LOAN_TOTAL).equals("0")) {
+                                        p.sendMessage(Component.text("Values more than 64 are not accepted.").color(Colors.RED));
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     PlayerInventory inventory = p.getInventory();
@@ -223,6 +234,7 @@ public class Simulation {
                                     inventory.addItem(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.LOAN_TOTAL,amount);
+                                    p.sendMessage(Component.text("Úspěšně půjčeno " + amount + " emeraldů. Nyní půjčeno celkem " + Meta.get(p,Meta.LOAN_TOTAL) + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -250,6 +262,7 @@ public class Simulation {
                                     inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.LOAN_TOTAL,-amount);
+                                    p.sendMessage(Component.text("Úspěšně vráceno " + amount + " emeraldů. Nyní půjčeno celkem " + Meta.get(p,Meta.LOAN_TOTAL) + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
