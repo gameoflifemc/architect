@@ -174,7 +174,6 @@ public class GlobalLeaderboard {
                     types.put(uuid, "0");
                     break;
             }
-            //TODO is needed?
             //board.setData(mapName, types);
 
             comp.setChangeToOnePlayer((display1)->{

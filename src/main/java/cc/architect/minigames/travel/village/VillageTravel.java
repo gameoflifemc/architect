@@ -2,6 +2,7 @@ package cc.architect.minigames.travel.village;
 
 import cc.architect.minigames.travel.wrapper.BasicTravelMinigame;
 import cc.architect.minigames.travel.wrapper.Factory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +25,7 @@ public class VillageTravel extends BasicTravelMinigame {
     public VillageTravel() {
         super(Bukkit.getWorld("village"),40);
         ItemMeta meta = key.getItemMeta();
+        meta.displayName(Component.text("Klíč do vesnice"));
         meta.setCustomModelData(3);
         key.setItemMeta(meta);
     }

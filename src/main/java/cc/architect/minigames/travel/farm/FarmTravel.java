@@ -2,6 +2,7 @@ package cc.architect.minigames.travel.farm;
 
 import cc.architect.minigames.travel.wrapper.BasicTravelMinigame;
 import cc.architect.minigames.travel.wrapper.Factory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +22,7 @@ public class FarmTravel extends BasicTravelMinigame {
     public FarmTravel() {
         super(Bukkit.getWorld("farm"),40);
         ItemMeta meta = key.getItemMeta();
+        meta.displayName(Component.text("Klíč do farmy"));
         meta.setCustomModelData(2);
         key.setItemMeta(meta);
     }

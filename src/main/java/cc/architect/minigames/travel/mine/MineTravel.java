@@ -2,6 +2,7 @@ package cc.architect.minigames.travel.mine;
 
 import cc.architect.minigames.travel.wrapper.BasicTravelMinigame;
 import cc.architect.minigames.travel.wrapper.Factory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,6 +26,7 @@ public class MineTravel extends BasicTravelMinigame {
     public MineTravel() {
         super(Bukkit.getWorld("mine"),40);
         ItemMeta meta = key.getItemMeta();
+        meta.displayName(Component.text("Klíč do dolu"));
         meta.setCustomModelData(1);
         key.setItemMeta(meta);
     }
