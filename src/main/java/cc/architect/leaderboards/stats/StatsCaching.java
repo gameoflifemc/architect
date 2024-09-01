@@ -13,14 +13,14 @@ public class StatsCaching {
     public static Map<String, List<Pair<String, Integer>>> tops = new HashMap<>();
 
     public static List<Pair<String, StatComparator>> comparators = List.of(
-        Pair.of("score_total", PlayerStatsHolder::getScore_total),
-        Pair.of("emeralds_total", PlayerStatsHolder::getEmeralds_total),
-        Pair.of("days_total", PlayerStatsHolder::getDays_total),
+        Pair.of("score_highest", PlayerStatsHolder::getScore_total),
+        Pair.of("emeralds_highest", PlayerStatsHolder::getEmeralds_total),
+        Pair.of("days_highest", PlayerStatsHolder::getDays_total),
         Pair.of("score_daily", PlayerStatsHolder::getScore_daily),
         Pair.of("emeralds_daily", PlayerStatsHolder::getEmeralds_daily),
-        Pair.of("investments_total", PlayerStatsHolder::getInvestice_total),
+        Pair.of("investments_highest", PlayerStatsHolder::getInvestice_total),
         Pair.of("investments_daily", PlayerStatsHolder::getInvestice_daily),
-        Pair.of("loan_total", PlayerStatsHolder::getPujcky_total),
+        Pair.of("loan_highest", PlayerStatsHolder::getPujcky_total),
         Pair.of("loan_daily", PlayerStatsHolder::getPujcky_daily)
     );
     public static void cacheStats() {

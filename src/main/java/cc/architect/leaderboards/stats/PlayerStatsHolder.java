@@ -27,19 +27,19 @@ public class PlayerStatsHolder {
     public PlayerStatsHolder(UUID uuid) {
         User user = toUser(uuid);
         this.uuid = uuid;
-        this.score_total = Integer.parseInt(Meta.getSafe(user,"score_total","0"));
+        this.score_total = Integer.parseInt(Meta.getSafe(user,"score_highest","0"));
         this.score_daily = Integer.parseInt(Meta.getSafe(user,"score_daily","0"));
 
-        this.emeralds_total = Integer.parseInt(Meta.getSafe(user,"emeralds_total","0"));
+        this.emeralds_total = Integer.parseInt(Meta.getSafe(user,"emeralds_highest","0"));
         this.emeralds_daily = Integer.parseInt(Meta.getSafe(user,"emeralds_daily","0"));
 
-        this.investice_total = Integer.parseInt(Meta.getSafe(user,"investice_total","0"));
+        this.investice_total = Integer.parseInt(Meta.getSafe(user,"investice_highest","0"));
         this.investice_daily = Integer.parseInt(Meta.getSafe(user,"investice_daily","0"));
 
-        this.pujcky_total = Integer.parseInt(Meta.getSafe(user,"pujcky_total","0"));
+        this.pujcky_total = Integer.parseInt(Meta.getSafe(user,"pujcky_highest","0"));
         this.pujcky_daily = Integer.parseInt(Meta.getSafe(user,"pujcky_daily","0"));
 
-        this.days_total = Integer.parseInt(Meta.getSafe(user,"days_total","0"));
+        this.days_total = Integer.parseInt(Meta.getSafe(user,"days_highest","0"));
     }
     public PlayerStatsHolder(int score_total, int emeralds_total, int days_total, int score_daily, int emeralds_daily, String name, UUID uuid) {
         this.score_total = score_total;

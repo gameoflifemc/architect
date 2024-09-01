@@ -30,7 +30,7 @@ public class GlobalLeaderboard {
         InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS);
         setupMainBoard(board);
         DisplayButtonComponent durationButton = new DisplayButtonComponent(new Vector(0,-.75,0));
-        setupDurationButton(board, durationButton, "duration","_total","_daily",Messages.durationTotal,Messages.durationDaily);
+        setupDurationButton(board, durationButton, "duration","_highest","_daily",Messages.durationTotal,Messages.durationDaily);
 
         DisplayButtonComponent typeButton = new DisplayButtonComponent(new Vector(4,1,0));
         setupTypeButton(board, typeButton, "type");
