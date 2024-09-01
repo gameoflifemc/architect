@@ -8,11 +8,10 @@ public class Routines {
     public static void switchToNext(Player p) {
         // check which routine to start
         int routine = Integer.parseInt(Meta.get(p,Meta.ROUTINE));
-        if (routine == 2) {
+        if (routine == 1) {
             // start evening
             Routines.startEvening(p);
-            return;
-        } else if (routine >= 3) {
+        } else if (routine >= 2) {
             // finish the day
             Game.finishDay(p);
             // if the player has played 10 days, end the game
@@ -42,9 +41,7 @@ public class Routines {
         },Titles.TRANSITION_TELEPORT);
     }
     private static void startEvening(Player p) {
-        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
-            Time.interpolate(p,9000,18000);
-            p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Večer"));
-        },Titles.TRANSITION_TELEPORT);
+        Time.interpolate(p,9000,18000);
+        p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Večer"));
     }
 }
