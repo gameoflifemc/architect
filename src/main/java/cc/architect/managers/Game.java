@@ -33,6 +33,7 @@ public class Game {
         // prepare meta
         Meta.set(p,Meta.ROUTINE,"1");
         Meta.set(p,Meta.ACTIONS,"20");
+        p.setFoodLevel(20);
         // simulate interest
         int investments = Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_TOTAL));
         int loan = Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));

@@ -19,12 +19,12 @@ public class Titles {
         Title.Times.times(Duration.ZERO,TRANSITION_FADE,TRANSITION_FADE)
     );
     public static Title ROUTINE(String day, String routine) {
-        return Title.title(Component.text("Den " + day),Component.text(routine),
+        return Title.title(Component.text("Den " + (Integer.parseInt(day) - 1)),Component.text(routine),
             Title.Times.times(Duration.ZERO,Duration.ofMillis(3000),Duration.ZERO)
         );
     }
     public static Title DAY(String day) {
-        return Title.title(Component.text("Den " + day),Component.text("Dokončen!"),
+        return Title.title(Component.text("Den " + (Integer.parseInt(day) - 1)),Component.text("Dokončen!"),
             Title.Times.times(Duration.ZERO,Duration.ofMillis(3000),Duration.ZERO)
         );
     }
