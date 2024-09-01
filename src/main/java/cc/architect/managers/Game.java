@@ -76,6 +76,7 @@ public class Game {
         Meta.clear(p,Meta.LAST_TIME);
         Meta.clear(p,Meta.ACTIONS);
         Meta.clear(p,Meta.ROUTINE);
+        p.setFoodLevel(20);
         // move to spawn
         Movers.toSpawn(p);
         // increment days
@@ -110,7 +111,10 @@ public class Game {
     }
     public static void exitGame(Player p) {
         // remove all bossbars from player
-        p.activeBossBars().forEach(bar -> bar.removeViewer(p));
+        Compass compass = HashMaps.COMPASSES.get(p);
+        compass.getDirections().removeViewer(p);
+        compass.getLocations().removeViewer(p);
+        compass.getBackground().removeViewer(p);
         // delete compass
         HashMaps.COMPASSES.remove(p);
         HashMaps.WORLD_LOCATIONS.remove(p);

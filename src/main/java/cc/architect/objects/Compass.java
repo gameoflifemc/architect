@@ -19,13 +19,13 @@ public class Compass {
         BossBar.Color.WHITE,
         BossBar.Overlay.PROGRESS
     );
+    private final BossBar background = BossBar.bossBar(
+        Component.text("@").font(Fonts.COMPASS),
+        BossBar.MAX_PROGRESS,
+        BossBar.Color.WHITE,
+        BossBar.Overlay.PROGRESS
+    );
     public Compass(Player p) {
-        BossBar background = BossBar.bossBar(
-            Component.text("@").font(Fonts.COMPASS),
-            BossBar.MAX_PROGRESS,
-            BossBar.Color.WHITE,
-            BossBar.Overlay.PROGRESS
-        );
         // the order of bossbars is important
         background.addViewer(p);
         directions.addViewer(p);
