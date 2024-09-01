@@ -38,8 +38,8 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
         entityLocations().forEach(loc->{
             if(count>MAX_COUNT) return;
 
-            factory().create(loc);
-            Entity e = factory().create(loc);
+            factory().createSuper(loc);
+            Entity e = factory().createSuper(loc);
             entities.put(e.getUniqueId(),e);
             count++;
         });
@@ -53,7 +53,7 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
 
         if(loc.getNearbyEntities(5,5,5).stream().filter(e->!(e instanceof Player)).count()>3) return;
 
-        Entity e = factory().create(loc);
+        Entity e = factory().createSuper(loc);
         entities.put(e.getUniqueId(),e);
         count++;
     }

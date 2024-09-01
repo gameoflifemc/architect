@@ -18,10 +18,10 @@ public class StatsCaching {
         Pair.of("days_total", PlayerStatsHolder::getDays_total),
         Pair.of("score_daily", PlayerStatsHolder::getScore_daily),
         Pair.of("emeralds_daily", PlayerStatsHolder::getEmeralds_daily),
-        Pair.of("investice_total", PlayerStatsHolder::getInvestice_total),
-        Pair.of("investice_daily", PlayerStatsHolder::getInvestice_daily),
-        Pair.of("pujcky_total", PlayerStatsHolder::getPujcky_total),
-        Pair.of("pujcky_daily", PlayerStatsHolder::getPujcky_daily)
+        Pair.of("investments_total", PlayerStatsHolder::getInvestice_total),
+        Pair.of("investments_daily", PlayerStatsHolder::getInvestice_daily),
+        Pair.of("loan_total", PlayerStatsHolder::getPujcky_total),
+        Pair.of("loan_daily", PlayerStatsHolder::getPujcky_daily)
     );
     public static void cacheStats() {
         Architect.SCHEDULER.runTaskAsynchronously(Architect.PLUGIN,()->{

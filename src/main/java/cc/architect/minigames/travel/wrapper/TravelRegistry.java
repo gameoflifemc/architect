@@ -5,8 +5,11 @@ import cc.architect.minigames.travel.farm.FarmTravel;
 import cc.architect.minigames.travel.mine.MineTravel;
 import cc.architect.minigames.travel.village.VillageTravel;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +33,7 @@ public class TravelRegistry {
         register("village", new VillageTravel());
 
         createTask();
+        createEntityDeleter();
     }
 
     private static void createTask(){
@@ -49,5 +53,16 @@ public class TravelRegistry {
     public static void playerDeath(PlayerDeathEvent e) {
         e.getPlayer().getInventory().remove(MineTravel.sword.getType());
         e.getPlayer().getInventory().remove(MineTravel.key.getType());
+    }
+
+    public static void createEntityDeleter() {
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()->{
+            Architect.TRAVEL.getLivingEntities().forEach(entity -> {
+                if(entity instanceof Player) return;
+                if(!entity.getScoreboardTags().contains(Architect.SESSION)) {
+                    entity.remove();
+                }
+            });
+        },40,40);
     }
 }

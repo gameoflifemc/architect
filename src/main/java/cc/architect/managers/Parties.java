@@ -10,8 +10,6 @@ import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,7 +70,7 @@ public class Parties {
         sendInviteMessages(receiver, sender);
     }
     public static int createDeleteTask(String receiver, String sender){
-        return Bukkit.getScheduler().runTaskLater(Architect.PLUGIN, () -> {
+        return Architect.SCHEDULER.runTaskLater(Architect.PLUGIN, () -> {
             invites.remove(receiver);
             optionMessageSend(sender,Messages.SEND_INVITE_EXPIRED);
             optionMessageSend(receiver,Messages.SEND_INVITE_EXPIRED);
@@ -104,7 +102,8 @@ public class Parties {
         }
         optionMessageSend(sender,Messages.SEND_INVITE_ACCEPTED(receiver));
         optionMessageSend(receiver, Messages.SEND_INVITE_ACCEPT(sender));
-        invites.remove(receiver);
+        Architect.SCHEDULER.cancelTask(invite.getTaskID());
+        invites.remove(receiver.toLowerCase());
     }
 
     public static void denyInvite(String receiver) {
@@ -114,7 +113,7 @@ public class Parties {
             return;
         }
         //deny invite
-        PartyInvite invite = invites.get(receiver);
+        PartyInvite invite = invites.get(receiver.toLowerCase());
         String sender = invite.getSender();
         invites.remove(receiver);
         Bukkit.getScheduler().cancelTask(invite.getTaskID());
@@ -129,6 +128,8 @@ public class Parties {
 
         optionMessageSend(sender,Messages.SEND_INVITE_DENIED(receiver));
         optionMessageSend(receiver,Messages.SEND_INVITE_DENY(sender));
+        Architect.SCHEDULER.cancelTask(invite.getTaskID());
+        invites.remove(receiver.toLowerCase());
     }
     public static boolean hasInvite(String receiver) {
         return invites.containsKey(receiver.toLowerCase());

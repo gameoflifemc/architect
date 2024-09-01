@@ -36,6 +36,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
+import java.util.UUID;
 
 public final class Architect extends JavaPlugin {
     public static Plugin PLUGIN;
@@ -43,8 +44,10 @@ public final class Architect extends JavaPlugin {
     public static BukkitScheduler SCHEDULER;
     public static ConsoleCommandSender CONSOLE;
     public static World WORLD;
+    public static World TRAVEL;
     public static World MINE;
     public static World FARM;
+    public static String SESSION;
     @Override
     public void onEnable() {
         // plugin
@@ -57,6 +60,8 @@ public final class Architect extends JavaPlugin {
         CONSOLE = Bukkit.getConsoleSender();
         // world
         WORLD = Bukkit.getWorld("world");
+        //new sesion id (for mobs in travel)
+        SESSION = UUID.randomUUID().toString();
         // commands
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         Discord.register(manager);
@@ -120,6 +125,9 @@ public final class Architect extends JavaPlugin {
                     break;
                 case "farm":
                     FARM = world;
+                    break;
+                case "travel":
+                    TRAVEL = world;
                     break;
             }
         }
