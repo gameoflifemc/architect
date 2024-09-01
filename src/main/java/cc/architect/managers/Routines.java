@@ -7,22 +7,23 @@ import org.bukkit.entity.Player;
 public class Routines {
     public static void switchToNext(Player p) {
         // check which routine to start
-        switch (Meta.get(p,Meta.ROUTINE)) {
-            case "2":
-                Routines.startEvening(p);
-                break;
-            case "3":
-                // finish the day
-                Game.finishDay(p);
-                // if the player has played 10 days, end the game
-                if (Meta.get(p,Meta.DAYS).equals("11")) {
-                    // end game
-                    Game.endGame(p);
-                    return;
-                }
-                // show title
-                p.showTitle(Titles.DAY(Meta.get(p,Meta.DAYS)));
+        int routine = Integer.parseInt(Meta.get(p,Meta.ROUTINE));
+        if (routine == 2) {
+            // start evening
+            Routines.startEvening(p);
+            return;
+        } else if (routine >= 3) {
+            // finish the day
+            Game.finishDay(p);
+            // if the player has played 10 days, end the game
+            if (Meta.get(p,Meta.DAYS).equals("11")) {
+                // end game
+                Game.endGame(p);
                 return;
+            }
+            // show title
+            p.showTitle(Titles.DAY(Meta.get(p,Meta.DAYS)));
+            return;
         }
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
             // increment routine
