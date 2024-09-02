@@ -59,7 +59,7 @@ public class HuskFactory extends Factory {
         }
 
         equipment.setDropChance(EquipmentSlot.HAND,0);
-        equipment.setDropChance(EquipmentSlot.OFF_HAND,0.25f);
+        equipment.setDropChance(EquipmentSlot.OFF_HAND,0.35f);
         equipment.setDropChance(EquipmentSlot.HEAD,0);
         husk.setLootTable(nullTable);
         husk.addScoreboardTag("villageH");

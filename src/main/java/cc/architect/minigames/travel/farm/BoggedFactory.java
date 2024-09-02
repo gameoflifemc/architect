@@ -33,7 +33,7 @@ public class BoggedFactory extends Factory {
         equipment.setItemInOffHand(FarmTravel.key);
 
         equipment.setDropChance(EquipmentSlot.HAND,0);
-        equipment.setDropChance(EquipmentSlot.OFF_HAND,0.25f);
+        equipment.setDropChance(EquipmentSlot.OFF_HAND,0.35f);
         equipment.setDropChance(EquipmentSlot.HEAD,0);
         bogged.setLootTable(ZombieFactory.nullTable);
         bogged.addScoreboardTag("farmB");

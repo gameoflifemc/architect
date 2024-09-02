@@ -16,7 +16,7 @@ import static org.bukkit.Bukkit.getPlayer;
 
 public abstract class BasicTravelMinigame extends TravelMinigame{
     public int count;
-    public static int MAX_COUNT = 15;
+    public int MAX_COUNT = 15;
 
     public BasicTravelMinigame(World finalWorld, int updateRate) {
         super(finalWorld, updateRate);
