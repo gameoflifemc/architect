@@ -76,7 +76,7 @@ public class Simulation {
                     )
                 )
                 .then(Commands.literal("savings")
-                    .then(Commands.argument("put",StringArgumentType.word())
+                    .then(Commands.literal("put")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
                                 .executes(ctx -> {
@@ -104,7 +104,7 @@ public class Simulation {
                             )
                         )
                     )
-                    .then(Commands.argument("claim",StringArgumentType.word())
+                    .then(Commands.literal("claim")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
                                 .executes(ctx -> {
@@ -142,7 +142,7 @@ public class Simulation {
                     )
                 )
                 .then(Commands.literal("investment")
-                    .then(Commands.argument("put",StringArgumentType.word())
+                    .then(Commands.literal("put")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
                                 .executes(ctx -> {
@@ -170,7 +170,7 @@ public class Simulation {
                             )
                         )
                     )
-                    .then(Commands.argument("claim",StringArgumentType.word())
+                    .then(Commands.literal("claim")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
                                 .executes(ctx -> {
@@ -208,7 +208,7 @@ public class Simulation {
                     )
                 )
                 .then(Commands.literal("loan")
-                    .then(Commands.argument("take",StringArgumentType.word())
+                    .then(Commands.literal("take")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
                                 .executes(ctx -> {
@@ -240,7 +240,7 @@ public class Simulation {
                             )
                         )
                     )
-                    .then(Commands.argument("payoff",StringArgumentType.word())
+                    .then(Commands.literal("payoff")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
                                 .executes(ctx -> {
