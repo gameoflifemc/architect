@@ -1,4 +1,4 @@
-package cc.architect.tasks.farming;
+package cc.architect.tasks.farmingLegacy;
 
 import cc.architect.managers.FarmingCycles;
 import org.bukkit.entity.Player;

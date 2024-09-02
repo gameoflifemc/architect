@@ -13,6 +13,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class Place implements Listener {
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
+
+    }
+
+    /**
+     * Legacy farming method
+     * @param e
+     */
+    public void farming(BlockPlaceEvent e) {
         Player p = e.getPlayer();
         if (p.getWorld() != Architect.FARM) {
             return;

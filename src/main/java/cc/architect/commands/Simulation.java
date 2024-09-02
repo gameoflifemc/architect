@@ -21,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 
+import static cc.architect.leaderboards.stats.StatsCaching.cacheStats;
+
 public class Simulation {
     public static void register(LifecycleEventManager<Plugin> manager) {
         // create and register command
@@ -88,6 +90,7 @@ public class Simulation {
                                     // check amount
                                     int amount = IntegerArgumentType.getInteger(ctx,"amount");
                                     if (amount <= 0) {
+                                        p.sendMessage(Component.text("Nemáš dostatek emeraldů na uložení.").color(Colors.RED));
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     PlayerInventory inventory = p.getInventory();
@@ -97,8 +100,8 @@ public class Simulation {
                                     // remove from inventory
                                     inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
                                     // write to database
-                                    Meta.add(p,Meta.SAVINGS,amount);
-                                    p.sendMessage(Component.text("Úspěšně uloženo " + amount + " emeraldů. Celkem je nyní uloženo " + Meta.get(p,Meta.SAVINGS) + " emeraldů.").color(Colors.GREEN));
+                                    Meta.add(p,Meta.SAVINGS,amount*10);
+                                    p.sendMessage(Component.text("Úspěšně uloženo " + amount + " emeraldů. Celkem je nyní uloženo " + (Integer.parseInt(Meta.get(p,Meta.SAVINGS))/10) + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -106,38 +109,41 @@ public class Simulation {
                     )
                     .then(Commands.literal("claim")
                         .then(Commands.argument("player",StringArgumentType.word())
-                            .then(Commands.argument("amount",IntegerArgumentType.integer())
-                                .executes(ctx -> {
-                                    // check player
-                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
-                                    if (p == null) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    // check amount
-                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
-                                    if (amount <= 0) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    if (amount > 64) {
-                                        p.sendMessage(Component.text("Values more than 64 are not accepted.").color(Colors.RED));
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    String savings = Meta.get(p,Meta.SAVINGS);
-                                    if (Integer.parseInt(savings) < amount) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    PlayerInventory inventory = p.getInventory();
-                                    if (inventory.firstEmpty() == -1) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    // add to inventory
-                                    inventory.addItem(new ItemStack(Material.EMERALD,amount));
-                                    // write to database
-                                    Meta.add(p,Meta.SAVINGS,-amount);
-                                    p.sendMessage(Component.text("Úspěšně vybráno " + amount + " emeraldů. Celkem je nyní uloženo " + savings + " emeraldů.").color(Colors.GREEN));
+                            .executes(ctx -> {
+                                // check player
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                if (p == null) {
                                     return Command.SINGLE_SUCCESS;
-                                })
-                            )
+                                }
+                                // check amount
+                                int savings = (int)Math.floor((double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10);
+                                PlayerInventory inventory = p.getInventory();
+                                if (inventory.firstEmpty() == -1) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                // add to inventory
+                                for (int i = 0; i < savings;) {
+                                    inventory.addItem(new ItemStack(Material.EMERALD, Math.min(64, savings - i)));
+                                    i += Math.min(64, savings - i);
+                                }
+                                // write to database
+                                Meta.set(p,Meta.SAVINGS, String.valueOf(0));
+                                p.sendMessage(Component.text("Úspěšně vybrány všechny emeraldy.").color(Colors.GREEN));
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
+                    )
+                    .then(Commands.literal("inspect")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .executes(ctx -> {
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                if (p == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                double savings = (double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10;
+                                p.sendMessage(Component.text("Aktuálně máš uloženo "+savings+" emeraldů.").color(Colors.GREEN));
+                                return Command.SINGLE_SUCCESS;
+                            })
                         )
                     )
                 )
@@ -308,6 +314,12 @@ public class Simulation {
                         })
                     )
                 )
+                    .then(Commands.literal("update")
+                        .executes(ctx -> {
+                            cacheStats();
+                            return Command.SINGLE_SUCCESS;
+                        })
+                    )
                 .build()
             );
         });

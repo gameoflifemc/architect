@@ -8,7 +8,7 @@ import cc.architect.managers.FarmingCycles;
 import cc.architect.managers.Items;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
-import cc.architect.tasks.farming.Mushrooms;
+import cc.architect.tasks.farmingLegacy.Mushrooms;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -36,10 +36,16 @@ public class Break implements Listener {
             if (world == Architect.MINE) {
                 mining(p,b);
             } else if (world == Architect.FARM) {
-                farming(p,b);
+                //farming(p,b);
             }
         }
     }
+
+    /**
+     * Legacy farming method
+     * @param p
+     * @param b
+     */
     private static void farming(Player p, Block b) {
         switch (b.getType()) {
             case WHEAT -> {

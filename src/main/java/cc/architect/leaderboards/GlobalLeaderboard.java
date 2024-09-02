@@ -18,6 +18,7 @@ import org.bukkit.util.Vector;
 import org.joml.Vector3f;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -67,7 +68,7 @@ public class GlobalLeaderboard {
             HashMap<UUID, String> types = (HashMap<UUID, String>) board.getData("type");
             types.put(uuid, "0");
             HashMap<UUID, String> duration = (HashMap<UUID, String>) board.getData("duration");
-            duration.put(uuid, "_total");
+            duration.put(uuid, "_highest");
             renderLeaderboard(board, uuid);
         });
     }
@@ -83,20 +84,32 @@ public class GlobalLeaderboard {
             Component builder = Component.text("");
 
             int pos = 1;
-            for(Pair<String, Integer> tops : StatsCaching.tops.get(page)){
-                builder = builder.append(
-                    Utilities.getDottedComponent(
-                        Component.text(pos+". "+tops.getLeft()+" "),
-                        Component.text(tops.getRight(), Style.style(TextDecoration.BOLD)),
-                        250)
-                );
-                builder = builder.appendNewline();
-                pos++;
+            List<Pair<String, Integer>> topAll = StatsCaching.tops.get(page);
+            if(topAll != null){
+                for(Pair<String, Integer> tops : topAll){
+                    builder = builder.append(
+                        Utilities.getDottedComponent(
+                            Component.text(pos+". "+tops.getLeft()+" "),
+                            Component.text(tops.getRight(), Style.style(TextDecoration.BOLD)),
+                            250)
+                    );
+                    builder = builder.appendNewline();
+                    pos++;
+                }
+
+                for(int i = 0; i < 10 - topAll.size(); i++){
+                    builder = builder.appendNewline();
+                }
+            }else{
+                for(int i = 0; i < 10; i++){
+                    builder = builder.append(Utilities.getDottedComponent(
+                            Component.text(pos+". Vyčkej do dalšího obnovení scoreboardu "),
+                            Component.text("", Style.style(TextDecoration.BOLD)),
+                            250)).appendNewline();
+                    pos++;
+                }
             }
 
-            for(int i = 0; i < 10 - StatsCaching.tops.get(page).size(); i++){
-                builder = builder.appendNewline();
-            }
             Map<UUID,Pair<Integer, Integer>> positions = StatsCaching.positions.get(page);
             Pair<Integer, Integer> stats = positions.getOrDefault(uuid, Pair.of(0,positions.size()));
 

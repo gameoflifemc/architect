@@ -4,7 +4,7 @@ import cc.architect.Architect;
 import cc.architect.loottables.LootTableManager;
 import cc.architect.loottables.definitions.FarmingCropLootTable;
 import cc.architect.objects.Messages;
-import cc.architect.tasks.farming.ShiftSeasons;
+import cc.architect.tasks.farmingLegacy.ShiftSeasons;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -1,4 +1,4 @@
-package cc.architect.tasks.farming;
+package cc.architect.tasks.farmingLegacy;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

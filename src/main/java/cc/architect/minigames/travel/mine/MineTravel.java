@@ -25,6 +25,7 @@ public class MineTravel extends BasicTravelMinigame {
     );
     public MineTravel() {
         super(Bukkit.getWorld("mine"),40);
+        MAX_COUNT = 9;
         ItemMeta meta = key.getItemMeta();
         meta.displayName(Component.text("Klíč do dolu"));
         meta.setCustomModelData(1);

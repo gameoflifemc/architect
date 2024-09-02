@@ -18,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Game {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
     private static final int INTEREST_DIVIDER = 5;
+    private static final int SAVINGS_DIVIDER = 50;
     public static void beginDay(Player p) {
         if (!Meta.check(p,Meta.DAYS)) {
             // prepare meta
@@ -36,9 +37,11 @@ public class Game {
         p.setFoodLevel(20);
         // simulate interest
         int investments = Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_TOTAL));
+        int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
         int loan = Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));
-        Meta.add(p,Meta.INVESTMENTS_TOTAL,investments + investments / INTEREST_DIVIDER);
-        Meta.add(p,Meta.LOAN_TOTAL,loan + loan / INTEREST_DIVIDER);
+        Meta.add(p,Meta.SAVINGS,savings / SAVINGS_DIVIDER);
+        Meta.add(p,Meta.INVESTMENTS_TOTAL, investments / INTEREST_DIVIDER);
+        Meta.add(p,Meta.LOAN_TOTAL, loan / INTEREST_DIVIDER);
         // move to first routine
         Routines.startMorning(p);
     }

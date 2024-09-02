@@ -3,6 +3,7 @@ package cc.architect.events.player;
 import cc.architect.loottables.LootTableManager;
 import cc.architect.loottables.definitions.MiningChestLootTable;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -27,6 +28,9 @@ public class InteractAtEntity implements Listener {
                 e.setCancelled(true);
                 treasure.remove();
                 MiningChestLootTable.miningChestsSpawned--;
+            }
+            if(!e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+                e.setCancelled(true);
             }
         }
     }

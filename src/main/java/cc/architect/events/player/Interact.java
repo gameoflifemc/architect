@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
@@ -60,7 +61,8 @@ public class Interact implements Listener {
             if (item == null) {
                 return;
             }
-            Material itemMat = item.getType();
+            //TODO LEGACY FARMING
+            /*Material itemMat = item.getType();
             Material blockMat = b.getType();
             Location location = b.getLocation();
             if (blockMat.equals(Material.GRASS_BLOCK) || blockMat.equals(Material.DIRT)) {
@@ -81,7 +83,7 @@ public class Interact implements Listener {
                 } else {
                     p.sendMessage(Messages.FARMING_CANNOT_BONEMEAL);
                 }
-            }
+            }*/
         }
         if (!p.getWorld().getName().equals("world")) {
             return;
