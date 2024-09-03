@@ -32,9 +32,9 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
 
     @Override
     public void start(UUID player) {
-        for(ItemStack allItems : onSpawnItems()) {
+        /*for(ItemStack allItems : onSpawnItems()) {
             getPlayer(player).getInventory().addItem(allItems);
-        }
+        }*/
         entityLocations().forEach(loc->{
             if(count>MAX_COUNT) return;
 

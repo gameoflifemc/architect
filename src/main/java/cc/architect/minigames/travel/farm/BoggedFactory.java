@@ -32,6 +32,8 @@ public class BoggedFactory extends Factory {
         equipment.setItemInMainHand(new ItemStack(Material.IRON_HOE,1));
         equipment.setItemInOffHand(FarmTravel.key);
 
+        equipment.setHelmet(new ItemStack(Material.PUMPKIN,1));
+
         equipment.setDropChance(EquipmentSlot.HAND,0);
         equipment.setDropChance(EquipmentSlot.OFF_HAND,0.35f);
         equipment.setDropChance(EquipmentSlot.HEAD,0);

@@ -49,7 +49,7 @@ public class TravelRegistry {
     }
 
     public static void playerDeath(PlayerDeathEvent e) {
-        e.getPlayer().getInventory().remove(MineTravel.sword.getType());
+        /*e.getPlayer().getInventory().remove(MineTravel.sword.getType());*/
         e.getPlayer().getInventory().remove(MineTravel.key.getType());
     }
 

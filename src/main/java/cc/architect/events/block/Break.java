@@ -8,6 +8,7 @@ import cc.architect.managers.FarmingCycles;
 import cc.architect.managers.Items;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
+import cc.architect.tasks.farming.Farming;
 import cc.architect.tasks.farmingLegacy.Mushrooms;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -16,18 +17,20 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
 import java.util.Random;
 
 import static cc.architect.Utilities.rollRandom;
 
 public class Break implements Listener {
     @EventHandler
-    public void onBreak(org.bukkit.event.block.BlockBreakEvent e) {
+    public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         if (p.getGameMode().equals(GameMode.ADVENTURE)) {
             e.setCancelled(true);
@@ -36,17 +39,16 @@ public class Break implements Listener {
             if (world == Architect.MINE) {
                 mining(p,b);
             } else if (world == Architect.FARM) {
-                //farming(p,b);
+                Farming.breakBlockFarm(e);
             }
         }
     }
-
     /**
      * Legacy farming method
      * @param p
      * @param b
      */
-    private static void farming(Player p, Block b) {
+    private static void farmingLegacy(Player p, Block b) {
         switch (b.getType()) {
             case WHEAT -> {
                 if (canHarvest(p, b)) {

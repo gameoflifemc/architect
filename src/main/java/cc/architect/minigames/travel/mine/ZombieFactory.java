@@ -56,9 +56,12 @@ public class ZombieFactory extends Factory {
         EntityEquipment equipment = ((LivingEntity)zombie).getEquipment();
         equipment.setItemInMainHand(new ItemStack(Material.IRON_PICKAXE,1));
         equipment.setItemInOffHand(MineTravel.key);
+
         boolean isHelmet = Math.random() > 0.7;
         if(isHelmet) {
             equipment.setHelmet(new ItemStack(Material.LEATHER_HELMET,1));
+        }else{
+            equipment.setHelmet(new ItemStack(Material.PUMPKIN,1));
         }
 
         equipment.setDropChance(EquipmentSlot.HAND,0);

@@ -9,6 +9,7 @@ import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
 import cc.architect.objects.HashMaps;
 import cc.architect.objects.Messages;
+import cc.architect.tasks.farming.Farming;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -25,7 +26,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class Interact implements Listener {
     @EventHandler
-    public void onInteract(org.bukkit.event.player.PlayerInteractEvent e) {
+    public void onInteract(PlayerInteractEvent e) {
         Action action = e.getAction();
         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
             return;
@@ -60,6 +61,9 @@ public class Interact implements Listener {
             }
             if (item == null) {
                 return;
+            }
+            if(p.getWorld().equals(Architect.FARM)){
+                Farming.interactBlockFarm(e);
             }
             //TODO LEGACY FARMING
             /*Material itemMat = item.getType();
