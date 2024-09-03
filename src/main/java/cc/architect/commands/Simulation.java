@@ -1,6 +1,7 @@
 package cc.architect.commands;
 
 import cc.architect.Utilities;
+import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
 import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
@@ -22,12 +23,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static cc.architect.leaderboards.stats.StatsCaching.cacheStats;
 import static cc.architect.managers.Meta.LOAN_LICH_COUNTER;
-
-import cc.architect.managers.Game;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Simulation {
     public static void register(LifecycleEventManager<Plugin> manager) {

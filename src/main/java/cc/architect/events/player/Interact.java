@@ -1,18 +1,11 @@
 package cc.architect.events.player;
 
 import cc.architect.Architect;
-import cc.architect.Utilities;
-import cc.architect.loottables.LootTableManager;
-import cc.architect.loottables.definitions.FarmingLootTable;
-import cc.architect.managers.FarmingCycles;
 import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
 import cc.architect.objects.HashMaps;
-import cc.architect.objects.Messages;
 import cc.architect.tasks.farming.Farming;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Door;

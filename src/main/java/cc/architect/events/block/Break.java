@@ -23,7 +23,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
 import java.util.Random;
 
 import static cc.architect.Utilities.rollRandom;
