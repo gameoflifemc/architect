@@ -24,6 +24,7 @@ public class Meta {
     public static final String SCORE_TOTAL = "score_total";
     public static final String EMERALDS_TOTAL = "emeralds_total";
     public static final String INVESTMENTS_TOTAL = "investments_total";
+    public static final String INVESTMENTS_MAP = "investments_map";
     public static final String LOAN_TOTAL = "loan_total";
     // highest values
     public static final String SCORE_HIGHEST = "score_highest";

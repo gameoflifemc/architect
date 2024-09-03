@@ -5,7 +5,10 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -84,5 +87,12 @@ public class Utilities {
     }
     public static <T extends Entity> T createEntity(Class<T> clazz) {
         return Architect.WORLD.createEntity(new Location(Architect.WORLD,0,0,0),clazz);
+    }
+
+    public static void addItemsToInventory(PlayerInventory inventory, int amount, Material material) {
+        for (int i = 0; i < amount;) {
+            inventory.addItem(new ItemStack(material, Math.min(64, amount - i)));
+            i += Math.min(64, amount - i);
+        }
     }
 }

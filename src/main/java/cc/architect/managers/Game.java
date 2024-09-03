@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Game {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
-    private static final int INTEREST_DIVIDER = 5;
+    private static final int INVESTMENTS_DIVIDER = 25;
     private static final int SAVINGS_DIVIDER = 50;
     public static void beginDay(Player p) {
         if (!Meta.check(p,Meta.DAYS)) {
@@ -28,6 +28,7 @@ public class Game {
             Meta.set(p,Meta.LOAN_TOTAL,"0");
             Meta.set(p,Meta.EMERALDS_TOTAL,"0");
             Meta.set(p,Meta.SCORE_TOTAL,"0");
+            Meta.set(p,Meta.INVESTMENTS_MAP,"");
         }
         // enter game
         Game.enterGame(p);
@@ -36,12 +37,32 @@ public class Game {
         Meta.set(p,Meta.ACTIONS,"20");
         p.setFoodLevel(20);
         // simulate interest
-        int investments = Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_TOTAL));
         int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
         int loan = Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));
         Meta.add(p,Meta.SAVINGS,savings / SAVINGS_DIVIDER);
-        Meta.add(p,Meta.INVESTMENTS_TOTAL, investments / INTEREST_DIVIDER);
-        Meta.add(p,Meta.LOAN_TOTAL, loan / INTEREST_DIVIDER);
+        //Meta.add(p,Meta.INVESTMENTS_TOTAL, investments / INTEREST_DIVIDER);
+        Meta.add(p,Meta.LOAN_TOTAL, loan / INVESTMENTS_DIVIDER);
+
+        //investice
+        StringBuilder invBuilder = new StringBuilder();
+        String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
+        String[] investments = investmentsMap.split(";");
+        if(investments[0].isEmpty()) return;
+
+        for (String investment : investments) {
+            String[] data = investment.split(",");
+            int amount = Integer.parseInt(data[0]);
+            int days = Math.max(Integer.parseInt(data[1]),0);
+
+            int newAmount = amount + (amount / INVESTMENTS_DIVIDER);
+            if(days==0){
+                newAmount = amount;
+            }
+            invBuilder.append(newAmount).append(",").append(days).append(";");
+        }
+
+        Meta.set(p,Meta.INVESTMENTS_MAP,invBuilder.toString());
+
         // move to first routine
         Routines.startMorning(p);
     }
@@ -98,6 +119,7 @@ public class Game {
         Meta.clear(p,Meta.LOAN_TOTAL);
         Meta.clear(p,Meta.EMERALDS_TOTAL);
         Meta.clear(p,Meta.SCORE_TOTAL);
+        Meta.clear(p,Meta.INVESTMENTS_MAP);
         // show title
         p.sendMessage(Component.text("Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu."));
     }
