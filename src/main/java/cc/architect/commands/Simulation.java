@@ -22,9 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Objects;
-
 import static cc.architect.leaderboards.stats.StatsCaching.cacheStats;
+import cc.architect.managers.Game;
 
 public class Simulation {
     public static void register(LifecycleEventManager<Plugin> manager) {
@@ -254,32 +253,31 @@ public class Simulation {
                     .then(Commands.literal("take")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
-                                .executes(ctx -> {
-                                    // check player
-                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
-                                    if (p == null) {
+                                //0 sporka 1 lichvar
+                                .then(Commands.argument("type", IntegerArgumentType.integer())
+                                    .executes(ctx -> {
+                                        // check player
+                                        Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                        if (p == null) {
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+                                        // check amount
+                                        int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                        if (amount <= 0) {
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+                                        int type = IntegerArgumentType.getInteger(ctx,"type");
+                                        switch (type) {
+                                            case 0:
+                                                sporkaTake(p, amount);
+                                                break;
+                                            case 1:
+                                                lichvarTake(p, amount);
+                                                break;
+                                        }
                                         return Command.SINGLE_SUCCESS;
-                                    }
-                                    // check amount
-                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
-                                    if (amount <= 0) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    if (amount > 64) {
-                                        p.sendMessage(Component.text("Values more than 64 are not accepted.").color(Colors.RED));
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    PlayerInventory inventory = p.getInventory();
-                                    if (inventory.firstEmpty() == -1) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    // add to inventory
-                                    inventory.addItem(new ItemStack(Material.EMERALD,amount));
-                                    // write to database
-                                    Meta.add(p,Meta.LOAN_TOTAL,amount);
-                                    p.sendMessage(Component.text("Úspěšně půjčeno " + amount + " emeraldů. Nyní půjčeno celkem " + Meta.get(p,Meta.LOAN_TOTAL) + " emeraldů.").color(Colors.GREEN));
-                                    return Command.SINGLE_SUCCESS;
-                                })
+                                    })
+                                )
                             )
                         )
                     )
@@ -306,6 +304,30 @@ public class Simulation {
                                     // write to database
                                     Meta.add(p,Meta.LOAN_TOTAL,-amount);
                                     p.sendMessage(Component.text("Úspěšně vráceno " + amount + " emeraldů. Nyní půjčeno celkem " + Meta.get(p,Meta.LOAN_TOTAL) + " emeraldů.").color(Colors.GREEN));
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                            )
+                        )
+                    )
+                    .then(Commands.literal("inspect")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            //0 sporka 1 lichvar
+                            .then(Commands.argument("type", IntegerArgumentType.integer())
+                                .executes(ctx -> {
+                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                    if (p == null) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    // check amount
+                                    int amount = IntegerArgumentType.getInteger(ctx,"type");
+                                    switch (amount) {
+                                        case 0:
+                                            p.sendMessage(Component.text("Aktuálně máš půjčeno " + Meta.get(p,Meta.LOAN_TOTAL) + " emeraldů.").color(Colors.GREEN));
+                                            break;
+                                        case 1:
+                                            printLichvar(p);
+                                            break;
+                                    }
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -381,5 +403,45 @@ public class Simulation {
             int days = Math.max(Integer.parseInt(data[1]) - playerDay, 0);
             p.sendMessage(Component.text("Investice s aktuální hodnotou " + amount + " emeraldů " + (days==0? "si můžes vyzvednout teď":"dostaneš za " + days + " dní.")).color(Colors.GREEN));
         }
+    }
+
+    public static void printLichvar(Player p){
+        String lichMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+        String[] loans = lichMap.split(";");
+
+        p.sendMessage(Component.text("Aktuální stav:").color(Colors.GREEN).appendNewline());
+
+        if(loans[0].isEmpty()) {
+            p.sendMessage(Component.text("Nemáš žádné aktivní půjčky u Vladislava Sudého").color(Colors.GREEN));
+            return;
+        }
+
+        for (String loan : loans) {
+            int amount = Integer.parseInt(loan);
+            p.sendMessage(Component.text("Půjčka s aktuální hodnotou " + amount + " emeraldů.").color(Colors.RED));
+        }
+    }
+    public static void sporkaTake(Player p, int amount){
+        if(Meta.get(p,Meta.LOAN_SPOR_HADLOAN).equals("true")){
+            p.sendMessage(Component.text("Tento den jsi si u spořitelny půjčil, přijdi další den aby jsi mohl vytvořit novou půjčku.").color(Colors.RED));
+            return;
+        }
+        String map = Meta.get(p,Meta.LOAN_SPOR);
+
+        if(!(Meta.get(p,Meta.LOAN_LICH_MAP).isEmpty()&&map.equals("0"))) {
+            if(!map.equals("0")){
+                p.sendMessage(Component.text("Už u nás máš vytořenou půjčku, nejdříve ji radši zplať aby jsi nezbankrotoval.").color(Colors.RED));
+            }else{
+                p.sendMessage(Component.text("Vidíme že máš vytvořenou půjčku, ale ne u nás. Doporučujeme ji co nejdříve zaplatit než se ti nasčítají úroky.").color(Colors.RED));
+            }
+            return;
+        }
+
+        Meta.set(p,Meta.LOAN_SPOR, String.valueOf((int)(amount*10+(amount*10)*Game.LOAN_SPOR_INSTANT)));
+
+        Meta.add(p,Meta.LOAN_TOTAL,amount);
+    }
+    public static void lichvarTake(Player p, int amount){
+        String lichMap = Meta.get(p,Meta.LOAN_LICH_MAP);
     }
 }
