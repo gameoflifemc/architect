@@ -20,6 +20,7 @@ public class Game {
     private static final float INVESTMENTS_PERCENT = .04f;
     private static final int SAVINGS_DIVIDER = 50;
     public static final float LOAN_SPOR_INSTANT = .03f;
+    public static final int LICH_SPOR_INSTANT = 10;
     public static void beginDay(Player p) {
         if (!Meta.check(p,Meta.DAYS)) {
             // prepare meta
@@ -32,6 +33,8 @@ public class Game {
             Meta.set(p,Meta.INVESTMENTS_MAP,"");
 
             Meta.set(p,Meta.LOAN_LICH_MAP,"");
+            Meta.set(p,Meta.LOAN_LICH_COUNTER,"10");
+
             Meta.set(p,Meta.LOAN_SPOR,"0");
             Meta.set(p,Meta.LOAN_SPOR_HADLOAN,"false");
         }
@@ -43,12 +46,14 @@ public class Game {
         Game.enterGame(p);
         // simulate interest
         int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
-        int loan = Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));
         Meta.add(p,Meta.SAVINGS,savings / SAVINGS_DIVIDER);
+
+        int loan_spor = Integer.parseInt(Meta.get(p,Meta.LOAN_SPOR));
         //Meta.add(p,Meta.INVESTMENTS_TOTAL, investments / INTEREST_DIVIDER);
-        Meta.add(p,Meta.LOAN_SPOR, (int) (loan * INVESTMENTS_PERCENT));
+        Meta.add(p,Meta.LOAN_SPOR, (int) (loan_spor * LOAN_SPOR_INSTANT));
 
         handleInvestments(p);
+        handleLoanLich(p);
 
         // move to first routine
         Routines.startMorning(p);
@@ -73,6 +78,25 @@ public class Game {
         }
 
         Meta.set(p,Meta.INVESTMENTS_MAP,invBuilder.toString());
+    }
+
+    public static void handleLoanLich(Player p) {
+        //investice
+        StringBuilder loanBuilder = new StringBuilder();
+        String loansMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+        String[] loans = loansMap.split(";");
+        if(loans[0].isEmpty()) return;
+
+        for (String investment : loans) {
+            String[] data = investment.split(",");
+            int amount = Integer.parseInt(data[0]);
+            int adder = Integer.parseInt(data[1]);
+
+            int newAmount = amount + adder;
+            loanBuilder.append(newAmount).append(",").append(adder).append(";");
+        }
+
+        Meta.set(p,Meta.LOAN_LICH_MAP,loanBuilder.toString());
     }
     public static void resumeDay(Player p) {
         // enter game
@@ -133,6 +157,7 @@ public class Game {
         Meta.clear(p,Meta.LOAN_SPOR_HADLOAN);
         Meta.clear(p,Meta.LOAN_SPOR);
         Meta.clear(p,Meta.LOAN_LICH_MAP);
+        Meta.clear(p,Meta.LOAN_LICH_COUNTER);
         // show title
         p.sendMessage(Component.text("Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu."));
     }

@@ -16,7 +16,8 @@ public class Facts {
         "bYXFPC4qNA5Ox6q",
         "rtcDFAPy90vcec8",
         "wK5dBo4vc1DkOrc",
-        "WhhEyFKTw9p7x7U"
+        "WhhEyFKTw9p7x7U",
+        "mfAnIq5uMVAPxah"
     };
     public static void synchronize(Player p) {
         // synchronize facts

@@ -50,9 +50,10 @@ public class Autosave implements Runnable {
                 emeralds.getAndAdd(stack.getAmount());
             }
         }
-        int others = (int) Math.floor((double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10);
+        int others = (int) Math.floor((double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10)
+                - Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));
         // save emeralds
-        Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(emeralds.addAndGet(others)));
+        Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(Math.max(emeralds.addAndGet(others),0)));
     }
     private static void facts(Player p) {
         // save all facts to database
