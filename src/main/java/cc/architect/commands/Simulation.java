@@ -1,5 +1,6 @@
 package cc.architect.commands;
 
+import cc.architect.Architect;
 import cc.architect.Utilities;
 import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
@@ -27,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static cc.architect.leaderboards.stats.StatsCaching.cacheStats;
 import static cc.architect.managers.Meta.LOAN_LICH_COUNTER;
+import static org.bukkit.Bukkit.getServer;
 
 public class Simulation {
     public static void register(LifecycleEventManager<Plugin> manager) {
@@ -106,7 +108,7 @@ public class Simulation {
                                     inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.SAVINGS,amount*10);
-                                    Meta.add(p,Meta.SCORE_TOTAL,(int)(amount*9));
+                                    getServer().dispatchCommand(Architect.CONSOLE,"simulation score add "+p.getName()+" "+(int)(amount*9));
                                     p.sendMessage(Component.text("Úspěšně uloženo " + amount + " emeraldů. Celkem je nyní uloženo " + (Integer.parseInt(Meta.get(p,Meta.SAVINGS))/10) + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
@@ -226,20 +228,6 @@ public class Simulation {
                                         invBuilder.append(amount).append(",").append(days).append(";");
                                     }else{
                                         claimAmount += amount;
-                                        switch (amount){
-                                            case 50:
-                                                Meta.add(p,Meta.SCORE_TOTAL,125);
-                                                break;
-                                            case 100:
-                                                Meta.add(p,Meta.SCORE_TOTAL,250);
-                                                break;
-                                            case 200:
-                                                Meta.add(p,Meta.SCORE_TOTAL,500);
-                                                break;
-                                            default:
-                                                Meta.add(p,Meta.SCORE_TOTAL,(int)(amount*2.5));
-                                                break;
-                                        }
                                     }
                                 }
 
@@ -458,7 +446,7 @@ public class Simulation {
             if(!map.equals("0")){
                 p.sendMessage(Component.text("Už u nás máš vytořenou půjčku, nejdříve ji raději zplať aby jsi nezbankrotoval.").color(Colors.RED));
             }else{
-                p.sendMessage(Component.text("Vidíme že máš vytvořenou půjčku, ale ne u nás. Doporučujeme ji co nejdříve zaplatit než se ti nasčítají úroky.").color(Colors.RED));
+                p.sendMessage(Component.text("Vidíme že máš vytvořenou půjčku, ale ne u nás. Doporučujeme ti ji co nejdříve zaplatit než se ti nasčítají úroky.").color(Colors.RED));
             }
             return;
         }
@@ -479,6 +467,12 @@ public class Simulation {
             lich = Integer.parseInt(Meta.get(p,LOAN_LICH_COUNTER));
         } catch (NumberFormatException e) {
             lich = 9;
+        }
+
+        String[] loans = lichMap.split(";");
+
+        if(loans.length>4) {
+            p.sendMessage(Component.text("Máš u mě už moc půjček.").color(Colors.RED));
         }
 
         Meta.set(p,Meta.LOAN_LICH_MAP,lichMap+ (amount+lich)+","+lich+";");

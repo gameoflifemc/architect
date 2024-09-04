@@ -34,7 +34,7 @@ public class Farming {
 
         Block b = e.getBlock();
 
-        b.getDrops().forEach(drop -> {
+        b.getDrops(inHand).forEach(drop -> {
             if(farmableSeeds.contains(drop.getType())){
                 Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + p.getName() + " " + drop.getType().getKey().getKey() + "[can_place_on={predicates:[{blocks:\"farmland\"}],show_in_tooltip:true}] 1");
             }else{
@@ -58,7 +58,7 @@ public class Farming {
                 Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,()->{
                     if(!b.getType().equals(Material.AIR)) return;
                     b.setType(pot.material);
-                },20);
+                },80);
                 return;
             }
         }
