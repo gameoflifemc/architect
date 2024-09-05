@@ -111,6 +111,10 @@ public class GlobalLeaderboard {
             }
 
             Map<UUID,Pair<Integer, Integer>> positions = StatsCaching.positions.get(page);
+            if(positions == null){
+                display.text(builder);
+                return;
+            }
             Pair<Integer, Integer> stats = positions.getOrDefault(uuid, Pair.of(0,positions.size()));
 
             builder = builder.append(

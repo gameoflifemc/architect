@@ -33,11 +33,11 @@ public class PlayerStatsHolder {
         this.emeralds_total = Integer.parseInt(Meta.getSafe(user,"emeralds_highest","0"));
         this.emeralds_daily = Integer.parseInt(Meta.getSafe(user,"emeralds_daily","0"));
 
-        this.investice_total = Integer.parseInt(Meta.getSafe(user,"investice_highest","0"));
-        this.investice_daily = Integer.parseInt(Meta.getSafe(user,"investice_daily","0"));
+        this.investice_total = Integer.parseInt(Meta.getSafe(user,"investments_highest","0"));
+        this.investice_daily = Integer.parseInt(Meta.getSafe(user,"investments_daily","0"));
 
-        this.pujcky_total = Integer.parseInt(Meta.getSafe(user,"pujcky_highest","0"));
-        this.pujcky_daily = Integer.parseInt(Meta.getSafe(user,"pujcky_daily","0"));
+        this.pujcky_total = Integer.parseInt(Meta.getSafe(user,"loan_highest","0"));
+        this.pujcky_daily = Integer.parseInt(Meta.getSafe(user,"loan_daily","0"));
 
         this.days_total = Integer.parseInt(Meta.getSafe(user,"days_highest","0"));
     }

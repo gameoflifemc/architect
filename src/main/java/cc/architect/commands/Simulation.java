@@ -217,7 +217,10 @@ public class Simulation {
                                 int claimAmount = 0;
                                 String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
                                 String[] investments = investmentsMap.split(";");
-                                if(investments[0].isEmpty()) return Command.SINGLE_SUCCESS;
+                                if(investments[0].isEmpty()) {
+                                    p.sendMessage(Component.text("Nemáš žádné aktivní investice.").color(Colors.RED));
+                                    return Command.SINGLE_SUCCESS;
+                                }
 
                                 for (String investment : investments) {
                                     String[] data = investment.split(",");

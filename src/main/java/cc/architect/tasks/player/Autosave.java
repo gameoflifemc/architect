@@ -25,8 +25,8 @@ public class Autosave implements Runnable {
         time(p);
         emeralds(p);
         facts(p);
-        calculateDaily(p);
         calculateHighest(p);
+        calculateDaily(p);
     }
     private static void location(Player p) {
         // get last location
