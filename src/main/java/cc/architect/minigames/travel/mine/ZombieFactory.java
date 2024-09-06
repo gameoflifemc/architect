@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ZombieFactory extends Factory {
-    public static LootTable nullTable = new LootTable() {
+    public static final LootTable nullTable = new LootTable() {
         @Override
         public @NotNull Collection<ItemStack> populateLoot(@Nullable Random random, @NotNull LootContext context) {
             return List.of();

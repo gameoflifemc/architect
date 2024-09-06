@@ -12,9 +12,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class MineTravel extends BasicTravelMinigame {
-    public static ItemStack key = new ItemStack(Material.STICK);
-    public static ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
-    public List<Location> zombieLocations = List.of(
+    public static final ItemStack key = new ItemStack(Material.STICK);
+    public static final ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
+    public final List<Location> zombieLocations = List.of(
         new Location(travelWorld, -42, 126, 23),
         new Location(travelWorld, -13, 125, 11),
         new Location(travelWorld, -10, 126, -17),

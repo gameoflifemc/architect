@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TravelRegistry {
-    public static HashMap<String, TravelMinigame> minigames = new HashMap<>();
-    public static Map<UUID, Entity> entities = new HashMap<>();
+    public static final HashMap<String, TravelMinigame> minigames = new HashMap<>();
+    public static final Map<UUID, Entity> entities = new HashMap<>();
 
     public static void register(String name, TravelMinigame minigame) {
         minigames.put(name, minigame);

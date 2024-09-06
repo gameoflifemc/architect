@@ -38,10 +38,8 @@ public class Parties {
         }
         if (receiver == null) {
             sendRemoteInviteRequest(sender, receiverName);
-            return;
-        }else{
+        } else {
             sender.sendMessage(Messages.PLAYER_ON_SAME_SERVER);
-            return;
         }
         //checks if player has invite
         /*if(invites.containsKey(receiver.getName())){
@@ -147,7 +145,6 @@ public class Parties {
         }
         Player pSender = getPlayerExact(sender);
         if (pSender == null) {
-            return;
         }
         //pReceiver.teleport(pSender.getLocation());
     }

@@ -5,6 +5,7 @@ import cc.architect.managers.Movers;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -12,7 +13,7 @@ import java.util.UUID;
 public abstract class TravelMinigame {
     public final World endWorld;
     public final World travelWorld = Bukkit.getWorld("travel");
-    public int updateRate;
+    public final int updateRate;
 
     public TravelMinigame(World finalWorld, int updateRate) {
         this.endWorld = finalWorld;
@@ -39,15 +40,13 @@ public abstract class TravelMinigame {
     public void handeExit() {
         getEndLocation().getNearbyEntities(getDistance(),getDistance(),getDistance())
                 .stream().filter(e->e instanceof Player)
-                .map(e->e.getUniqueId())
+                .map(Entity::getUniqueId)
                 .filter(this::canExit)
                 .forEach(this::playerSuccessExit);
     }
 
     public void createTask(){
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()->{
-            updateCall();
-        },updateRate,updateRate);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,this::updateCall,updateRate,updateRate);
     }
 
 }

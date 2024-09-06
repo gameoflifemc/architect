@@ -5,12 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.util.BoundingBox;
 
 public class AutoPot {
-    public Location start;
-    public Location end;
+    public final Location start;
+    public final Location end;
 
-    public Material material;
+    public final Material material;
 
-    public BoundingBox boundingBox;
+    public final BoundingBox boundingBox;
 
     public AutoPot(Location start, Location end, Material material) {
         this.start = start;

@@ -1,6 +1,7 @@
 package cc.architect;
 
 import cc.architect.channels.*;
+import cc.architect.commands.Code;
 import cc.architect.commands.Discord;
 import cc.architect.commands.Simulation;
 import cc.architect.commands.Unstuck;
@@ -59,10 +60,11 @@ public final class Architect extends JavaPlugin {
         CONSOLE = Bukkit.getConsoleSender();
         // world
         WORLD = Bukkit.getWorld("world");
-        //new sesion id (for mobs in travel)
+        //new session id (for mobs in travel)
         SESSION = UUID.randomUUID().toString();
         // commands
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
+        Code.register(manager);
         Discord.register(manager);
         cc.architect.commands.Party.register(manager);
         Simulation.register(manager);

@@ -12,9 +12,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class VillageTravel extends BasicTravelMinigame {
-    public static ItemStack key = new ItemStack(Material.STICK);
-    public static ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
-    public List<Location> huskLocations = List.of(
+    public static final ItemStack key = new ItemStack(Material.STICK);
+    public static final ItemStack sword = new ItemStack(Material.WOODEN_SWORD);
+    public final List<Location> huskLocations = List.of(
         new Location(travelWorld, 239,126,-16),
         new Location(travelWorld, 214,126,81),
         new Location(travelWorld, 192,126,85),

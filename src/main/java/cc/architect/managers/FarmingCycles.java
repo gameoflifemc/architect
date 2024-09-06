@@ -21,10 +21,10 @@ import java.util.Map;
 **/
 public class FarmingCycles {
     public static final Map<Player, FarmingCycles> activeCycleManagers = new HashMap<>();
-    public static Map<Player, Map<Location, Boolean>> profits = new HashMap<>();
+    public static final Map<Player, Map<Location, Boolean>> profits = new HashMap<>();
     public final Player player;
     public int state;
-    public static List<Location> tilledLand = new ArrayList<>();
+    public static final List<Location> tilledLand = new ArrayList<>();
 
     public FarmingCycles(Player player) {
         activeCycleManagers.put(player, this);

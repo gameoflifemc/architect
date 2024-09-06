@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Mushrooms implements Runnable {
-    public static Map<Location, Integer> mushrooms = new HashMap<>();
+    public static final Map<Location, Integer> mushrooms = new HashMap<>();
 
     @Override
     public void run() {

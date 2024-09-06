@@ -98,31 +98,17 @@ public class Break implements Listener {
     }
     private static void mining(Player p,Block b) {
         switch (b.getType()) {
-            case COAL_ORE -> {
-                ore(p,b,Material.COAL_ORE,Material.COAL,1000);
-            }
-            case COPPER_ORE -> {
-                ore(p,b,Material.COPPER_ORE,Material.RAW_COPPER,1000);
-            }
-            case IRON_ORE -> {
-                ore(p,b,Material.IRON_ORE,Material.RAW_IRON,2000);
-            }
-            case GOLD_ORE -> {
-                ore(p,b,Material.GOLD_ORE,Material.RAW_GOLD,3000);
-            }
-            case REDSTONE_ORE -> {
-                ore(p,b,Material.REDSTONE_ORE,Material.REDSTONE,3000);
-            }
-            case LAPIS_ORE -> {
-                ore(p,b,Material.LAPIS_ORE,Material.LAPIS_LAZULI,3000);
-            }
+            case COAL_ORE -> ore(p,b,Material.COAL_ORE,Material.COAL,1000);
+            case COPPER_ORE -> ore(p,b,Material.COPPER_ORE,Material.RAW_COPPER,1000);
+            case IRON_ORE -> ore(p,b,Material.IRON_ORE,Material.RAW_IRON,2000);
+            case GOLD_ORE -> ore(p,b,Material.GOLD_ORE,Material.RAW_GOLD,3000);
+            case REDSTONE_ORE -> ore(p,b,Material.REDSTONE_ORE,Material.REDSTONE,3000);
+            case LAPIS_ORE -> ore(p,b,Material.LAPIS_ORE,Material.LAPIS_LAZULI,3000);
             case DIAMOND_ORE -> {
                 ore(p,b,Material.DIAMOND_ORE,Material.DIAMOND,5000);
                 DiamondBonus.add(p,1f/3f);
             }
-            case EMERALD_ORE -> {
-                ore(p,b,Material.EMERALD_ORE,Material.EMERALD,6000);
-            }
+            case EMERALD_ORE -> ore(p,b,Material.EMERALD_ORE,Material.EMERALD,6000);
             case STONE, ANDESITE, GRANITE -> {
                 b.setType(Material.COBBLESTONE);
                 //                           this is here to secure the server from crashing

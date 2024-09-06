@@ -57,9 +57,7 @@ public class GlobalLeaderboard {
     }
 
     public static void setupMainBoard(InteractiveDisplay board) {
-        board.setChangeToAllPlayers((display) -> {
-            display.setLineWidth(3000);
-        });
+        board.setChangeToAllPlayers((display) -> display.setLineWidth(3000));
 
         board.setData("type", new HashMap<UUID, String>());
         board.setData("duration", new HashMap<UUID, String>());
@@ -130,11 +128,7 @@ public class GlobalLeaderboard {
 
     public static void setupDurationButton(InteractiveDisplay board, DisplayButtonComponent comp, String mapName
             , String switch1, String switch2, Component switch1C, Component switch2C) {
-        comp.setOnSpawnCallback((display,uuid)->{
-            comp.setChangeToOnePlayer((display1)->{
-                display1.text(switch1C);
-            },uuid);
-        });
+        comp.setOnSpawnCallback((display,uuid)-> comp.setChangeToOnePlayer((display1)-> display1.text(switch1C),uuid));
 
         comp.enableCooldown();
         comp.getComponentInteraction().setInteractionWidth(2.5f);
@@ -163,11 +157,7 @@ public class GlobalLeaderboard {
         });
     }
     public static void setupTypeButton(InteractiveDisplay board, DisplayButtonComponent comp, String mapName) {
-        comp.setOnSpawnCallback((display,uuid)->{
-            comp.setChangeToOnePlayer((display1)->{
-                display1.text(Messages.typeScore);
-            },uuid);
-        });
+        comp.setOnSpawnCallback((display,uuid)-> comp.setChangeToOnePlayer((display1)-> display1.text(Messages.typeScore),uuid));
 
         comp.enableCooldown();
         comp.getComponentInteraction().setInteractionWidth(1.5f);
@@ -214,24 +204,24 @@ public class GlobalLeaderboard {
         });
     }
 
-    public class Messages{
-        public static Component durationTotal = Component.text("Celkové výsledky", TextColor.color(255, 230,0))
+    public static class Messages{
+        public static final Component durationTotal = Component.text("Celkové výsledky", TextColor.color(255, 230,0))
                 .appendNewline().append(Component.text("Průměrné výsledky", TextColor.color(125,125,125)));
-        public static Component durationDaily = Component.text("Celkové výsledky", TextColor.color(125,125,125))
+        public static final Component durationDaily = Component.text("Celkové výsledky", TextColor.color(125,125,125))
                 .appendNewline().append(Component.text("Průměrné výsledky", TextColor.color(255, 230,0)));
-        public static Component typeScore = Component.text("Score", TextColor.color(255, 230,0))
+        public static final Component typeScore = Component.text("Score", TextColor.color(255, 230,0))
                 .appendNewline().append(Component.text("Emeraldy", TextColor.color(125,125,125)))
                 .appendNewline().append(Component.text("Investice", TextColor.color(125,125,125)))
                 .appendNewline().append(Component.text("Půjčky", TextColor.color(125,125,125)));
-        public static Component typeEmeralds = Component.text("Score", TextColor.color(125,125,125))
+        public static final Component typeEmeralds = Component.text("Score", TextColor.color(125,125,125))
                 .appendNewline().append(Component.text("Emeraldy", TextColor.color(255, 230,0)))
                 .appendNewline().append(Component.text("Investice", TextColor.color(125,125,125)))
                 .appendNewline().append(Component.text("Půjčky", TextColor.color(125,125,125)));
-        public static Component typeInvestments = Component.text("Score", TextColor.color(125,125,125))
+        public static final Component typeInvestments = Component.text("Score", TextColor.color(125,125,125))
                 .appendNewline().append(Component.text("Emeraldy", TextColor.color(125,125,125)))
                 .appendNewline().append(Component.text("Investice", TextColor.color(255, 230,0)))
                 .appendNewline().append(Component.text("Půjčky", TextColor.color(125,125,125)));
-        public static Component typeLoans = Component.text("Score", TextColor.color(125,125,125))
+        public static final Component typeLoans = Component.text("Score", TextColor.color(125,125,125))
                 .appendNewline().append(Component.text("Emeraldy", TextColor.color(125,125,125)))
                 .appendNewline().append(Component.text("Investice", TextColor.color(125,125,125)))
                 .appendNewline().append(Component.text("Půjčky", TextColor.color(255, 230,0)));

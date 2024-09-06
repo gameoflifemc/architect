@@ -9,10 +9,10 @@ import java.util.*;
 public class StatsCaching {
 
     /**value, pos**/
-    public static Map<String, Map<UUID,Pair<Integer, Integer>>> positions = new HashMap<>();
-    public static Map<String, List<Pair<String, Integer>>> tops = new HashMap<>();
+    public static final Map<String, Map<UUID,Pair<Integer, Integer>>> positions = new HashMap<>();
+    public static final Map<String, List<Pair<String, Integer>>> tops = new HashMap<>();
 
-    public static List<Pair<String, StatComparator>> comparators = List.of(
+    public static final List<Pair<String, StatComparator>> comparators = List.of(
         Pair.of("score_highest", PlayerStatsHolder::getScore_total),
         Pair.of("emeralds_highest", PlayerStatsHolder::getEmeralds_total),
         Pair.of("days_highest", PlayerStatsHolder::getDays_total),

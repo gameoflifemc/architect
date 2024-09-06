@@ -20,6 +20,7 @@ public class Meta {
     public static final String ACTIONS = "actions";
     public static final String FACT = "fact";
     public static final String SAVINGS = "savings";
+    public static final String CODE = "code";
     // total values
     public static final String SCORE_TOTAL = "score_total";
     public static final String EMERALDS_TOTAL = "emeralds_total";

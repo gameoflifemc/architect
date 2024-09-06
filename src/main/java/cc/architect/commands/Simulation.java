@@ -108,7 +108,7 @@ public class Simulation {
                                     inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
                                     // write to database
                                     Meta.add(p,Meta.SAVINGS,amount*10);
-                                    getServer().dispatchCommand(Architect.CONSOLE,"simulation score add "+p.getName()+" "+(int)(amount*9));
+                                    getServer().dispatchCommand(Architect.CONSOLE,"simulation score add " + p.getName() + " " + (amount*9));
                                     p.sendMessage(Component.text("Úspěšně uloženo " + amount + " emeraldů. Celkem je nyní uloženo " + (Integer.parseInt(Meta.get(p,Meta.SAVINGS))/10) + " emeraldů.").color(Colors.GREEN));
                                     return Command.SINGLE_SUCCESS;
                                 })
