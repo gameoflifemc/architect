@@ -24,7 +24,7 @@ public class Facts {
             // get fact data
             String data = Meta.get(p,Meta.FACT + "_" + fact);
             // set fact data
-            Bukkit.dispatchCommand(Architect.CONSOLE,"tw facts set " + fact + " " + data + " " + p.getName());
+            Bukkit.dispatchCommand(Architect.CONSOLE,"tw facts set " + fact + " " + (data == null ? "0" : data) + " " + p.getName());
         }
     }
 }
