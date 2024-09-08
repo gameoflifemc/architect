@@ -176,9 +176,11 @@ public class Game {
     public static void exitGame(Player p) {
         // remove all bossbars from player
         Compass compass = HashMaps.COMPASSES.get(p);
-        compass.getDirections().removeViewer(p);
-        compass.getLocations().removeViewer(p);
-        compass.getBackground().removeViewer(p);
+        if (compass != null) {
+            compass.getDirections().removeViewer(p);
+            compass.getLocations().removeViewer(p);
+            compass.getBackground().removeViewer(p);
+        }
         // delete compass
         HashMaps.COMPASSES.remove(p);
         HashMaps.WORLD_LOCATIONS.remove(p);
@@ -188,9 +190,9 @@ public class Game {
     }
     public static void enterLobby(Player p) {
         // give player spyglass
-        PlayerInventory inv = p.getInventory();
-        HashMaps.REPLACEMENT_ITEM.put(p,inv.getItemInMainHand());
-        inv.setItemInMainHand(Items.SPYGLASS);
+        PlayerInventory inventory = p.getInventory();
+        HashMaps.REPLACEMENT_ITEM.put(p,inventory.getItemInMainHand());
+        inventory.setItemInMainHand(Items.SPYGLASS);
         // add player to action bar
         HashMaps.ACTION_BAR.add(p);
     }

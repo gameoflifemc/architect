@@ -18,8 +18,8 @@ import org.bukkit.plugin.Plugin;
 
 public class Code {
     private static final Component ICON = Component.text("\uE004 ").color(TextColor.fromHexString("#FFFFFF"));
-    private static final Component PREFIX = Component.text("Zde je tvůj registrační kód: ").color(Colors.GREEN);
-    private static final Component SUFFIX = Component.text(" (stiskni \"T\" a klikni na kód pro zkopírování)").color(Colors.GREEN);
+    private static final Component PREFIX = Component.text("\"").color(Colors.GREEN);
+    private static final Component SUFFIX = Component.text("\" je tvůj registrační kód. Stiskni \"T\" a klikni zde pro zkopírování kódu.").color(Colors.GREEN);
     public static void register(LifecycleEventManager<Plugin> manager) {
         // create and register command
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -30,7 +30,7 @@ public class Code {
                     return Command.SINGLE_SUCCESS;
                 }
                 String code = Meta.check(p,Meta.CODE) ? Meta.get(p,Meta.CODE) : Code.generate(p);
-                p.sendMessage(ICON.append(PREFIX).append(Component.text(code).decorate(TextDecoration.UNDERLINED).color(Colors.BASE)).append(SUFFIX).clickEvent(ClickEvent.copyToClipboard(code)));
+                p.sendMessage(ICON.append(PREFIX).append(Component.text(code).color(Colors.GREEN).decorate(TextDecoration.UNDERLINED)).append(SUFFIX).clickEvent(ClickEvent.copyToClipboard(code)));
                 return Command.SINGLE_SUCCESS;
             })
             .build()
