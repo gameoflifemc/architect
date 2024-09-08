@@ -2,7 +2,9 @@ package cc.architect.tasks.player;
 
 import cc.architect.managers.Facts;
 import cc.architect.managers.Meta;
+import cc.architect.objects.Colors;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -53,7 +55,36 @@ public class Autosave implements Runnable {
         int others = (int) Math.floor((double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10)
                 - Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));
         // save emeralds
-        Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(Math.max(emeralds.addAndGet(others),0)));
+        int remover = Integer.parseInt(Meta.get(p,Meta.LOAN_SPOR));
+
+        String lichMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+        String[] loans = lichMap.split(";");
+
+        if(!loans[0].isEmpty()) {
+            for (String loan : loans) {
+                String[] data = loan.split(",");
+                int loanAmount = Integer.parseInt(data[0]);
+                remover += loanAmount;
+            }
+        }
+
+        String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
+        String[] investments = investmentsMap.split(";");
+
+        int playerDay = Integer.parseInt(Meta.get(p,Meta.DAYS));
+
+        for (String investment : investments) {
+            String[] data = investment.split(",");
+            int amount = Integer.parseInt(data[0]);
+            int days = Math.max(Integer.parseInt(data[1]) - playerDay, 0);
+            if(days == 0) {
+                others += amount;
+            }
+        }
+
+        int emeraldsF = Math.max((emeralds.get()-remover)+others,0);
+
+        Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(emeraldsF));
     }
     private static void facts(Player p) {
         // save all facts to database
@@ -79,6 +110,7 @@ public class Autosave implements Runnable {
     }
     public static void calculateHighest(Player p) {
         // calculate highest and save to database
+
         Meta.set(p,Meta.SCORE_HIGHEST,Meta.get(p,Meta.SCORE_TOTAL));
         Meta.set(p,Meta.EMERALDS_HIGHEST,Meta.get(p,Meta.EMERALDS_TOTAL));
         Meta.set(p,Meta.INVESTMENTS_HIGHEST,Meta.get(p,Meta.INVESTMENTS_TOTAL));

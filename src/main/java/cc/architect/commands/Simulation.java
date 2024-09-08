@@ -469,13 +469,15 @@ public class Simulation {
         try {
             lich = Integer.parseInt(Meta.get(p,LOAN_LICH_COUNTER));
         } catch (NumberFormatException e) {
-            lich = 9;
+            lich = 10;
+            Meta.set(p,LOAN_LICH_COUNTER,"10");
         }
 
         String[] loans = lichMap.split(";");
 
-        if(loans.length>4) {
+        if(loans.length>3) {
             p.sendMessage(Component.text("Máš u mě už moc půjček.").color(Colors.RED));
+            return;
         }
 
         Meta.set(p,Meta.LOAN_LICH_MAP,lichMap+ (amount+lich)+","+lich+";");
@@ -485,6 +487,7 @@ public class Simulation {
         p.sendMessage(Component.text("Úspěšně jsi vytvořil půjčku s hodnotou "+amount+" emeraldů a úrokem "+lich+" emeraldů.").color(Colors.GREEN));
 
         if(lich==9) return;
+        Meta.add(p,Meta.LOAN_TOTAL,amount);
         Meta.add(p,LOAN_LICH_COUNTER,1);
     }
 
@@ -584,6 +587,10 @@ public class Simulation {
 
             int map = (int) Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SPOR)) /10);
 
+            if(map<=0){
+                p.sendMessage(Component.text("Aktuálně nemáš žádné půjčky.").color(Colors.RED));
+            }
+
             if(map<=emeraldsInventory.get()) {
                 removed += map;
                 Meta.set(p,Meta.LOAN_SPOR, String.valueOf(0));
@@ -606,6 +613,10 @@ public class Simulation {
             int removed = 0;
 
             int map = (int) Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SPOR)) /10);
+
+            if(map<=0){
+                p.sendMessage(Component.text("Aktuálně nemáš žádné půjčky.").color(Colors.RED));
+            }
 
             if(map<=amount) {
                 removed += map;

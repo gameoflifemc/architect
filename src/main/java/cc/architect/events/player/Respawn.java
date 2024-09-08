@@ -1,5 +1,7 @@
 package cc.architect.events.player;
 
+import cc.architect.Architect;
+import cc.architect.managers.Meta;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -14,5 +16,7 @@ public class Respawn implements Listener {
             return;
         }
         e.setRespawnLocation(world.getSpawnLocation());
+
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> e.getPlayer().setFoodLevel(Integer.parseInt(Meta.get(e.getPlayer(),Meta.ACTIONS))),20);
     }
 }

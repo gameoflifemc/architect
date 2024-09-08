@@ -129,7 +129,11 @@ public class Break implements Listener {
                     p.sendMessage(Messages.TREASURE_FOUND);
                     p.playSound(p.getLocation(),Sound.ENTITY_EXPERIENCE_ORB_PICKUP,SoundCategory.MASTER,100f,1f);
                     MiningChestLootTable.miningChestsSpawned++;
+
                 }
+                PlayerInventory inventory = p.getInventory();
+                ItemStack item = inventory.getItemInMainHand();
+                item.damage(1,p);
             }
             case COBBLESTONE -> {
                 b.setType(Material.BEDROCK);
@@ -146,6 +150,9 @@ public class Break implements Listener {
                     ocelot.setTrusting(false);
                     ocelot.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,PotionEffect.INFINITE_DURATION,1));
                 }
+                PlayerInventory inventory = p.getInventory();
+                ItemStack item = inventory.getItemInMainHand();
+                item.damage(1,p);
             }
         }
     }
