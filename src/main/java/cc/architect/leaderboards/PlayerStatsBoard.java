@@ -37,7 +37,7 @@ public class PlayerStatsBoard {
     }
 
     public static void setupBoard(InteractiveDisplay board){
-        board.setChangeToAllPlayers((display)->{display.setLineWidth(300);});
+        board.setChangeToAllPlayers((display)-> display.setLineWidth(300));
 
         board.setOnSpawnCallback((display, uuid) -> {
             PlayerStatsHolder stats = new PlayerStatsHolder(uuid);

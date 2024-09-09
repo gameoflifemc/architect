@@ -35,9 +35,7 @@ public class TravelRegistry {
     }
 
     private static void createTask(){
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()->{
-            minigames.values().forEach(TravelMinigame::handeExit);
-        },0,10);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()-> minigames.values().forEach(TravelMinigame::handeExit),0,10);
     }
 
     public static void entityDeath(EntityDeathEvent event) {
@@ -54,13 +52,11 @@ public class TravelRegistry {
     }
 
     public static void createEntityDeleter() {
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()->{
-            Architect.TRAVEL.getLivingEntities().forEach(entity -> {
-                if(entity instanceof Player) return;
-                if(!entity.getScoreboardTags().contains(Architect.SESSION)) {
-                    entity.remove();
-                }
-            });
-        },40,40);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()-> Architect.TRAVEL.getLivingEntities().forEach(entity -> {
+            if(entity instanceof Player) return;
+            if(!entity.getScoreboardTags().contains(Architect.SESSION)) {
+                entity.remove();
+            }
+        }),40,40);
     }
 }
