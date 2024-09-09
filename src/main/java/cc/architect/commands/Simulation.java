@@ -439,7 +439,7 @@ public class Simulation {
         }
     }
     public static void sporkaTake(Player p, int amount){
-        if(Meta.get(p,Meta.LOAN_SAFE_HADLOAN).equals("true")){
+        if(Meta.get(p,Meta.LOAN_SAFE_HAD_LOAN).equals("true")){
             p.sendMessage(Component.text("Tento den jsi si u už spořitelny půjčil, přijdi další den aby jsi mohl vytvořit novou půjčku.").color(Colors.RED));
             return;
         }

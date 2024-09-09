@@ -36,7 +36,7 @@ public class Game {
             Meta.set(p,Meta.LOAN_RISKY_COUNTER,"10");
 
             Meta.set(p,Meta.LOAN_SAFE,"0");
-            Meta.set(p,Meta.LOAN_SAFE_HADLOAN,"false");
+            Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         }
         // prepare meta
         Meta.set(p,Meta.ROUTINE,"1");
@@ -134,7 +134,7 @@ public class Game {
         Meta.clear(p,Meta.ACTIONS);
         Meta.clear(p,Meta.ROUTINE);
 
-        Meta.set(p,Meta.LOAN_SAFE_HADLOAN,"false");
+        Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         p.setFoodLevel(20);
         // move to spawn
         Movers.toSpawn(p);
@@ -154,7 +154,7 @@ public class Game {
         Meta.clear(p,Meta.EMERALDS_TOTAL);
         Meta.clear(p,Meta.SCORE_TOTAL);
         Meta.clear(p,Meta.INVESTMENTS_MAP);
-        Meta.clear(p,Meta.LOAN_SAFE_HADLOAN);
+        Meta.clear(p,Meta.LOAN_SAFE_HAD_LOAN);
         Meta.clear(p,Meta.LOAN_SAFE);
         Meta.clear(p,Meta.LOAN_RISKY_MAP);
         Meta.clear(p,Meta.LOAN_RISKY_COUNTER);
