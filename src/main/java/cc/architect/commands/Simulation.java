@@ -27,7 +27,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static cc.architect.leaderboards.stats.StatsCaching.cacheStats;
-import static cc.architect.managers.Meta.LOAN_LICH_COUNTER;
+import static cc.architect.managers.Meta.LOAN_RISKY_COUNTER;
 import static org.bukkit.Bukkit.getServer;
 
 public class Simulation {
@@ -337,7 +337,7 @@ public class Simulation {
                                     int amount = IntegerArgumentType.getInteger(ctx,"type");
                                     switch (amount) {
                                         case 0:
-                                            p.sendMessage(Component.text("Aktuálně máš půjčku s hodnotou " + (int)Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SPOR)) /10) + " emeraldů.").color(Colors.GREEN));
+                                            p.sendMessage(Component.text("Aktuálně máš půjčku s hodnotou " + (int)Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SAFE)) /10) + " emeraldů.").color(Colors.GREEN));
                                             break;
                                         case 1:
                                             printLichvar(p);
@@ -421,7 +421,7 @@ public class Simulation {
     }
 
     public static void printLichvar(Player p){
-        String lichMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+        String lichMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
         String[] loans = lichMap.split(";");
 
         p.sendMessage(Component.text("Aktuální stav:").color(Colors.GREEN).appendNewline());
@@ -439,13 +439,13 @@ public class Simulation {
         }
     }
     public static void sporkaTake(Player p, int amount){
-        if(Meta.get(p,Meta.LOAN_SPOR_HADLOAN).equals("true")){
+        if(Meta.get(p,Meta.LOAN_SAFE_HAD_LOAN).equals("true")){
             p.sendMessage(Component.text("Tento den jsi si u už spořitelny půjčil, přijdi další den aby jsi mohl vytvořit novou půjčku.").color(Colors.RED));
             return;
         }
-        String map = Meta.get(p,Meta.LOAN_SPOR);
+        String map = Meta.get(p,Meta.LOAN_SAFE);
 
-        if(!(Meta.get(p,Meta.LOAN_LICH_MAP).isEmpty()&&map.equals("0"))) {
+        if(!(Meta.get(p,Meta.LOAN_RISKY_MAP).isEmpty()&&map.equals("0"))) {
             if(!map.equals("0")){
                 p.sendMessage(Component.text("Už u nás máš vytořenou půjčku, nejdříve ji raději zplať aby jsi nezbankrotoval.").color(Colors.RED));
             }else{
@@ -454,7 +454,7 @@ public class Simulation {
             return;
         }
 
-        Meta.set(p,Meta.LOAN_SPOR, String.valueOf((int)(amount*10+(amount*10)*Game.LOAN_SPOR_INSTANT)));
+        Meta.set(p,Meta.LOAN_SAFE, String.valueOf((int)(amount*10+(amount*10)*Game.LOAN_SPOR_INSTANT)));
 
         Utilities.addItemsToInventory(p.getInventory(), amount, Material.EMERALD);
 
@@ -463,14 +463,14 @@ public class Simulation {
         Meta.add(p,Meta.LOAN_TOTAL,amount);
     }
     public static void lichvarTake(Player p, int amount){
-        String lichMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+        String lichMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
 
         int lich;
         try {
-            lich = Integer.parseInt(Meta.get(p,LOAN_LICH_COUNTER));
+            lich = Integer.parseInt(Meta.get(p, LOAN_RISKY_COUNTER));
         } catch (NumberFormatException e) {
             lich = 10;
-            Meta.set(p,LOAN_LICH_COUNTER,"10");
+            Meta.set(p, LOAN_RISKY_COUNTER,"10");
         }
 
         String[] loans = lichMap.split(";");
@@ -480,7 +480,7 @@ public class Simulation {
             return;
         }
 
-        Meta.set(p,Meta.LOAN_LICH_MAP,lichMap+ (amount+lich)+","+lich+";");
+        Meta.set(p,Meta.LOAN_RISKY_MAP,lichMap+ (amount+lich)+","+lich+";");
 
         Utilities.addItemsToInventory(p.getInventory(), amount, Material.EMERALD);
 
@@ -488,7 +488,7 @@ public class Simulation {
 
         if(lich==9) return;
         Meta.add(p,Meta.LOAN_TOTAL,amount);
-        Meta.add(p,LOAN_LICH_COUNTER,1);
+        Meta.add(p, LOAN_RISKY_COUNTER,1);
     }
 
     public static void lichvarPayoff(Player p,int amount) {
@@ -501,7 +501,7 @@ public class Simulation {
                 }
             });
 
-            String lichMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+            String lichMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
             String[] loans = lichMap.split(";");
 
             if(loans[0].isEmpty()) {
@@ -526,7 +526,7 @@ public class Simulation {
                 }
             }
 
-            Meta.set(p,Meta.LOAN_LICH_MAP,loanBuilder.toString());
+            Meta.set(p,Meta.LOAN_RISKY_MAP,loanBuilder.toString());
 
             p.getInventory().removeItemAnySlot(new ItemStack(Material.EMERALD,removed));
 
@@ -540,7 +540,7 @@ public class Simulation {
             }
             int removed = 0;
 
-            String lichMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+            String lichMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
             String[] loans = lichMap.split(";");
 
             if(loans[0].isEmpty()) {
@@ -565,7 +565,7 @@ public class Simulation {
                 }
             }
 
-            Meta.set(p,Meta.LOAN_LICH_MAP,loanBuilder.toString());
+            Meta.set(p,Meta.LOAN_RISKY_MAP,loanBuilder.toString());
 
             p.getInventory().removeItemAnySlot(new ItemStack(Material.EMERALD,removed));
 
@@ -585,7 +585,7 @@ public class Simulation {
                 }
             });
 
-            int map = (int) Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SPOR)) /10);
+            int map = (int) Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SAFE)) /10);
 
             if(map<=0){
                 p.sendMessage(Component.text("Aktuálně nemáš žádné půjčky.").color(Colors.RED));
@@ -593,18 +593,18 @@ public class Simulation {
 
             if(map<=emeraldsInventory.get()) {
                 removed += map;
-                Meta.set(p,Meta.LOAN_SPOR, String.valueOf(0));
+                Meta.set(p,Meta.LOAN_SAFE, String.valueOf(0));
                 //TODO scoreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 Meta.add(p,Meta.SCORE_TOTAL,100);
             }else {
                 removed += emeraldsInventory.get();
-                Meta.set(p,Meta.LOAN_SPOR, String.valueOf(map-emeraldsInventory.get()));
+                Meta.set(p,Meta.LOAN_SAFE, String.valueOf(map-emeraldsInventory.get()));
             }
 
             p.getInventory().removeItemAnySlot(new ItemStack(Material.EMERALD,removed));
 
             p.sendMessage(Component.text("Úspěšně jsi vrátil "+removed+" emeraldů.").color(Colors.GREEN));
-            p.sendMessage(Component.text("Aktuálně máš půjčku s hodnotou " + (int)Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SPOR)) /10) + " emeraldů.").color(Colors.GREEN));
+            p.sendMessage(Component.text("Aktuálně máš půjčku s hodnotou " + (int)Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SAFE)) /10) + " emeraldů.").color(Colors.GREEN));
         }else {
             if(!p.getInventory().contains(Material.EMERALD,amount)){
                 p.sendMessage(Component.text("Nemáš tento počet emeraldů.").color(Colors.RED));
@@ -612,7 +612,7 @@ public class Simulation {
             }
             int removed = 0;
 
-            int map = (int) Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SPOR)) /10);
+            int map = (int) Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SAFE)) /10);
 
             if(map<=0){
                 p.sendMessage(Component.text("Aktuálně nemáš žádné půjčky.").color(Colors.RED));
@@ -620,18 +620,18 @@ public class Simulation {
 
             if(map<=amount) {
                 removed += map;
-                Meta.set(p,Meta.LOAN_SPOR, String.valueOf(0));
+                Meta.set(p,Meta.LOAN_SAFE, String.valueOf(0));
                 //TODO scoreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 Meta.add(p,Meta.SCORE_TOTAL,100);
             }else {
                 removed += amount;
-                Meta.set(p,Meta.LOAN_SPOR, String.valueOf(map-amount));
+                Meta.set(p,Meta.LOAN_SAFE, String.valueOf(map-amount));
             }
 
             p.getInventory().removeItemAnySlot(new ItemStack(Material.EMERALD,removed));
 
             p.sendMessage(Component.text("Úspěšně jsi vrátil "+removed+" emeraldů.").color(Colors.GREEN));
-            p.sendMessage(Component.text("Aktuálně máš půjčku s hodnotou " + (int)Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SPOR)) /10) + " emeraldů.").color(Colors.GREEN));
+            p.sendMessage(Component.text("Aktuálně máš půjčku s hodnotou " + (int)Math.ceil((double) Integer.parseInt(Meta.get(p, Meta.LOAN_SAFE)) /10) + " emeraldů.").color(Colors.GREEN));
         }
     }
 }
