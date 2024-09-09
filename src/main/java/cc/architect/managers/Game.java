@@ -32,11 +32,11 @@ public class Game {
             Meta.set(p,Meta.SCORE_TOTAL,"0");
             Meta.set(p,Meta.INVESTMENTS_MAP,"");
 
-            Meta.set(p,Meta.LOAN_LICH_MAP,"");
-            Meta.set(p,Meta.LOAN_LICH_COUNTER,"10");
+            Meta.set(p,Meta.LOAN_RISKY_MAP,"");
+            Meta.set(p,Meta.LOAN_RISKY_COUNTER,"10");
 
-            Meta.set(p,Meta.LOAN_SPOR,"0");
-            Meta.set(p,Meta.LOAN_SPOR_HADLOAN,"false");
+            Meta.set(p,Meta.LOAN_SAFE,"0");
+            Meta.set(p,Meta.LOAN_SAFE_HADLOAN,"false");
         }
         // prepare meta
         Meta.set(p,Meta.ROUTINE,"1");
@@ -48,9 +48,9 @@ public class Game {
         int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
         Meta.add(p,Meta.SAVINGS,savings / SAVINGS_DIVIDER);
 
-        int loan_spor = Integer.parseInt(Meta.get(p,Meta.LOAN_SPOR));
+        int loan_spor = Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE));
         //Meta.add(p,Meta.INVESTMENTS_TOTAL, investments / INTEREST_DIVIDER);
-        Meta.add(p,Meta.LOAN_SPOR, (int) (loan_spor * LOAN_SPOR_INSTANT));
+        Meta.add(p,Meta.LOAN_SAFE, (int) (loan_spor * LOAN_SPOR_INSTANT));
 
         handleInvestments(p);
         handleLoanLich(p);
@@ -83,7 +83,7 @@ public class Game {
     public static void handleLoanLich(Player p) {
         //investice
         StringBuilder loanBuilder = new StringBuilder();
-        String loansMap = Meta.get(p,Meta.LOAN_LICH_MAP);
+        String loansMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
         String[] loans = loansMap.split(";");
         if(loans[0].isEmpty()) return;
 
@@ -96,7 +96,7 @@ public class Game {
             loanBuilder.append(newAmount).append(",").append(adder).append(";");
         }
 
-        Meta.set(p,Meta.LOAN_LICH_MAP,loanBuilder.toString());
+        Meta.set(p,Meta.LOAN_RISKY_MAP,loanBuilder.toString());
     }
     public static void resumeDay(Player p) {
         // enter game
@@ -134,7 +134,7 @@ public class Game {
         Meta.clear(p,Meta.ACTIONS);
         Meta.clear(p,Meta.ROUTINE);
 
-        Meta.set(p,Meta.LOAN_SPOR_HADLOAN,"false");
+        Meta.set(p,Meta.LOAN_SAFE_HADLOAN,"false");
         p.setFoodLevel(20);
         // move to spawn
         Movers.toSpawn(p);
@@ -154,10 +154,10 @@ public class Game {
         Meta.clear(p,Meta.EMERALDS_TOTAL);
         Meta.clear(p,Meta.SCORE_TOTAL);
         Meta.clear(p,Meta.INVESTMENTS_MAP);
-        Meta.clear(p,Meta.LOAN_SPOR_HADLOAN);
-        Meta.clear(p,Meta.LOAN_SPOR);
-        Meta.clear(p,Meta.LOAN_LICH_MAP);
-        Meta.clear(p,Meta.LOAN_LICH_COUNTER);
+        Meta.clear(p,Meta.LOAN_SAFE_HADLOAN);
+        Meta.clear(p,Meta.LOAN_SAFE);
+        Meta.clear(p,Meta.LOAN_RISKY_MAP);
+        Meta.clear(p,Meta.LOAN_RISKY_COUNTER);
         // show title
         p.sendMessage(Component.text("Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu."));
     }
