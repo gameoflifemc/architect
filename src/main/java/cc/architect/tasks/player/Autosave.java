@@ -1,5 +1,6 @@
 package cc.architect.tasks.player;
 
+import cc.architect.Architect;
 import cc.architect.managers.Facts;
 import cc.architect.managers.Meta;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -51,47 +52,47 @@ public class Autosave implements Runnable {
             }
         }
 
-        int others = (int) Math.floor((double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10);
+        Architect.CONSOLE.sendMessage("Emeralds: " + emeralds.get());
+
+        int savingsAdd = divideFloor(Integer.parseInt(Meta.get(p, Meta.SAVINGS))); // savings
+        Architect.CONSOLE.sendMessage("Savings: " + savingsAdd);
         // save emeralds
-        int remover = Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE));
+        int loansRemove = divideCeil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE)));//loans
+        Architect.CONSOLE.sendMessage("Loans1: " + loansRemove);
+        loansRemove += divideCeil(mapReader(Meta.get(p,Meta.LOAN_RISKY_MAP)));
+        Architect.CONSOLE.sendMessage("Loans2: " + loansRemove);
 
 
-        String lichMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
+        int investmentsAdd = mapReader(Meta.get(p,Meta.INVESTMENTS_MAP));
+        Architect.CONSOLE.sendMessage("Investments: " + investmentsAdd);
 
-        if(lichMap!=null) {
-            String[] loans = lichMap.split(";");
-
-            if (!loans[0].isEmpty()) {
-                for (String loan : loans) {
-                    String[] data = loan.split(",");
-                    int loanAmount = Integer.parseInt(data[0]);
-                    remover += loanAmount;
-                }
-            }
-        }
-
-        String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
-
-        if(investmentsMap != null) {
-            String[] investments = investmentsMap.split(";");
-
-            if (!investments[0].isEmpty()) {
-                int playerDay = Integer.parseInt(Meta.get(p, Meta.DAYS));
-
-                for (String investment : investments) {
-                    String[] data = investment.split(",");
-                    int amount = Integer.parseInt(data[0]);
-                    int days = Math.max(Integer.parseInt(data[1]) - playerDay, 0);
-                    if (days == 0) {
-                        others += amount;
-                    }
-                }
-            }
-        }
-
-        int emeraldsF = Math.max((emeralds.get() - remover) + others, 0);
+        int emeraldsF = emeralds.get();
+        Architect.CONSOLE.sendMessage("EmeraldF1: " + emeraldsF);
+        emeraldsF += savingsAdd;
+        Architect.CONSOLE.sendMessage("EmeraldF2: " + emeraldsF);
+        emeraldsF += investmentsAdd;
+        Architect.CONSOLE.sendMessage("EmeraldF3: " + emeraldsF);
+        emeraldsF -= loansRemove;
+        Architect.CONSOLE.sendMessage("EmeraldF4: " + emeraldsF);
+        emeraldsF = Math.max(0,emeraldsF);
+        Architect.CONSOLE.sendMessage("EmeraldF5: " + emeraldsF);
 
         Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(emeraldsF));
+    }
+
+    private static int mapReader(String map) {
+        int total = 0;
+        if(map != null) {
+            String[] datas = map.split(";");
+            if (!datas[0].isEmpty()) {
+                for (String data : datas) {
+                    String[] subdata = data.split(",");
+                    int amount = Integer.parseInt(subdata[0]);
+                    total += amount;
+                }
+            }
+        }
+        return total;
     }
     private static void facts(Player p) {
         // save all facts to database
@@ -122,5 +123,12 @@ public class Autosave implements Runnable {
         Meta.set(p,Meta.EMERALDS_HIGHEST,Meta.get(p,Meta.EMERALDS_TOTAL));
         Meta.set(p,Meta.INVESTMENTS_HIGHEST,Meta.get(p,Meta.INVESTMENTS_TOTAL));
         Meta.set(p,Meta.LOAN_HIGHEST,Meta.get(p,Meta.LOAN_TOTAL));
+    }
+
+    public static int divideCeil(int i){
+        return (int) Math.ceil((double)i/10);
+    }
+    public static int divideFloor(int i){
+        return (int) Math.floor((double)i/10);
     }
 }

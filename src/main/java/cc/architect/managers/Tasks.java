@@ -23,6 +23,6 @@ public class Tasks {
         //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new StartFarmingMinigame(),DELAY,10);
         //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Mushrooms(),DELAY,20);
         // stats
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,StatsCaching::cacheStats,DELAY,24000);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,StatsCaching::cacheStats,DELAY,6000);
     }
 }

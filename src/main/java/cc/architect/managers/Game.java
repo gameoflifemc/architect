@@ -102,17 +102,26 @@ public class Game {
         // enter game
         Game.enterGame(p);
         // synchronize action points
-        p.setFoodLevel(Integer.parseInt(Meta.get(p,Meta.ACTIONS)));
+        if(Meta.get(p,Meta.ACTIONS)!=null) {
+            p.setFoodLevel(Integer.parseInt(Meta.get(p, Meta.ACTIONS)));
+        }else{
+            p.setFoodLevel(20);
+            Meta.set(p,Meta.ACTIONS,"20");
+        }
         // show transition
         Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
-            // teleport to last location
-            String[] data = Meta.get(p, Meta.LAST_LOCATION).split(",");
-            World world = Bukkit.getWorld(data[0]);
-            if (world == null) {
-                return;
+            if(Meta.get(p, Meta.LAST_LOCATION)==null){
+                p.teleport(Bukkit.getWorld("village").getSpawnLocation());
+            }else {
+                // teleport to last location
+                String[] data = Meta.get(p, Meta.LAST_LOCATION).split(",");
+                World world = Bukkit.getWorld(data[0]);
+                if (world == null) {
+                    return;
+                }
+                p.teleport(new Location(world, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]), Float.parseFloat(data[4]), Float.parseFloat(data[5])));
             }
-            p.teleport(new Location(world,Double.parseDouble(data[1]),Double.parseDouble(data[2]),Double.parseDouble(data[3]),Float.parseFloat(data[4]),Float.parseFloat(data[5])));
             // synchronize time
             switch (Meta.get(p,Meta.ROUTINE)) {
                 case "1":
@@ -126,8 +135,7 @@ public class Game {
     }
     public static void finishDay(Player p) {
         // calculate game information
-        Autosave.emeralds(p);
-        Autosave.calculateHighest(p);
+        Autosave.autosave(p);
         // remove everything concerning the given day, but keep stuff concerning the whole game
         Meta.clear(p,Meta.LAST_LOCATION);
         Meta.clear(p,Meta.LAST_TIME);
