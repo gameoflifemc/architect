@@ -193,7 +193,6 @@ public class Loan {
             p.getInventory().removeItemAnySlot(new ItemStack(Material.EMERALD,removed));
 
             p.sendMessage(Component.text("Úspěšně jsi vrátil "+removed+" emeraldů.").color(Colors.GREEN));
-            printLichvar(p);
         }else {
 
             if(!p.getInventory().contains(Material.EMERALD,amount)){
@@ -233,8 +232,8 @@ public class Loan {
 
             p.sendMessage(Component.text("Úspěšně jsi vrátil "+removed+" emeraldů.").color(Colors.GREEN));
 
-            printLichvar(p);
         }
+        printLichvar(p);
     }
 
     public static void sporPayoff(Player p,int amount) {
