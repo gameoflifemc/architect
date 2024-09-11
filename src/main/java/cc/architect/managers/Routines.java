@@ -7,6 +7,9 @@ import org.bukkit.entity.Player;
 public class Routines {
     public static void switchToNext(Player p) {
         // check which routine to start
+        if(Meta.get(p,Meta.ROUTINE) == null) {
+            Meta.set(p,Meta.ROUTINE,"1");
+        }
         int routine = Integer.parseInt(Meta.get(p,Meta.ROUTINE));
         if (routine == 1) {
             // start evening

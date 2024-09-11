@@ -52,30 +52,20 @@ public class Autosave implements Runnable {
             }
         }
 
-        Architect.CONSOLE.sendMessage("Emeralds: " + emeralds.get());
 
         int savingsAdd = divideFloor(Integer.parseInt(Meta.get(p, Meta.SAVINGS))); // savings
-        Architect.CONSOLE.sendMessage("Savings: " + savingsAdd);
         // save emeralds
         int loansRemove = divideCeil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE)));//loans
-        Architect.CONSOLE.sendMessage("Loans1: " + loansRemove);
         loansRemove += divideCeil(mapReader(Meta.get(p,Meta.LOAN_RISKY_MAP)));
-        Architect.CONSOLE.sendMessage("Loans2: " + loansRemove);
 
 
         int investmentsAdd = mapReader(Meta.get(p,Meta.INVESTMENTS_MAP));
-        Architect.CONSOLE.sendMessage("Investments: " + investmentsAdd);
 
         int emeraldsF = emeralds.get();
-        Architect.CONSOLE.sendMessage("EmeraldF1: " + emeraldsF);
         emeraldsF += savingsAdd;
-        Architect.CONSOLE.sendMessage("EmeraldF2: " + emeraldsF);
         emeraldsF += investmentsAdd;
-        Architect.CONSOLE.sendMessage("EmeraldF3: " + emeraldsF);
         emeraldsF -= loansRemove;
-        Architect.CONSOLE.sendMessage("EmeraldF4: " + emeraldsF);
         emeraldsF = Math.max(0,emeraldsF);
-        Architect.CONSOLE.sendMessage("EmeraldF5: " + emeraldsF);
 
         Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(emeraldsF));
     }

@@ -2,6 +2,8 @@ package cc.architect.managers;
 
 import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
+import cc.architect.commands.money.investments.InvestmentBasic;
+import cc.architect.commands.money.investments.InvestmentRisky;
 import cc.architect.objects.Compass;
 import cc.architect.objects.HashMaps;
 import cc.architect.objects.Titles;
@@ -17,10 +19,11 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Game {
     private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
-    private static final float INVESTMENTS_PERCENT = .04f;
-    private static final int SAVINGS_DIVIDER = 50;
+    public static final float INVESTMENTS_PERCENT = .04f;
+    public static final float INVESTMENTS_RISKY_MIN_PERCENT = -.07f;
+    public static final float INVESTMENTS_RISKY_MAX_PERCENT = .08f;
+    public static final int SAVINGS_DIVIDER = 50;
     public static final float LOAN_SPOR_INSTANT = .03f;
-    public static final int LICH_SPOR_INSTANT = 10;
     public static void beginDay(Player p) {
         if (!Meta.check(p,Meta.DAYS)) {
             // prepare meta
@@ -30,7 +33,9 @@ public class Game {
             Meta.set(p,Meta.LOAN_TOTAL,"0");
             Meta.set(p,Meta.EMERALDS_TOTAL,"0");
             Meta.set(p,Meta.SCORE_TOTAL,"0");
+
             Meta.set(p,Meta.INVESTMENTS_MAP,"");
+            Meta.set(p,Meta.INVESTMENTS_MAP_RISKY,"");
 
             Meta.set(p,Meta.LOAN_RISKY_MAP,"");
             Meta.set(p,Meta.LOAN_RISKY_COUNTER,"10");
@@ -38,6 +43,7 @@ public class Game {
             Meta.set(p,Meta.LOAN_SAFE,"0");
             Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         }
+        Architect.CONSOLE.sendMessage("beginDay "+p.getName());
         // prepare meta
         Meta.set(p,Meta.ROUTINE,"1");
         Meta.set(p,Meta.ACTIONS,"20");
@@ -52,32 +58,12 @@ public class Game {
         //Meta.add(p,Meta.INVESTMENTS_TOTAL, investments / INTEREST_DIVIDER);
         Meta.add(p,Meta.LOAN_SAFE, (int) (loan_spor * LOAN_SPOR_INSTANT));
 
-        handleInvestments(p);
+        InvestmentBasic.handleInvestmentsAdder(p);
+        InvestmentRisky.handleRiskyInvestmentsAdder(p);
         handleLoanLich(p);
 
         // move to first routine
         Routines.startMorning(p);
-    }
-    public static void handleInvestments(Player p) {
-        //investice
-        StringBuilder invBuilder = new StringBuilder();
-        String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
-        String[] investments = investmentsMap.split(";");
-        if(investments[0].isEmpty()) return;
-
-        for (String investment : investments) {
-            String[] data = investment.split(",");
-            int amount = Integer.parseInt(data[0]);
-            int days = Math.max(Integer.parseInt(data[1]),0);
-
-            int newAmount = amount + (int)(amount * INVESTMENTS_PERCENT);
-            if(days==0){
-                newAmount = amount;
-            }
-            invBuilder.append(newAmount).append(",").append(days).append(";");
-        }
-
-        Meta.set(p,Meta.INVESTMENTS_MAP,invBuilder.toString());
     }
 
     public static void handleLoanLich(Player p) {
@@ -122,6 +108,9 @@ public class Game {
                 }
                 p.teleport(new Location(world, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]), Float.parseFloat(data[4]), Float.parseFloat(data[5])));
             }
+            if(Meta.get(p,Meta.ROUTINE) == null) {
+                Meta.set(p,Meta.ROUTINE,"1");
+            }
             // synchronize time
             switch (Meta.get(p,Meta.ROUTINE)) {
                 case "1":
@@ -162,6 +151,7 @@ public class Game {
         Meta.clear(p,Meta.EMERALDS_TOTAL);
         Meta.clear(p,Meta.SCORE_TOTAL);
         Meta.clear(p,Meta.INVESTMENTS_MAP);
+        Meta.clear(p,Meta.INVESTMENTS_MAP_RISKY);
         Meta.clear(p,Meta.LOAN_SAFE_HAD_LOAN);
         Meta.clear(p,Meta.LOAN_SAFE);
         Meta.clear(p,Meta.LOAN_RISKY_MAP);
