@@ -2,6 +2,7 @@ package cc.architect.managers;
 
 import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
+import cc.architect.commands.money.Loan;
 import cc.architect.commands.money.investments.InvestmentBasic;
 import cc.architect.commands.money.investments.InvestmentRisky;
 import cc.architect.objects.Compass;
@@ -45,6 +46,7 @@ public class Game {
         }
         Architect.CONSOLE.sendMessage("beginDay "+p.getName());
         // prepare meta
+        Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         Meta.set(p,Meta.ROUTINE,"1");
         Meta.set(p,Meta.ACTIONS,"20");
         p.setFoodLevel(20);
@@ -54,36 +56,17 @@ public class Game {
         int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
         Meta.add(p,Meta.SAVINGS,savings / SAVINGS_DIVIDER);
 
-        int loan_spor = Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE));
-        //Meta.add(p,Meta.INVESTMENTS_TOTAL, investments / INTEREST_DIVIDER);
-        Meta.add(p,Meta.LOAN_SAFE, (int) (loan_spor * LOAN_SPOR_INSTANT));
 
         InvestmentBasic.handleInvestmentsAdder(p);
         InvestmentRisky.handleRiskyInvestmentsAdder(p);
-        handleLoanLich(p);
+
+        Loan.handleLoanSporAdd(p);
+        Loan.handleLoanLichvarAdd(p);
 
         // move to first routine
         Routines.startMorning(p);
     }
 
-    public static void handleLoanLich(Player p) {
-        //investice
-        StringBuilder loanBuilder = new StringBuilder();
-        String loansMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
-        String[] loans = loansMap.split(";");
-        if(loans[0].isEmpty()) return;
-
-        for (String investment : loans) {
-            String[] data = investment.split(",");
-            int amount = Integer.parseInt(data[0]);
-            int adder = Integer.parseInt(data[1]);
-
-            int newAmount = amount + adder;
-            loanBuilder.append(newAmount).append(",").append(adder).append(";");
-        }
-
-        Meta.set(p,Meta.LOAN_RISKY_MAP,loanBuilder.toString());
-    }
     public static void resumeDay(Player p) {
         // enter game
         Game.enterGame(p);
