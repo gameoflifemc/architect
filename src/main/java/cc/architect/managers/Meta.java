@@ -26,6 +26,7 @@ public class Meta {
     public static final String EMERALDS_TOTAL = "emeralds_total";
     public static final String INVESTMENTS_TOTAL = "investments_total";
     public static final String INVESTMENTS_MAP = "investments_map";
+    public static final String INVESTMENTS_MAP_RISKY = "investments_map_risky";
     public static final String LOAN_TOTAL = "loan_total";
     public static final String LOAN_RISKY_MAP = "loan_risky_map";
     public static final String LOAN_RISKY_COUNTER = "loan_risky_counter";

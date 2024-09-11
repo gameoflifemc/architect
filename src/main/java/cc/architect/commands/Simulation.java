@@ -349,6 +349,111 @@ public class Simulation {
                         )
                     )
                 )
+                .then(Commands.literal("riskyinvestment")
+                    .then(Commands.literal("put")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .then(Commands.argument("amount",IntegerArgumentType.integer())
+                                .then(Commands.argument("time",IntegerArgumentType.integer())
+                                    .executes(ctx -> {
+                                        // check player
+                                        Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                        if (p == null) {
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+                                        // check amount
+                                        int amount = IntegerArgumentType.getInteger(ctx,"amount");
+                                        int time = IntegerArgumentType.getInteger(ctx,"time");
+                                        if (amount <= 0) {
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+                                        PlayerInventory inventory = p.getInventory();
+                                        if (!inventory.contains(Material.EMERALD,amount)) {
+                                            p.sendMessage(Component.text("Bohužel nemáš tolik emeraldů.").color(Colors.RED));
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+                                        int days = Integer.parseInt(Meta.get(p,Meta.DAYS));
+                                        int endTime = days+time;
+
+                                        if(endTime > 10){
+                                            p.sendMessage(Component.text("Tato investice bude trvat déle než zbývajících "+(10-days)+" dnů").color(Colors.RED));
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+
+                                        // remove from inventory
+                                        inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
+                                        // write to database
+                                        Meta.add(p,Meta.INVESTMENTS_TOTAL,amount);
+
+                                        String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
+                                        Meta.set(p,Meta.INVESTMENTS_MAP_RISKY,investmentsMap + amount + "," + endTime+ ";");
+
+
+                                        p.sendMessage(Component.text("Úspěšně zainvestováno " + amount + " emeraldů na dobu "+time+" dnů.").color(Colors.GREEN));
+                                        printInvestments(p);
+                                        return Command.SINGLE_SUCCESS;
+                                    })
+                                )
+                            )
+                        )
+                    )
+                    .then(Commands.literal("claim")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .executes(ctx -> {
+                                // check player
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                if (p == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                PlayerInventory inventory = p.getInventory();
+                                if (inventory.firstEmpty() == -1) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+
+                                StringBuilder invBuilder = new StringBuilder();
+                                int claimAmount = 0;
+                                String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
+                                String[] investments = investmentsMap.split(";");
+                                if(investments[0].isEmpty()) {
+                                    p.sendMessage(Component.text("Nemáš žádné aktivní investice.").color(Colors.RED));
+                                    return Command.SINGLE_SUCCESS;
+                                }
+
+                                for (String investment : investments) {
+                                    String[] data = investment.split(",");
+                                    int amount = Integer.parseInt(data[0]);
+                                    int days = Math.max(Integer.parseInt(data[1]),0);
+
+                                    if(days>Integer.parseInt(Meta.get(p,Meta.DAYS))){
+                                        invBuilder.append(amount).append(",").append(days).append(";");
+                                    }else{
+                                        claimAmount += amount;
+                                    }
+                                }
+
+                                Meta.set(p,Meta.INVESTMENTS_MAP_RISKY,invBuilder.toString());
+
+                                // add to inventory
+                                Utilities.addItemsToInventory(inventory, claimAmount, Material.EMERALD);
+                                // write to database
+                                p.sendMessage(Component.text("Dostal jsi " + claimAmount + " emeraldů.").color(Colors.GREEN));
+                                printInvestmentsRisky(p);
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
+                    )
+                    .then(Commands.literal("inspect")
+                        .then(Commands.argument("player",StringArgumentType.word())
+                            .executes(ctx -> {
+                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                                if (p == null) {
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                printInvestmentsRisky(p);
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
+                    )
+                )
                 .then(Commands.literal("travel")
                     .then(Commands.argument("player",StringArgumentType.word())
                         .then(Commands.argument("world",StringArgumentType.word())
@@ -401,6 +506,26 @@ public class Simulation {
 
     public static void printInvestments(Player p){
         String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP);
+        String[] investments = investmentsMap.split(";");
+
+        p.sendMessage(Component.text("Aktuální stav:").color(Colors.GREEN).appendNewline());
+
+        if(investments[0].isEmpty()) {
+            p.sendMessage(Component.text("Nemáš žádné aktivní investice").color(Colors.GREEN));
+            return;
+        }
+
+        int playerDay = Integer.parseInt(Meta.get(p,Meta.DAYS));
+
+        for (String investment : investments) {
+            String[] data = investment.split(",");
+            int amount = Integer.parseInt(data[0]);
+            int days = Math.max(Integer.parseInt(data[1]) - playerDay, 0);
+            p.sendMessage(Component.text("Investice s aktuální hodnotou " + amount + " emeraldů " + (days==0? "si můžes vyzvednout teď":"dostaneš za " + days + " dní.")).color(Colors.GREEN));
+        }
+    }
+    public static void printInvestmentsRisky(Player p){
+        String investmentsMap = Meta.get(p,Meta.INVESTMENTS_MAP_RISKY);
         String[] investments = investmentsMap.split(";");
 
         p.sendMessage(Component.text("Aktuální stav:").color(Colors.GREEN).appendNewline());
