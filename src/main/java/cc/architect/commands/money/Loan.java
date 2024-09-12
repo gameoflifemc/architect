@@ -134,12 +134,8 @@ public class Loan {
         }
         String map = Meta.get(p,Meta.LOAN_SAFE);
 
-        if(!(Meta.get(p,Meta.LOAN_RISKY_MAP).isEmpty()&&map.equals("0"))) {
-            if(!map.equals("0")){
-                p.sendMessage(Component.text("Už u nás máš vytořenou půjčku, nejdříve ji raději zplať aby jsi nezbankrotoval.").color(Colors.RED));
-            }else{
-                p.sendMessage(Component.text("Vidíme že máš vytvořenou půjčku, ale ne u nás. Doporučujeme ti ji co nejdříve zaplatit než se ti nasčítají úroky.").color(Colors.RED));
-            }
+        if(!(map.equals("0"))) {
+            p.sendMessage(Component.text("Už u nás máš vytořenou půjčku, nejdříve ji raději zplať aby jsi nezbankrotoval.").color(Colors.RED));
             return;
         }
 
