@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static cc.architect.managers.Meta.LOAN_RISKY_COUNTER;
@@ -309,5 +310,19 @@ public class Loan {
             int percent = Integer.parseInt(data[1]);
             p.sendMessage(Component.text("Půjčka s aktuální hodnotou " + amount + " emeraldů a úrokem "+percent+".").color(Colors.RED));
         }
+    }
+
+    public static int countAllAmount(UUID p){
+        String lichMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
+        if(lichMap.isEmpty()) return 0;
+        String[] loans = lichMap.split(";");
+        if(loans[0].isEmpty()) return 0;
+        int amount = 0;
+        for (String loan : loans) {
+            String[] data = loan.split(",");
+            amount += Integer.parseInt(data[0]);
+        }
+        amount += (int) Math.ceil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE))/10.0);
+        return amount;
     }
 }

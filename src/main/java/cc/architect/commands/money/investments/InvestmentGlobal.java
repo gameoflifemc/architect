@@ -8,11 +8,14 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.kyori.adventure.text.Component;
+import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.UUID;
 
 public class InvestmentGlobal {
     public static int investPut(CommandContext ctx, String metaKey) {
@@ -123,6 +126,26 @@ public class InvestmentGlobal {
             int days = Math.max(Integer.parseInt(data[1]) - playerDay, 0);
             p.sendMessage(Component.text("Investice s aktuální hodnotou " + amount + " emeraldů " + (days==0? "si můžes vyzvednout teď":"dostaneš za " + days + " dní.")).color(Colors.GREEN));
         }
+    }
+
+    public static int countAllInvestments(UUID p) {
+        return countInvestment(p,Meta.INVESTMENTS_MAP)+countInvestment(p,Meta.INVESTMENTS_MAP_RISKY);
+    }
+
+    public static int countInvestment(UUID p, String metaKey) {
+        int investments = 0;
+        String investmentsMap = Meta.get(p,metaKey);
+        if(investmentsMap != null) {
+            String[] investmentsArray = investmentsMap.split(";");
+            if(!investmentsArray[0].isEmpty()) {
+                for (String investment : investmentsArray) {
+                    String[] data = investment.split(",");
+                    investments += Integer.parseInt(data[0]);
+                }
+            }
+        }
+
+        return investments;
     }
 
 }
