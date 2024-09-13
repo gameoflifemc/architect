@@ -39,7 +39,7 @@ public class PlayerStatsHolder {
         this.pujcky_total = Integer.parseInt(Meta.getSafe(user,"loan_highest","0"));
         this.pujcky_daily = Integer.parseInt(Meta.getSafe(user,"loan_daily","0"));
 
-        this.days_total = Integer.parseInt(Meta.getSafe(user,"days_highest","0"));
+        this.days_total = Integer.parseInt(Meta.getSafe(user,"days","0"));
     }
     public PlayerStatsHolder(int score_total, int emeralds_total, int days_total, int score_daily, int emeralds_daily, String name, UUID uuid) {
         this.score_total = score_total;

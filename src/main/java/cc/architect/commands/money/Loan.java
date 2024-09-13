@@ -313,7 +313,11 @@ public class Loan {
     }
 
     public static int countAllAmount(UUID p){
-        String lichMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
+        return countAmount(p,Meta.LOAN_RISKY_MAP)+(int) Math.ceil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE))/10.0);
+    }
+
+    public static int countAmount(UUID p, String metaKey){
+        String lichMap = Meta.get(p,metaKey);
         if(lichMap.isEmpty()) return 0;
         String[] loans = lichMap.split(";");
         if(loans[0].isEmpty()) return 0;
@@ -322,7 +326,6 @@ public class Loan {
             String[] data = loan.split(",");
             amount += Integer.parseInt(data[0]);
         }
-        amount += (int) Math.ceil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE))/10.0);
         return amount;
     }
 }

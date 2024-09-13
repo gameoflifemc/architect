@@ -23,9 +23,14 @@ public class Farming {
             new AutoPot(new Location(Architect.FARM,-97,-51,-85),new Location(Architect.FARM,-93,-51,-79),Material.BEETROOTS),
             new AutoPot(new Location(Architect.FARM,65,-54,-66),new Location(Architect.FARM,73,-54,-59),Material.BEETROOTS),
             new AutoPot(new Location(Architect.FARM,54,-56,79),new Location(Architect.FARM,62,-56,86),Material.CARROTS),
+            new AutoPot(new Location(Architect.FARM,115,-56,5),new Location(Architect.FARM,118,-56,7),Material.TORCHFLOWER_CROP),
+            new AutoPot(new Location(Architect.FARM,115,-55,119),new Location(Architect.FARM,121,-55,124),Material.TORCHFLOWER_CROP),
+            new AutoPot(new Location(Architect.FARM,103,-39,35),new Location(Architect.FARM,103,-39,35),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,104,-31,34),new Location(Architect.FARM,106,-31,36),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,-51,-41,61),new Location(Architect.FARM,-49,-41,63),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,112,-56,-114),new Location(Architect.FARM,118,-56,-108),Material.CARROTS)
     );
-    public static final List<Material> farmableSeeds = List.of(Material.WHEAT_SEEDS,Material.CARROT,Material.POTATO,Material.TORCHFLOWER_CROP, Material.BEETROOT_SEEDS);
+    public static final List<Material> farmableSeeds = List.of(Material.WHEAT_SEEDS,Material.CARROT,Material.POTATO,Material.TORCHFLOWER_CROP, Material.BEETROOT_SEEDS, Material.COCOA_BEANS, Material.SEAGRASS, Material.SEA_PICKLE, Material.PITCHER_CROP);
     public static void breakBlockFarm(BlockBreakEvent e){
         Player p = e.getPlayer();
 

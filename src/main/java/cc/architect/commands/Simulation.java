@@ -3,6 +3,7 @@ package cc.architect.commands;
 import cc.architect.Architect;
 import cc.architect.Utilities;
 import cc.architect.commands.money.Loan;
+import cc.architect.commands.money.Savings;
 import cc.architect.commands.money.investments.InvestmentBasic;
 import cc.architect.commands.money.investments.InvestmentRisky;
 import cc.architect.managers.Game;
@@ -93,68 +94,18 @@ public class Simulation {
                     .then(Commands.literal("put")
                         .then(Commands.argument("player",StringArgumentType.word())
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
-                                .executes(ctx -> {
-                                    // check player
-                                    Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
-                                    if (p == null) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    // check amount
-                                    int amount = IntegerArgumentType.getInteger(ctx,"amount");
-                                    if (amount <= 0) {
-                                        p.sendMessage(Component.text("Nemáš dostatek emeraldů na uložení.").color(Colors.RED));
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    PlayerInventory inventory = p.getInventory();
-                                    if (!inventory.contains(Material.EMERALD,amount)) {
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    // remove from inventory
-                                    inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
-                                    // write to database
-                                    Meta.add(p,Meta.SAVINGS,amount*10);
-                                    getServer().dispatchCommand(Architect.CONSOLE,"simulation score add " + p.getName() + " " + (amount*9));
-                                    p.sendMessage(Component.text("Úspěšně uloženo " + amount + " emeraldů. Celkem je nyní uloženo " + (Integer.parseInt(Meta.get(p,Meta.SAVINGS))/10) + " emeraldů.").color(Colors.GREEN));
-                                    return Command.SINGLE_SUCCESS;
-                                })
+                                .executes(Savings::put)
                             )
                         )
                     )
                     .then(Commands.literal("claim")
                         .then(Commands.argument("player",StringArgumentType.word())
-                            .executes(ctx -> {
-                                // check player
-                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
-                                if (p == null) {
-                                    return Command.SINGLE_SUCCESS;
-                                }
-                                // check amount
-                                int savings = (int)Math.floor((double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10);
-                                PlayerInventory inventory = p.getInventory();
-                                if (inventory.firstEmpty() == -1) {
-                                    return Command.SINGLE_SUCCESS;
-                                }
-                                // add to inventory
-                                Utilities.addItemsToInventory(inventory, savings, Material.EMERALD);
-
-                                // write to database
-                                Meta.set(p,Meta.SAVINGS, String.valueOf(0));
-                                p.sendMessage(Component.text("Úspěšně vybrány všechny emeraldy.").color(Colors.GREEN));
-                                return Command.SINGLE_SUCCESS;
-                            })
+                            .executes(Savings::claim)
                         )
                     )
                     .then(Commands.literal("inspect")
                         .then(Commands.argument("player",StringArgumentType.word())
-                            .executes(ctx -> {
-                                Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
-                                if (p == null) {
-                                    return Command.SINGLE_SUCCESS;
-                                }
-                                double savings = (double) Integer.parseInt(Meta.get(p, Meta.SAVINGS)) /10;
-                                p.sendMessage(Component.text("Aktuálně máš uloženo "+savings+" emeraldů.").color(Colors.GREEN));
-                                return Command.SINGLE_SUCCESS;
-                            })
+                            .executes(Savings::inspect)
                         )
                     )
                 )

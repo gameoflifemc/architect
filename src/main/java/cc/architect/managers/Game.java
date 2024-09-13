@@ -3,6 +3,7 @@ package cc.architect.managers;
 import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
 import cc.architect.commands.money.Loan;
+import cc.architect.commands.money.Savings;
 import cc.architect.commands.money.investments.InvestmentBasic;
 import cc.architect.commands.money.investments.InvestmentRisky;
 import cc.architect.objects.Compass;
@@ -53,13 +54,11 @@ public class Game {
         // enter game
         Game.enterGame(p);
         // simulate interest
-        int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
-        Meta.add(p,Meta.SAVINGS,savings / SAVINGS_DIVIDER);
-
-
+        Savings.handeSavingsAdder(p);
+        //investments
         InvestmentBasic.handleInvestmentsAdder(p);
         InvestmentRisky.handleRiskyInvestmentsAdder(p);
-
+        // loans
         Loan.handleLoanSporAdd(p);
         Loan.handleLoanLichvarAdd(p);
 
