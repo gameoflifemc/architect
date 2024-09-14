@@ -28,6 +28,8 @@ public class Farming {
             new AutoPot(new Location(Architect.FARM,103,-39,35),new Location(Architect.FARM,103,-39,35),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,104,-31,34),new Location(Architect.FARM,106,-31,36),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,-51,-41,61),new Location(Architect.FARM,-49,-41,63),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,108,-53,40),new Location(Architect.FARM,108,-53,40),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,11,-43,-112),new Location(Architect.FARM,14,-43,109),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,112,-56,-114),new Location(Architect.FARM,118,-56,-108),Material.CARROTS)
     );
     public static final List<Material> farmableSeeds = List.of(Material.WHEAT_SEEDS,Material.CARROT,Material.POTATO,Material.TORCHFLOWER_CROP, Material.BEETROOT_SEEDS, Material.COCOA_BEANS, Material.SEAGRASS, Material.SEA_PICKLE, Material.PITCHER_CROP);

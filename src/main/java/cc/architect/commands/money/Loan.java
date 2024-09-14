@@ -322,7 +322,7 @@ public class Loan {
 
     public static int countAmount(UUID p, String metaKey){
         String lichMap = Meta.get(p,metaKey);
-        if(lichMap.isEmpty()) return 0;
+        if(lichMap==null) return 0;
         String[] loans = lichMap.split(";");
         if(loans[0].isEmpty()) return 0;
         int amount = 0;
