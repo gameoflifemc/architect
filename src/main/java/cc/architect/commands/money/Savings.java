@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.UUID;
+
 import static org.bukkit.Bukkit.getServer;
 
 public class Savings {
@@ -76,5 +78,9 @@ public class Savings {
     public static void handeSavingsAdder(Player p) {
         int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
         Meta.add(p,Meta.SAVINGS,savings / Game.SAVINGS_DIVIDER);
+    }
+
+    public static int get(UUID p){
+        return Meta.get(p,Meta.SAVINGS)==null? 0 : Integer.parseInt(Meta.get(p,Meta.SAVINGS));
     }
 }

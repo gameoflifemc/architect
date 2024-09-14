@@ -313,7 +313,11 @@ public class Loan {
     }
 
     public static int countAllAmount(UUID p){
-        return countAmount(p,Meta.LOAN_RISKY_MAP)+(int) Math.ceil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE))/10.0);
+        int amount = countAmount(p, Meta.LOAN_RISKY_MAP);
+        if(Meta.get(p, Meta.LOAN_SAFE)!=null) {
+            amount += (int) Math.ceil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE))/10.0);
+        }
+        return amount;
     }
 
     public static int countAmount(UUID p, String metaKey){
