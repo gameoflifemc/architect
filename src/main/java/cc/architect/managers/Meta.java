@@ -12,13 +12,12 @@ import java.util.UUID;
 public class Meta {
     // autosaved data
     public static final String LAST_LOCATION = "last_location";
-    public static final String LAST_TIME = "last_time";
     // game flow data
     public static final String DAYS = "days";
     public static final String ROUTINE = "routine";
     // player data
     public static final String ACTIONS = "actions";
-    public static final String FACT = "fact";
+    public static final String FACT = "fact_";
     public static final String SAVINGS = "savings";
     public static final String CODE = "code";
     // total values
@@ -93,7 +92,7 @@ public class Meta {
         }
         set(user, key, Integer.toString(next));
     }
-    private static User toUser(Player player) {
+    public static User toUser(Player player) {
         return Architect.LUCKPERMS.getPlayerAdapter(Player.class).getUser(player);
     }
     public static User toUser(UUID player) {

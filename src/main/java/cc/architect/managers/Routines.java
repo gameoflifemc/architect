@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class Routines {
     public static void switchToNext(Player p) {
         // check which routine to start
-        if(Meta.get(p,Meta.ROUTINE) == null) {
+        if (Meta.get(p,Meta.ROUTINE) == null) {
             Meta.set(p,Meta.ROUTINE,"1");
         }
         int routine = Integer.parseInt(Meta.get(p,Meta.ROUTINE));
@@ -39,12 +39,12 @@ public class Routines {
     public static void startMorning(Player p) {
         Movers.toVillage(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
-            Time.interpolate(p,0,9000);
+            Time.accelerate(p,true);
             p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Ráno"));
         },Titles.TRANSITION_TELEPORT);
     }
     private static void startEvening(Player p) {
-        Time.interpolate(p,9000,18000);
+        Time.accelerate(p,false);
         p.showTitle(Titles.ROUTINE(Meta.get(p,Meta.DAYS),"Večer"));
     }
 }

@@ -1,5 +1,6 @@
 package cc.architect.events.player;
 
+import cc.architect.managers.Facts;
 import cc.architect.managers.Game;
 import cc.architect.tasks.player.Autosave;
 import net.kyori.adventure.text.Component;
@@ -17,6 +18,7 @@ public class Quit implements Listener {
         Player p = e.getPlayer();
         // autosave player
         Autosave.autosave(p);
+        Facts.saveOne(p);
         // remove player from lobby
         Game.exitLobby(p);
         // remove player from game

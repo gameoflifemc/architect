@@ -20,8 +20,6 @@ import org.joml.Vector3f;
 
 import java.util.Arrays;
 
-import static org.bukkit.Bukkit.getPlayer;
-
 
 public class PlayerStatsBoard {
     public static void createStatsLeaderBoard(Location l) {

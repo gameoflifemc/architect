@@ -40,9 +40,19 @@ public class Movers {
         Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"farm"),Titles.TRANSITION_TELEPORT);
     }
-
-    public static void toTravel(Player p, Location loc) {
+    public static void toTravel(Player p, Location location) {
         Movers.showTransition(p);
-        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> p.teleport(loc),100);
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> p.teleport(location),Titles.TRANSITION_TELEPORT);
+    }
+    public static void toLastLocation(Player p) {
+        Movers.showTransition(p);
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
+            String[] data = Meta.get(p,Meta.LAST_LOCATION).split(",");
+            World world = Bukkit.getWorld(data[0]);
+            if (world == null) {
+                return;
+            }
+            p.teleport(new Location(world,Double.parseDouble(data[1]),Double.parseDouble(data[2]),Double.parseDouble(data[3]),Float.parseFloat(data[4]),Float.parseFloat(data[5])));
+        },Titles.TRANSITION_TELEPORT);
     }
 }

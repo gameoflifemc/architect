@@ -1,9 +1,7 @@
 package cc.architect.tasks.player;
 
-import cc.architect.Architect;
 import cc.architect.managers.Facts;
 import cc.architect.managers.Meta;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Autosave implements Runnable {
     @Override
     public void run() {
+        Facts.saveAll();
         Bukkit.getOnlinePlayers().forEach(Autosave::autosave);
     }
     public static void autosave(Player p) {
@@ -23,9 +22,7 @@ public class Autosave implements Runnable {
             return;
         }
         location(p);
-        time(p);
         emeralds(p);
-        facts(p);
         calculateHighest(p);
         calculateDaily(p);
     }
@@ -37,10 +34,6 @@ public class Autosave implements Runnable {
         // save player location
         Meta.set(p,Meta.LAST_LOCATION,data);
     }
-    private static void time(Player p) {
-        // save player time
-        Meta.set(p,Meta.LAST_TIME,String.valueOf(p.getPlayerTime()));
-    }
     public static void emeralds(Player p) {
         // create atomic integer for emeralds
         AtomicInteger emeralds = new AtomicInteger();
@@ -51,25 +44,18 @@ public class Autosave implements Runnable {
                 emeralds.getAndAdd(stack.getAmount());
             }
         }
-
-
         int savingsAdd = divideFloor(Integer.parseInt(Meta.get(p, Meta.SAVINGS))); // savings
         // save emeralds
         int loansRemove = divideCeil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE)));//loans
         loansRemove += divideCeil(mapReader(Meta.get(p,Meta.LOAN_RISKY_MAP)));
-
-
         int investmentsAdd = mapReader(Meta.get(p,Meta.INVESTMENTS_MAP));
-
         int emeraldsF = emeralds.get();
         emeraldsF += savingsAdd;
         emeraldsF += investmentsAdd;
         emeraldsF -= loansRemove;
         emeraldsF = Math.max(0,emeraldsF);
-
         Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(emeraldsF));
     }
-
     private static int mapReader(String map) {
         int total = 0;
         if(map != null) {
@@ -83,14 +69,6 @@ public class Autosave implements Runnable {
             }
         }
         return total;
-    }
-    private static void facts(Player p) {
-        // save all facts to database
-        for (String fact : Facts.FACTS) {
-            // save fact
-            String data = PlaceholderAPI.setPlaceholders(p,"%typewriter_" + fact + "%");
-            Meta.set(p,Meta.FACT + "_" + fact,data);
-        }
     }
     private static void calculateDaily(Player p) {
         // get days
@@ -108,17 +86,15 @@ public class Autosave implements Runnable {
     }
     public static void calculateHighest(Player p) {
         // calculate highest and save to database
-
         Meta.set(p,Meta.SCORE_HIGHEST,Meta.get(p,Meta.SCORE_TOTAL));
         Meta.set(p,Meta.EMERALDS_HIGHEST,Meta.get(p,Meta.EMERALDS_TOTAL));
         Meta.set(p,Meta.INVESTMENTS_HIGHEST,Meta.get(p,Meta.INVESTMENTS_TOTAL));
         Meta.set(p,Meta.LOAN_HIGHEST,Meta.get(p,Meta.LOAN_TOTAL));
     }
-
     public static int divideCeil(int i){
-        return (int) Math.ceil((double)i/10);
+        return (int) Math.ceil((double) i / 10);
     }
     public static int divideFloor(int i){
-        return (int) Math.floor((double)i/10);
+        return (int) Math.floor((double) i / 10);
     }
 }

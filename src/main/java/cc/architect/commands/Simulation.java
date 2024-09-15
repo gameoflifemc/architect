@@ -1,12 +1,9 @@
 package cc.architect.commands;
 
-import cc.architect.Architect;
-import cc.architect.Utilities;
 import cc.architect.commands.money.Loan;
 import cc.architect.commands.money.Savings;
 import cc.architect.commands.money.investments.InvestmentBasic;
 import cc.architect.commands.money.investments.InvestmentRisky;
-import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
 import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
@@ -21,25 +18,17 @@ import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import static cc.architect.leaderboards.stats.StatsCaching.cacheStats;
-import static cc.architect.managers.Meta.LOAN_RISKY_COUNTER;
-import static org.bukkit.Bukkit.getServer;
 
 public class Simulation {
     public static void register(LifecycleEventManager<Plugin> manager) {
         // create and register command
         manager.registerEventHandler(LifecycleEvents.COMMANDS,event -> {
             // register command
-            // check player
             event.registrar().register(Commands.literal("simulation")
                 // internal commands
                 .then(Commands.literal("points")

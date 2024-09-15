@@ -1,6 +1,5 @@
 package cc.architect.commands.money.investments;
 
-import cc.architect.Architect;
 import cc.architect.managers.Game;
 import cc.architect.managers.Meta;
 import com.mojang.brigadier.context.CommandContext;

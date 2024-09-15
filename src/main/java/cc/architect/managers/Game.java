@@ -11,9 +11,6 @@ import cc.architect.objects.HashMaps;
 import cc.architect.objects.Titles;
 import cc.architect.tasks.player.Autosave;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -45,7 +42,6 @@ public class Game {
             Meta.set(p,Meta.LOAN_SAFE,"0");
             Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         }
-        Architect.CONSOLE.sendMessage("beginDay "+p.getName());
         // prepare meta
         Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         Meta.set(p,Meta.ROUTINE,"1");
@@ -61,58 +57,50 @@ public class Game {
         // loans
         Loan.handleLoanSporAdd(p);
         Loan.handleLoanLichvarAdd(p);
-
         // move to first routine
         Routines.startMorning(p);
     }
-
     public static void resumeDay(Player p) {
         // enter game
         Game.enterGame(p);
         // synchronize action points
-        if(Meta.get(p,Meta.ACTIONS)!=null) {
-            p.setFoodLevel(Integer.parseInt(Meta.get(p, Meta.ACTIONS)));
-        }else{
+        if (Meta.get(p,Meta.ACTIONS) != null) {
+            p.setFoodLevel(Integer.parseInt(Meta.get(p,Meta.ACTIONS)));
+        } else {
             p.setFoodLevel(20);
             Meta.set(p,Meta.ACTIONS,"20");
         }
-        // show transition
-        Movers.showTransition(p);
+        if (Meta.get(p,Meta.LAST_LOCATION) == null) {
+            // teleport to village
+            Movers.toVillage(p);
+        } else {
+            // teleport to last location
+            Movers.toLastLocation(p);
+        }
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
-            if(Meta.get(p, Meta.LAST_LOCATION)==null){
-                p.teleport(Bukkit.getWorld("village").getSpawnLocation());
-            }else {
-                // teleport to last location
-                String[] data = Meta.get(p, Meta.LAST_LOCATION).split(",");
-                World world = Bukkit.getWorld(data[0]);
-                if (world == null) {
-                    return;
-                }
-                p.teleport(new Location(world, Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]), Float.parseFloat(data[4]), Float.parseFloat(data[5])));
-            }
-            if(Meta.get(p,Meta.ROUTINE) == null) {
-                Meta.set(p,Meta.ROUTINE,"1");
-            }
             // synchronize time
             switch (Meta.get(p,Meta.ROUTINE)) {
                 case "1":
-                    Time.interpolate(p,Long.parseLong(Meta.get(p,Meta.LAST_TIME)),9000);
+                    Time.set(p,6000);
                     break;
                 case "2":
-                    Time.interpolate(p,Long.parseLong(Meta.get(p,Meta.LAST_TIME)),18000);
+                    Time.set(p,18000);
+                    break;
+                default:
+                    Time.set(p,6000);
+                    Meta.set(p,Meta.ROUTINE,"1");
                     break;
             }
-        }, Titles.TRANSITION_TELEPORT);
+        },Titles.TRANSITION_TELEPORT);
     }
     public static void finishDay(Player p) {
         // calculate game information
         Autosave.autosave(p);
+        Facts.saveOne(p);
         // remove everything concerning the given day, but keep stuff concerning the whole game
         Meta.clear(p,Meta.LAST_LOCATION);
-        Meta.clear(p,Meta.LAST_TIME);
         Meta.clear(p,Meta.ACTIONS);
         Meta.clear(p,Meta.ROUTINE);
-
         Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         p.setFoodLevel(20);
         // move to spawn
@@ -144,7 +132,7 @@ public class Game {
     private static void enterGame(Player p) {
         Game.exitLobby(p);
         // synchronize facts
-        Facts.synchronize(p);
+        Facts.restore(p);
         // create compass
         if (!HashMaps.COMPASSES.containsKey(p)) {
             // create compass

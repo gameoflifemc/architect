@@ -11,6 +11,7 @@ import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.leaderboards.InitLeaderBoards;
 import cc.architect.managers.Compasses;
+import cc.architect.managers.Facts;
 import cc.architect.managers.Items;
 import cc.architect.managers.Tasks;
 import cc.architect.minigames.travel.wrapper.TravelRegistry;
@@ -136,6 +137,8 @@ public final class Architect extends JavaPlugin {
         Compasses.setupValues();
         // leaderboards
         InitLeaderBoards.init();
+        // facts
+        Facts.initialize();
         // travel mini-games
         TravelRegistry.init();
         // welcome

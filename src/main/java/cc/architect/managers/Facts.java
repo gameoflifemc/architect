@@ -4,70 +4,83 @@ import cc.architect.Architect;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public class Facts {
-    public static final String[] FACTS = {
-        // facts
-        "eif5GXYBcwkJK3P",
-        "Y2n3yM3Mi5Dyagc",
-        "vhpXgbQKTMeQ5w4",
-        "3JtA3527BVZbesM",
-        "1IpI56QCdApGD33",
-        "mm22LuT8w4c8hjl",
-        "I3O438Bqx90imFk",
-        "bYXFPC4qNA5Ox6q",
-        "rtcDFAPy90vcec8",
-        "wK5dBo4vc1DkOrc",
-        "WhhEyFKTw9p7x7U",
-        "s5EHHx8cm2Z3bkg",
-        "bDHv8yOKA68Q2Jp",
-        "FGbdjVbU3mfsVTy",
-        "J3C5JYIYV59frZU",
-        "gT3nfCg6DzKCC6A",
-        "TQaypbHWwxb1itF",
-        "PXeZTLsQK6JxIjt",
-        "sYMM9WznOgSZvpu",
-        "TbVp04F8kil339i",
-        "HgaTEUmhxwxsnyD",
-        "4RN2gBtx3o27C19",
-        "ozZgLLeuOJ0rQoW",
-        "mfAnIq5uMVAPxah",
-        "2CSok6RUNJl0O6a",
-        "7kVNSYo2yDozYt5",
-        "bzNKoXFacK6gWE9",
-        "1GpDQrLqhNHIk4n",
-        // random emeralds
-        "AVU9lNoFkNdiI1x",
-        "JUAiNM7Drel6lSY",
-        // score
-        "FntiFqnZGccgWMc",
-        "aoWUqAgUPD7Cmif",
-        "OVy3wM5ZaTHvNhS",
-        "zwcqLtem6MxpNw4",
-        "bH3UIgC7Hkn8BkL",
-        "FTWE99fmU4giNun",
-        "lDRUX374hA4Eyap",
-        "ZDt9elP1DPlJADZ",
-        "hqPGvyePqZJ51DX",
-        "upG7McPVJU2WVMb",
-        "KUXYfZADmHCOrQe",
-        "nZkpLDZMxAZPZHH",
-        "N5l6x7JMXsPeZtp",
-        "Cwb87OtF0LeSVcu",
-        "RBcHA2i36UD2bIk",
-        "e5xK7T5c5qZcZGL",
-        "qqbbzizdeI4voWn",
-        "XjViFQNw3CWcxyI",
-        "oGqbMguoW9JD8of",
-        "EeLHXQpXLvBZbW1",
-        "1qivP4AxFljdUIj"
-    };
-    public static void synchronize(Player p) {
+    private static String FACT_PATH;
+    public static void initialize() {
+        FACT_PATH = Bukkit.getPluginsFolder().getPath() + "/Typewriter/facts.json";
+    }
+    public static void restore(Player p) {
+        // get all meta keys
+        Set<String> keys = Meta.toUser(p).getCachedData().getMetaData().getMeta().keySet();
         // synchronize facts
-        for (String fact : FACTS) {
+        for (String fact : keys) {
+            // skip non-facts
+            if (!fact.startsWith(Meta.FACT)) {
+                return;
+            }
+            // get fact id
+            String id = fact.substring(5);
             // get fact data
-            String data = Meta.get(p, Meta.FACT + "_" + fact);
+            String data = Meta.get(p,fact);
             // set fact data
-            Bukkit.dispatchCommand(Architect.CONSOLE, "tw facts set " + fact + " " + (data == null ? "0" : data) + " " + p.getName());
+            Bukkit.dispatchCommand(Architect.CONSOLE, "tw facts set " + id + " " + data + " " + p.getName());
+        }
+    }
+    public static void saveOne(Player p) {
+        if (p.getWorld().getName().equals("world")) {
+            return;
+        }
+        Facts.save(p,Facts.get());
+    }
+    public static void saveAll() {
+        String line = Facts.get();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getWorld().getName().equals("world")) {
+                continue;
+            }
+            Facts.save(p,line);
+        }
+    }
+    private static String get() {
+        String line;
+        try (BufferedReader reader = new BufferedReader(new FileReader(FACT_PATH))) {
+            line = reader.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return line;
+    }
+    private static void save(Player p,String line) {
+        // get indexes of uuid
+        List<Integer> uuids = new ArrayList<>();
+        String matcher = p.getUniqueId().toString();
+        int index = line.indexOf(matcher);
+        while (index >= 0) {
+            uuids.add(index);
+            index = line.indexOf(matcher,index + 1);
+        }
+        // run through all uuid indexes
+        for (int uuid : uuids) {
+            // get fact index
+            int fact = uuid - 19;
+            // get value index
+            int value = uuid + 47;
+            // prepare string builder
+            StringBuilder builder = new StringBuilder();
+            // get whole value
+            while (Character.isDigit(line.charAt(value))) {
+                builder.append(line.charAt(value));
+                value++;
+            }
+            // save fact
+            Meta.set(p,Meta.FACT + line.substring(fact,fact + 15),builder.toString());
         }
     }
 }

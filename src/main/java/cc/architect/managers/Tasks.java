@@ -18,7 +18,7 @@ public class Tasks {
         // autosave
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Autosave(),DELAY,1200);
         // mining
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN, replenishBedrockTask,DELAY,1800);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN, replenishBedrockTask,DELAY,6000);
         // farming
         //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new StartFarmingMinigame(),DELAY,10);
         //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Mushrooms(),DELAY,20);
