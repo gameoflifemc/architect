@@ -5,8 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Bisected;
+import org.bukkit.block.data.type.Cocoa;
+import org.bukkit.block.data.type.SeaPickle;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -35,6 +38,8 @@ public class Farming {
             new AutoPot(new Location(Architect.FARM,-51,-41,61),new Location(Architect.FARM,-49,-41,63),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,108,-53,40),new Location(Architect.FARM,108,-53,40),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,11,-43,-112),new Location(Architect.FARM,14,-43,109),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,104,-55,34),new Location(Architect.FARM,107,-51,37),Material.COCOA),
+            new AutoPot(new Location(Architect.FARM,11,-54,-112),new Location(Architect.FARM,14,-52,-109),Material.COCOA),
             new AutoPot(new Location(Architect.FARM,112,-56,-114),new Location(Architect.FARM,118,-56,-108),Material.CARROTS)
     );
     public static final List<Material> farmableSeeds = List.of(Material.WHEAT_SEEDS,Material.CARROT,Material.POTATO, Material.BEETROOT_SEEDS);
@@ -58,6 +63,12 @@ public class Farming {
             b = b.getRelative(0,-1,0);
         }
 
+        if(b.getType().equals(Material.SEAGRASS)) {
+            for (int i = 0; i < finalRepeat; i++) {
+                p.getInventory().addItem(new ItemStack(Material.SEAGRASS));
+            }
+        }
+
         b.getDrops().forEach(drop -> {
             for(int i = 0; i < finalRepeat; i++) {
                 if (farmableSeeds.contains(drop.getType())) {
@@ -79,16 +90,45 @@ public class Farming {
             e.setCancelled(false);
         }
 
+        Block finalB = b;
+        Material finalMaterial = b.getType();
+        if(isUnderWater(b)) {
+            Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,()->{
+                if(finalMaterial.equals(Material.SEA_PICKLE)) {
+                    BlockState state = finalB.getState();
+                    state.setType(finalMaterial);
+                    SeaPickle pickle = (SeaPickle)state.getBlockData();
+                    pickle.setPickles((int)Math.floor((Math.random()*2.0)+1));
+                    state.setBlockData(pickle);
+                    finalB.setBlockData(pickle);
+                } else {
+                    finalB.setType(finalMaterial);
+                }
+            },320+(long)(Math.random()*80));
+            return;
+        }
+
         for(AutoPot pot : pots){
             if(pot.boundingBox.contains(b.getX(),b.getY(),b.getZ())){
-                Block finalB = b;
+
                 Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,()->{
                     if(!finalB.getType().equals(Material.AIR)) return;
-                    finalB.setType(pot.material);
+
+                    if(!pot.material.equals(Material.COCOA)) {
+                        finalB.setType(pot.material);
+                    } else {
+                        placeCocoa(finalB);
+                    }
+
+
                 },80);
                 return;
             }
         }
+    }
+
+    public static boolean isUnderWater(Block b) {
+        return b.getType().equals(Material.SEAGRASS) || b.getType().equals(Material.SEA_PICKLE);
     }
 
     public static void interactBlockFarm(PlayerInteractEvent e) {
@@ -111,5 +151,21 @@ public class Farming {
         data.setHalf(Bisected.Half.TOP);
         state.setBlockData(data);
         top.setBlockData(data);
+    }
+
+    public static void placeCocoa(Block b) {
+        if(b.getRelative(BlockFace.EAST).getType().equals(Material.JUNGLE_LOG)) placeCocoa(b,BlockFace.EAST);
+        if(b.getRelative(BlockFace.WEST).getType().equals(Material.JUNGLE_LOG)) placeCocoa(b,BlockFace.WEST);
+        if(b.getRelative(BlockFace.NORTH).getType().equals(Material.JUNGLE_LOG)) placeCocoa(b,BlockFace.NORTH);
+        if(b.getRelative(BlockFace.SOUTH).getType().equals(Material.JUNGLE_LOG)) placeCocoa(b,BlockFace.SOUTH);
+    }
+
+    public static void placeCocoa(Block b, BlockFace face) {
+        BlockState state = b.getState();
+        state.setType(Material.COCOA);
+        Cocoa cocoa = (Cocoa)state.getBlockData();
+        cocoa.setFacing(face);
+        state.setBlockData(cocoa);
+        b.setBlockData(cocoa);
     }
 }
