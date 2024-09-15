@@ -9,7 +9,6 @@ import org.bukkit.event.block.BlockGrowEvent;
 public class BlockGrow implements Listener {
     @EventHandler
     public void BlockGrowEvent(BlockGrowEvent event) {
-        Bukkit.broadcastMessage("BlockGrowEvent");
         Farming.handleBlockGrow(event);
     }
 }

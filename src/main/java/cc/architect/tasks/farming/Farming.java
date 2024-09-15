@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Bisected;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -51,6 +53,11 @@ public class Farming {
         }
 
         int finalRepeat = repeat;
+
+        if(b.getRelative(0,-1,0).getType().equals(Material.PITCHER_PLANT)) {
+            b = b.getRelative(0,-1,0);
+        }
+
         b.getDrops().forEach(drop -> {
             for(int i = 0; i < finalRepeat; i++) {
                 if (farmableSeeds.contains(drop.getType())) {
@@ -74,9 +81,10 @@ public class Farming {
 
         for(AutoPot pot : pots){
             if(pot.boundingBox.contains(b.getX(),b.getY(),b.getZ())){
+                Block finalB = b;
                 Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,()->{
-                    if(!b.getType().equals(Material.AIR)) return;
-                    b.setType(pot.material);
+                    if(!finalB.getType().equals(Material.AIR)) return;
+                    finalB.setType(pot.material);
                 },80);
                 return;
             }
@@ -92,8 +100,16 @@ public class Farming {
     }
 
     public static void handleBlockGrow(BlockGrowEvent event) {
-        if(!event.getBlock().getType().equals(Material.PITCHER_POD)) return;
-
+        if(!event.getBlock().getType().equals(Material.PITCHER_CROP)) return;
+        event.setCancelled(true);
         event.getBlock().setType(Material.PITCHER_PLANT);
+
+        Block top = event.getBlock().getRelative(0,1,0);
+        BlockState state = top.getState();
+        state.setType(Material.PITCHER_PLANT);
+        Bisected data = (Bisected)state.getBlockData();
+        data.setHalf(Bisected.Half.TOP);
+        state.setBlockData(data);
+        top.setBlockData(data);
     }
 }
