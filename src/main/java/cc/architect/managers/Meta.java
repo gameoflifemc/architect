@@ -58,7 +58,7 @@ public class Meta {
     public static String getSafe(User player, String key, String defaultValue) {
         String value = get(player,key);
         if (value == null) {
-            //set(player,key,defaultValue);
+            set(player,key,defaultValue);
             return defaultValue;
         }
         return value;
