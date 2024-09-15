@@ -104,7 +104,7 @@ public class Farming {
                 } else {
                     finalB.setType(finalMaterial);
                 }
-            },320+(long)(Math.random()*80));
+            },460+(long)(Math.random()*120));
             return;
         }
 

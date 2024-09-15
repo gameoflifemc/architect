@@ -156,6 +156,7 @@ public class Compasses {
         Component[] locations = new Component[DIAMETER];
         // get location map
         HashMap<Integer,RoughLocation> locationMap = HashMaps.ROTATION_LOCATIONS.get(p);
+        if(locationMap == null) return;
         // iterate through indexes
         for (int i = 0; i < DIAMETER; i++) {
             // get current index
