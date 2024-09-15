@@ -24,7 +24,7 @@ public class Game {
     public static final int SAVINGS_DIVIDER = 50;
     public static final float LOAN_SPOR_INSTANT = .03f;
     public static void beginDay(Player p) {
-        if (!Meta.check(p,Meta.DAYS)) {
+        if (!Meta.check(p,Meta.IS_IN_GAME)) {
             // prepare meta
             Meta.set(p,Meta.DAYS,"1");
             Meta.set(p,Meta.SAVINGS,"0");
@@ -41,6 +41,8 @@ public class Game {
 
             Meta.set(p,Meta.LOAN_SAFE,"0");
             Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
+
+            Meta.set(p,Meta.IS_IN_GAME, "true");
         }
         // prepare meta
         Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
@@ -126,6 +128,7 @@ public class Game {
         Meta.clear(p,Meta.LOAN_SAFE);
         Meta.clear(p,Meta.LOAN_RISKY_MAP);
         Meta.clear(p,Meta.LOAN_RISKY_COUNTER);
+        Meta.clear(p,Meta.IS_IN_GAME);
         // show title
         p.sendMessage(Component.text("Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu."));
     }

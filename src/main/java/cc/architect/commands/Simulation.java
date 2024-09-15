@@ -52,7 +52,7 @@ public class Simulation {
                                     Meta.set(p,Meta.ACTIONS,String.valueOf(next));
                                     // update player
                                     p.setFoodLevel(next);
-                                    p.sendMessage(Component.text("Akční bod byl úspěšně využit. Zbývá " + next + " akčních bodů do další části dne.").color(Colors.GREEN));
+                                    p.sendMessage(Component.text("Akční bod byl úspěšně využit. Zbývá " + (int)(next/2.0) + " akčních bodů do další části dne.").color(Colors.GREEN));
                                 }
                                 return Command.SINGLE_SUCCESS;
                             })

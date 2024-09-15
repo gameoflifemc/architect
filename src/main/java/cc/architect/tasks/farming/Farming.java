@@ -5,13 +5,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
 import java.util.List;
+import java.util.Map;
 
 public class Farming {
     public static final List<AutoPot> pots = List.of(
@@ -32,20 +35,29 @@ public class Farming {
             new AutoPot(new Location(Architect.FARM,11,-43,-112),new Location(Architect.FARM,14,-43,109),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,112,-56,-114),new Location(Architect.FARM,118,-56,-108),Material.CARROTS)
     );
-    public static final List<Material> farmableSeeds = List.of(Material.WHEAT_SEEDS,Material.CARROT,Material.POTATO,Material.TORCHFLOWER_CROP, Material.BEETROOT_SEEDS, Material.COCOA_BEANS, Material.SEAGRASS, Material.SEA_PICKLE, Material.PITCHER_CROP);
+    public static final List<Material> farmableSeeds = List.of(Material.WHEAT_SEEDS,Material.CARROT,Material.POTATO, Material.BEETROOT_SEEDS);
     public static void breakBlockFarm(BlockBreakEvent e){
         Player p = e.getPlayer();
 
         ItemStack inHand = p.getInventory().getItemInMainHand();
-        if(!(inHand.getType().equals(Material.IRON_HOE) || inHand.getType().equals(Material.DIAMOND_HOE)|| inHand.getType().equals(Material.NETHERITE_HOE))) return;
+        if(!(inHand.getType().equals(Material.IRON_HOE) || inHand.getType().equals(Material.DIAMOND_HOE) || inHand.getType().equals(Material.NETHERITE_HOE) || inHand.getType().equals(Material.GOLDEN_HOE))) return;
 
         Block b = e.getBlock();
 
-        b.getDrops(inHand).forEach(drop -> {
-            if(farmableSeeds.contains(drop.getType())){
-                Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + p.getName() + " " + drop.getType().getKey().getKey() + "[can_place_on={predicates:[{blocks:\"farmland\"}],show_in_tooltip:true}] 1");
-            }else{
-                p.getInventory().addItem(drop);
+        Map<Enchantment, Integer> enchantments = inHand.getEnchantments();
+        int repeat = 1;
+        if(enchantments.get(Enchantment.FORTUNE)!=null) {
+            repeat += enchantments.get(Enchantment.FORTUNE);
+        }
+
+        int finalRepeat = repeat;
+        b.getDrops().forEach(drop -> {
+            for(int i = 0; i < finalRepeat; i++) {
+                if (farmableSeeds.contains(drop.getType())) {
+                    giveFarmland(p, drop);
+                } else {
+                    p.getInventory().addItem(drop);
+                }
             }
         });
 
@@ -73,5 +85,15 @@ public class Farming {
 
     public static void interactBlockFarm(PlayerInteractEvent e) {
         e.setCancelled(false);
+    }
+
+    public static void giveFarmland(Player p, ItemStack drop) {
+        Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + p.getName() + " " + drop.getType().getKey().getKey() + "[can_place_on={predicates:[{blocks:\"farmland\"}],show_in_tooltip:true}] 1");
+    }
+
+    public static void handleBlockGrow(BlockGrowEvent event) {
+        if(!event.getBlock().getType().equals(Material.PITCHER_POD)) return;
+
+        event.getBlock().setType(Material.PITCHER_PLANT);
     }
 }

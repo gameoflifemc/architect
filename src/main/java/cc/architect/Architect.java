@@ -7,6 +7,7 @@ import cc.architect.events.block.Place;
 import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
 import cc.architect.events.entity.RemoveFromWorld;
+import cc.architect.events.misc.BlockGrow;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
 import cc.architect.leaderboards.InitLeaderBoards;
@@ -90,7 +91,8 @@ public final class Architect extends JavaPlugin {
             new Quit(),
             new Respawn(),
             new SpawnLocation(),
-            new cc.architect.events.player.Teleport()
+            new Teleport(),
+            new BlockGrow()
         );
         PluginManager pluginManager = this.getServer().getPluginManager();
         for (Listener event : events) {
