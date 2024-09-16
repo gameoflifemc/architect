@@ -22,14 +22,6 @@ public class Parties {
     //receiver -> sender, taskid
     public static final Map<String, PartyInvite> invites = new HashMap<>();
     public static void sendInvite(Player sender, String receiverName) {
-        /*if(IS_IN_PARTY.contains(sender.getName())){
-            sender.sendMessage(Messages.SEND_INVITE_CANNOT_MAKE_PARTY);
-            return;
-        }
-        if(IS_IN_PARTY.contains(receiverName)){
-            sender.sendMessage(Messages.PLAYER_IN_PARTY);
-            return;
-        }*/
         Player receiver = getPlayerExact(receiverName);
         //checks if player is sending invite to themselves
         if (sender.getName().equals(receiverName)) {
@@ -42,11 +34,6 @@ public class Parties {
             sender.sendMessage(Messages.PLAYER_ON_SAME_SERVER);
         }
         //checks if player has invite
-        /*if(invites.containsKey(receiver.getName())){
-            sender.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(receiver.getName()));
-            return;
-        }
-        createInvite(receiver.getName(), sender.getName());*/
     }
     /**
      * Creates invite for player
@@ -145,20 +132,13 @@ public class Parties {
         }
         Player pSender = getPlayerExact(sender);
         if (pSender == null) {
+            return;
         }
-        //pReceiver.teleport(pSender.getLocation());
+        pReceiver.teleport(pSender.getLocation());
     }
     public static void otherServerAcceptHandler(String receiver, String sender, PartyInvite invite){
         // sends message about teleporting the player on the server
         // plus the server name of the player that is being teleported for PARTIES and CANNOT_MAKE_PARTY
-        /*Base.prepareForwardMessage();
-        DataOutputStream messageOut = Base.getForwardMessageData();
-        try {
-            messageOut.writeUTF(receiver);
-            messageOut.writeUTF(sender);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
         //Base.sendForwardMessage(invite.getSenderServer(), Base.TELEPORT);
         // connecting to other server
         ByteArrayDataOutput out = getBasicMessage(Base.CONNECT);

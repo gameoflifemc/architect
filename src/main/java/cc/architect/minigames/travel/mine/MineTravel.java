@@ -31,35 +31,25 @@ public class MineTravel extends BasicTravelMinigame {
         meta.setCustomModelData(1);
         key.setItemMeta(meta);
     }
-
     @Override
     public double getDistance() {
         return 5;
     }
-
     @Override
     public Location getStartLocation() {
         return new Location(travelWorld, -31, 126, -47);
     }
-
     @Override
     public Location getEndLocation() {
         return new Location(travelWorld, -10, 126, 40);
     }
-
     @Override
     public Location teleportToLocation() {
         return new Location(endWorld, 32, -60, -106,-54,0);
     }
-
     @Override
     public List<Location> entityLocations(){
         return zombieLocations;
-    }
-
-    @Override
-    public List<ItemStack> onSpawnItems() {
-        return List.of(sword);
     }
     @Override
     public List<ItemStack> getAllItems() {
@@ -69,7 +59,6 @@ public class MineTravel extends BasicTravelMinigame {
     public List<ItemStack> getRequiredItems() {
         return List.of(key);
     }
-
     @Override
     public Factory factory() {
         return new ZombieFactory();

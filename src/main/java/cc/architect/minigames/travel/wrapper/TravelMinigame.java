@@ -14,7 +14,6 @@ public abstract class TravelMinigame {
     public final World endWorld;
     public final World travelWorld = Bukkit.getWorld("travel");
     public final int updateRate;
-
     public TravelMinigame(World finalWorld, int updateRate) {
         this.endWorld = finalWorld;
         this.updateRate = updateRate;
@@ -27,26 +26,21 @@ public abstract class TravelMinigame {
     public abstract double getDistance();
     public abstract void updateCall();
     public abstract boolean canExit(UUID player);
-
     public void playerEnter(UUID player) {
         Movers.toTravel(Bukkit.getPlayer(player),getStartLocation());
         start(player);
     }
-
     public void playerSuccessExit(UUID player) {
         Bukkit.getPlayer(player).teleport(teleportToLocation());
     }
-
-    public void handeExit() {
+    public void handleExit() {
         getEndLocation().getNearbyEntities(getDistance(),getDistance(),getDistance())
                 .stream().filter(e->e instanceof Player)
                 .map(Entity::getUniqueId)
                 .filter(this::canExit)
                 .forEach(this::playerSuccessExit);
     }
-
     public void createTask(){
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,this::updateCall,updateRate,updateRate);
     }
-
 }

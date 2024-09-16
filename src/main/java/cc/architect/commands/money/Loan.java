@@ -42,7 +42,7 @@ public class Loan {
         return Command.SINGLE_SUCCESS;
     }
 
-    public static int loanPayof(CommandContext ctx) {
+    public static int loanPayoff(CommandContext ctx) {
         Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
         if (p == null) {
             return Command.SINGLE_SUCCESS;

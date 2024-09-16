@@ -17,6 +17,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -52,7 +53,7 @@ public class Simulation {
                                     Meta.set(p,Meta.ACTIONS,String.valueOf(next));
                                     // update player
                                     p.setFoodLevel(next);
-                                    p.sendMessage(Component.text("Akční bod byl úspěšně využit. Zbývá " + (int)(next/2.0) + " akčních bodů do další části dne.").color(Colors.GREEN));
+                                    p.sendMessage(Component.text("\uD83C\uDF4E ").color(NamedTextColor.WHITE).append(Component.text("Akční bod úspěšně využit. Zbývá " + next / 2 + " bodů do další části dne.").color(Colors.ACTION)));
                                 }
                                 return Command.SINGLE_SUCCESS;
                             })
@@ -71,7 +72,7 @@ public class Simulation {
                                     int amount = IntegerArgumentType.getInteger(ctx,"amount");
                                     // write to database
                                     Meta.add(p,Meta.SCORE_TOTAL,amount);
-                                    p.sendMessage(Component.text("+ " + amount + " bodů skóre. Celkem " + Meta.get(p,Meta.SCORE_TOTAL) + " bodů skóre.").color(Colors.GREEN));
+                                    p.sendMessage(Component.text("\uE004 ").color(NamedTextColor.WHITE).append(Component.text("Získáno " + amount + " skóre. Celkem " + Meta.get(p,Meta.SCORE_TOTAL) + " skóre.").color(Colors.GREEN)));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )
@@ -156,7 +157,7 @@ public class Simulation {
                             .then(Commands.argument("amount",IntegerArgumentType.integer())
                                 //0 sporka 1 lichvar
                                 .then(Commands.argument("type", IntegerArgumentType.integer())
-                                    .executes(Loan::loanPayof)
+                                    .executes(Loan::loanPayoff)
                                 )
                             )
                         )
@@ -180,7 +181,7 @@ public class Simulation {
                                     return Command.SINGLE_SUCCESS;
                                 }
                                 TravelMinigame minigame = TravelRegistry.get(world);
-                                if(minigame == null) {
+                                if (minigame == null) {
                                     return Command.SINGLE_SUCCESS;
                                 }
                                 minigame.playerEnter(p.getUniqueId());

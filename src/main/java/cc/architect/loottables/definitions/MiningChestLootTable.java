@@ -10,11 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class MiningChestLootTable extends BaseLootTable {
-
     public static int miningChestsSpawned = 0;
     public final Player player;
     private final List<LootTableObject> lootTableItems;
-
     public MiningChestLootTable(Player player) {
         this.player = player;
         int bonus = (int) Math.ceil(HashMaps.BONUSES.get(player));
@@ -25,18 +23,14 @@ public class MiningChestLootTable extends BaseLootTable {
                 new LootTableObject(40, new ItemStack(Material.EMERALD, 4 * bonus))
         );
     }
-
     @Override
     public float[] getChances() {
         float[] chances = new float[lootTableItems.size()];
-
         for (int i = 0; i < lootTableItems.size(); i++) {
             chances[i] = lootTableItems.get(i).chance();
         }
-
         return chances;
     }
-
     @Override
     public ItemStack getItemStack(int rolledItem) {
         return lootTableItems.get(rolledItem).item();

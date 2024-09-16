@@ -31,18 +31,9 @@ public class Party implements PluginMessageListener {
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subChannel = in.readUTF();
-        //Bukkit.broadcastMessage("Received message from BungeeCord on subchannel: " + subchannel);
         if (subChannel.equals(Base.INVITE)) {
             processInviteChannel(getForwardMessageData(in));
         }
-        /* DataInputStream msgin = getForwardMessageData(in);
-
-        try {
-            String somedata = msgin.readUTF();
-            //Bukkit.broadcastMessage("Received message with data: " + somedata);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
     }
     /**
      * Sends request of invite to another player on the network
@@ -104,10 +95,7 @@ public class Party implements PluginMessageListener {
         String inviteReceiver = Utilities.readUTF(messageData);
         String inviteSender = Utilities.readUTF(messageData);
         String response = null;
-
-        /*if(IS_IN_PARTY.contains(inviteReceiver)){
-            response = "CAN_NOT_MAKE_PARTY";
-        }*/
+        
         Player p = getPlayerExact(inviteReceiver);
         if (p == null) {
             return;
@@ -155,9 +143,6 @@ public class Party implements PluginMessageListener {
             case "ACCEPT" -> Parties.sendInviteMessages(inviteReceiver, inviteSender);
             case "DENY" -> p.sendMessage(Messages.SEND_INVITE_PLAYER_HAS_INVITE(inviteReceiver));
             case "OFFLINE" -> p.sendMessage(Messages.PLAYER_NOT_ONLINE(inviteReceiver));
-            /*case "CAN_NOT_MAKE_PARTY" -> {
-                p.sendMessage(Messages.PLAYER_IN_PARTY);
-            }*/
         }
     }
 }

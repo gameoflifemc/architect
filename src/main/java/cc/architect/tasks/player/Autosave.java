@@ -44,9 +44,10 @@ public class Autosave implements Runnable {
                 emeralds.getAndAdd(stack.getAmount());
             }
         }
-        int savingsAdd = divideFloor(Integer.parseInt(Meta.get(p, Meta.SAVINGS))); // savings
-        // save emeralds
-        int loansRemove = divideCeil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE)));//loans
+        // savings
+        int savingsAdd = divideFloor(Integer.parseInt(Meta.get(p, Meta.SAVINGS)));
+        // loans
+        int loansRemove = divideCeil(Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE)));
         loansRemove += divideCeil(mapReader(Meta.get(p,Meta.LOAN_RISKY_MAP)));
         int investmentsAdd = mapReader(Meta.get(p,Meta.INVESTMENTS_MAP));
         int emeraldsF = emeralds.get();
@@ -59,11 +60,11 @@ public class Autosave implements Runnable {
     private static int mapReader(String map) {
         int total = 0;
         if(map != null) {
-            String[] datas = map.split(";");
-            if (!datas[0].isEmpty()) {
-                for (String data : datas) {
-                    String[] subdata = data.split(",");
-                    int amount = Integer.parseInt(subdata[0]);
+            String[] dataMap = map.split(";");
+            if (!dataMap[0].isEmpty()) {
+                for (String data : dataMap) {
+                    String[] subData = data.split(",");
+                    int amount = Integer.parseInt(subData[0]);
                     total += amount;
                 }
             }
@@ -73,23 +74,31 @@ public class Autosave implements Runnable {
     private static void calculateDaily(Player p) {
         // get days
         int days = Integer.parseInt(Meta.get(p,Meta.DAYS));
+        // calculate daily and save to database
+        Meta.set(p,Meta.SCORE_DAILY,String.valueOf(Integer.parseInt(Meta.get(p,Meta.SCORE_TOTAL)) / days));
+        Meta.set(p,Meta.EMERALDS_DAILY,String.valueOf(Integer.parseInt(Meta.get(p,Meta.EMERALDS_TOTAL)) / days));
+        Meta.set(p,Meta.INVESTMENTS_DAILY,String.valueOf(Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_TOTAL)) / days));
+        Meta.set(p,Meta.LOAN_DAILY,String.valueOf(Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL)) / days));
+    }
+    public static void calculateHighest(Player p) {
         // get total values
         int score = Integer.parseInt(Meta.get(p,Meta.SCORE_TOTAL));
         int emeralds = Integer.parseInt(Meta.get(p,Meta.EMERALDS_TOTAL));
         int investments = Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_TOTAL));
         int loan = Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL));
-        // calculate daily and save to database
-        Meta.set(p,Meta.SCORE_DAILY,String.valueOf(score / days));
-        Meta.set(p,Meta.EMERALDS_DAILY,String.valueOf(emeralds / days));
-        Meta.set(p,Meta.INVESTMENTS_DAILY,String.valueOf(investments / days));
-        Meta.set(p,Meta.LOAN_DAILY,String.valueOf(loan / days));
-    }
-    public static void calculateHighest(Player p) {
         // calculate highest and save to database
-        Meta.set(p,Meta.SCORE_HIGHEST,Meta.get(p,Meta.SCORE_TOTAL));
-        Meta.set(p,Meta.EMERALDS_HIGHEST,Meta.get(p,Meta.EMERALDS_TOTAL));
-        Meta.set(p,Meta.INVESTMENTS_HIGHEST,Meta.get(p,Meta.INVESTMENTS_TOTAL));
-        Meta.set(p,Meta.LOAN_HIGHEST,Meta.get(p,Meta.LOAN_TOTAL));
+        if (score > Integer.parseInt(Meta.get(p,Meta.SCORE_HIGHEST))) {
+            Meta.set(p,Meta.SCORE_HIGHEST,String.valueOf(score));
+        }
+        if (emeralds > Integer.parseInt(Meta.get(p,Meta.EMERALDS_HIGHEST))) {
+            Meta.set(p,Meta.EMERALDS_HIGHEST,String.valueOf(emeralds));
+        }
+        if (investments > Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_HIGHEST))) {
+            Meta.set(p,Meta.INVESTMENTS_HIGHEST,String.valueOf(investments));
+        }
+        if (loan > Integer.parseInt(Meta.get(p,Meta.LOAN_HIGHEST))) {
+            Meta.set(p,Meta.LOAN_HIGHEST,String.valueOf(loan));
+        }
     }
     public static int divideCeil(int i){
         return (int) Math.ceil((double) i / 10);

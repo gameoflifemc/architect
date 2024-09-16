@@ -4,9 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -46,32 +44,21 @@ public class Utilities {
                     ((TextComponent)first).content(),
                     first.style().hasDecoration(TextDecoration.BOLD)
                 )
-                +getPixelLength(
+                + getPixelLength(
                         ((TextComponent)last).content(),
                         last.style().hasDecoration(TextDecoration.BOLD)
                 );
         int neededLen = length - textLen;
-
         builder = builder.append(first);
-
         for(int i = 0; i < neededLen; i += 2){
             builder = builder.append(spacer);
         }
-        /*if(neededLen % 2 == 1){
-            builder = builder.append(spacer);
-        }*/
-
         builder = builder.append(Component.text(" "));
-
         builder = builder.append(last);
-
         return builder;
     }
     public static Component getDottedComponent(Component first, Component last, int length) {
         return getSpacedComponent(first, last, Component.text(".", TextColor.color(40,40,40)),length);
-    }
-    public static int getPixelLength(String s){
-        return getPixelLength(s,false);
     }
     /**
      * returns the pixel length of a string
@@ -85,10 +72,6 @@ public class Utilities {
         }
         return currentLength;
     }
-    public static <T extends Entity> T createEntity(Class<T> clazz) {
-        return Architect.WORLD.createEntity(new Location(Architect.WORLD,0,0,0),clazz);
-    }
-
     public static void addItemsToInventory(PlayerInventory inventory, int amount, Material material) {
         for (int i = 0; i < amount;) {
             inventory.addItem(new ItemStack(material, Math.min(64, amount - i)));

@@ -26,47 +26,34 @@ public class FarmTravel extends BasicTravelMinigame {
         meta.setCustomModelData(2);
         key.setItemMeta(meta);
     }
-
     @Override
     public double getDistance() {
         return 5;
     }
-
     @Override
     public Location getStartLocation() {
-        return new Location(travelWorld, 103, 126, -42,-11, 0);
+        return new Location(travelWorld, 103,126,-42);
     }
-
     @Override
     public Location getEndLocation() {
         return new Location(travelWorld, 129, 129, 61);
     }
-
     @Override
     public Location teleportToLocation() {
         return new Location(endWorld, 26, -53, -4,103, -22);
     }
-
     @Override
     public List<Location> entityLocations() {
         return boggedLocations;
     }
-
-    @Override
-    public List<ItemStack> onSpawnItems() {
-        return List.of(sword);
-    }
-
     @Override
     public List<ItemStack> getRequiredItems() {
         return List.of(key);
     }
-
     @Override
     public List<ItemStack> getAllItems() {
         return List.of(sword, key);
     }
-
     @Override
     public Factory factory() {
         return new BoggedFactory();

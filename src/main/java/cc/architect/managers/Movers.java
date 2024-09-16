@@ -32,14 +32,6 @@ public class Movers {
         Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"village"),Titles.TRANSITION_TELEPORT);
     }
-    public static void toMine(Player p) {
-        Movers.showTransition(p);
-        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"mine"),Titles.TRANSITION_TELEPORT);
-    }
-    public static void toFarm(Player p) {
-        Movers.showTransition(p);
-        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> toWorld(p,"farm"),Titles.TRANSITION_TELEPORT);
-    }
     public static void toTravel(Player p, Location location) {
         Movers.showTransition(p);
         Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> p.teleport(location),Titles.TRANSITION_TELEPORT);

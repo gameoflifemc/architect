@@ -38,12 +38,8 @@ public class PlayerStatsBoard {
             ));
         });
         DisplayButtonComponent emeraldsInfo = new DisplayButtonComponent(new Vector(-3.4,2.25,0.05));
-        emeraldsInfo.setOnSpawnCallback((display, uuid) -> {
-            emeraldsInfo.setDisplayText(Component.text("ⓘ"),uuid);
-        });
-        emeraldsInfo.onClick((display, event) -> {
-            event.getPlayer().sendMessage(Component.text("Počet emeraldů se počítá takto: \n Emeraldy v inventáři + Spoření + Investice - Půjčky \nPokud budeš kdykoli v mínusu tak ti tabulka ukáže hodnotu 0"));
-        });
+        emeraldsInfo.setOnSpawnCallback((display, uuid) -> emeraldsInfo.setDisplayText(Component.text("\uE003"),uuid));
+        emeraldsInfo.onClick((display, event) -> event.getPlayer().sendMessage(Component.text("Počet emeraldů se počítá takto: \n Emeraldy v inventáři + Spoření + Investice - Půjčky \nPokud budeš kdykoli v mínusu tak ti tabulka ukáže hodnotu 0")));
         board.addComponent(header);
         board.addComponent(emeraldsInfo);
         board.create(l);

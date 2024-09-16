@@ -23,8 +23,6 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
     }
 
     public abstract List<Location> entityLocations();
-
-    public abstract List<ItemStack> onSpawnItems();
     public abstract List<ItemStack> getRequiredItems();
     public abstract List<ItemStack> getAllItems();
 
@@ -32,9 +30,6 @@ public abstract class BasicTravelMinigame extends TravelMinigame{
 
     @Override
     public void start(UUID player) {
-        /*for(ItemStack allItems : onSpawnItems()) {
-            getPlayer(player).getInventory().addItem(allItems);
-        }*/
         entityLocations().forEach(loc->{
             if(count>MAX_COUNT) return;
 

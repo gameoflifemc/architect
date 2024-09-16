@@ -29,35 +29,25 @@ public class VillageTravel extends BasicTravelMinigame {
         meta.setCustomModelData(3);
         key.setItemMeta(meta);
     }
-
     @Override
     public double getDistance() {
         return 5;
     }
-
     @Override
     public Location getStartLocation() {
-        return new Location(travelWorld, 211, 125, -57,24, 3);
+        return new Location(travelWorld,211,125,-57);
     }
-
     @Override
     public Location getEndLocation() {
         return new Location(travelWorld, 174, 126, 70);
     }
-
     @Override
     public Location teleportToLocation() {
         return new Location(endWorld, -21, 77, 22,-175,0);
     }
-
     @Override
     public List<Location> entityLocations(){
         return huskLocations;
-    }
-
-    @Override
-    public List<ItemStack> onSpawnItems() {
-        return List.of(sword);
     }
     @Override
     public List<ItemStack> getAllItems() {
@@ -67,7 +57,6 @@ public class VillageTravel extends BasicTravelMinigame {
     public List<ItemStack> getRequiredItems() {
         return List.of(key);
     }
-
     @Override
     public Factory factory() {
         return new HuskFactory();

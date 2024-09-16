@@ -38,7 +38,7 @@ public class InvestmentRisky {
             float randFloat = (float) ((Math.random() * (Game.INVESTMENTS_RISKY_MAX_PERCENT - Game.INVESTMENTS_RISKY_MIN_PERCENT)) + Game.INVESTMENTS_RISKY_MIN_PERCENT);
             randFloat = Math.round(randFloat*100)/100f;
 
-            int newAmount = amount + (int)((double)amount * randFloat); //nechat castování na double i int
+            int newAmount = amount + (int) ((double) amount * randFloat);
 
             if(days==0){
                 newAmount = amount;

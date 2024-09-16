@@ -55,32 +55,9 @@ public class Interact implements Listener {
             if (item == null) {
                 return;
             }
-            if(p.getWorld().equals(Architect.FARM)){
+            if (p.getWorld().equals(Architect.FARM)) {
                 Farming.interactBlockFarm(e);
             }
-            //TODO LEGACY FARMING
-            /*Material itemMat = item.getType();
-            Material blockMat = b.getType();
-            Location location = b.getLocation();
-            if (blockMat.equals(Material.GRASS_BLOCK) || blockMat.equals(Material.DIRT)) {
-                if (itemMat.equals(Material.IRON_HOE)) {
-                    if (FarmingCycles.tilledLand.contains(location)) {
-                        FarmingCycles.tilledLand.add(location);
-                    }
-                    if (Utilities.rollRandom(5)) {
-                        p.getInventory().addItem(LootTableManager.roll(new FarmingLootTable()));
-                        p.sendMessage(Messages.FARMING_TREASURE);
-                    }
-                }
-            }
-            if (itemMat.equals(Material.BONE_MEAL)) {
-                if (blockMat.equals(Material.WHEAT) && (FarmingCycles.profits.get(p).containsKey(location) || !FarmingCycles.getLocations().contains(location))) {
-                    FarmingCycles.profits.get(p).put(location,true);
-                    Bukkit.getServer().dispatchCommand(Architect.CONSOLE, "give " + p.getName() + " bone_meal[can_place_on={predicates:[{blocks:\"wheat\"}],show_in_tooltip:true}] 1");
-                } else {
-                    p.sendMessage(Messages.FARMING_CANNOT_BONEMEAL);
-                }
-            }*/
         }
         if (!p.getWorld().getName().equals("world")) {
             return;

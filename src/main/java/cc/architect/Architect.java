@@ -3,10 +3,8 @@ package cc.architect;
 import cc.architect.channels.*;
 import cc.architect.commands.*;
 import cc.architect.events.block.Break;
-import cc.architect.events.block.Place;
 import cc.architect.events.entity.Damage;
 import cc.architect.events.entity.DamageByEntity;
-import cc.architect.events.entity.RemoveFromWorld;
 import cc.architect.events.misc.BlockGrow;
 import cc.architect.events.misc.FoodLevelChange;
 import cc.architect.events.player.*;
@@ -77,12 +75,10 @@ public final class Architect extends JavaPlugin {
         List<Listener> events = List.of(
             // block
             new Break(),
-            new Place(),
             // entity
             new Damage(),
             new DamageByEntity(),
             new cc.architect.events.entity.Death(),
-            new RemoveFromWorld(),
             // misc
             new FoodLevelChange(),
             // player

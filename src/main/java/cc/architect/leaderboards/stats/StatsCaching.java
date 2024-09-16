@@ -29,15 +29,9 @@ public class StatsCaching {
             tops.clear();
             List<UUID> players = Players.getAllPlayers();
             List<PlayerStatsHolder> statsHolders = new ArrayList<>();
-
             for (UUID player : players) {
                 statsHolders.add(new PlayerStatsHolder(player));
             }
-
-            /*for (int i = 0; i < 2000; i++) {
-                statsHolders.add(new PlayerStatsHolder(5000));
-            }*/
-
             for(Pair<String, StatComparator> pair : comparators){
                 addPostions(StatsSorter.listAll(statsHolders, pair.getRight()),pair.getRight(),pair.getLeft());
                 addTops(statsHolders, pair.getRight(), pair.getLeft(), 10);

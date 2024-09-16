@@ -35,7 +35,7 @@ public class TravelRegistry {
     }
 
     private static void createTask(){
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()-> minigames.values().forEach(TravelMinigame::handeExit),0,10);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,()-> minigames.values().forEach(TravelMinigame::handleExit),0,10);
     }
 
     public static void entityDeath(EntityDeathEvent event) {
