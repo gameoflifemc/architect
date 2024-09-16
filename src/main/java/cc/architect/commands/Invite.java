@@ -1,6 +1,7 @@
 package cc.architect.commands;
 
 import cc.architect.managers.Parties;
+import cc.architect.tasks.player.Autosave;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.papermc.paper.command.brigadier.Commands;
@@ -34,7 +35,7 @@ public class Invite {
                             return Command.SINGLE_SUCCESS;
                         }
                         Player receiver = (Player) ctx.getSource().getSender();
-
+                        Autosave.autosave(receiver);
                         Parties.acceptInvite(receiver.getName());
                         return Command.SINGLE_SUCCESS;
                     })
