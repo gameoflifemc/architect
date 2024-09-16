@@ -1,6 +1,7 @@
 package cc.architect.managers;
 
 import cc.architect.Architect;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -8,13 +9,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Facts {
-    private static String FACT_PATH;
+    private static final AtomicInteger FACT_UID = new AtomicInteger(1);
+    private static final Component INDICATOR = Component.text("Architect Fact Saver Run In Progress, ID ");
+    private static String PATH;
     public static void initialize() {
-        FACT_PATH = Bukkit.getPluginsFolder().getPath() + "/Typewriter/facts.json";
+        PATH = Bukkit.getPluginsFolder().getPath() + "/../logs/latest.log";
     }
     public static void restore(Player p) {
         // get all meta keys
@@ -34,53 +39,122 @@ public class Facts {
         }
     }
     public static void saveOne(Player p) {
+        // skip if in default world
         if (p.getWorld().getName().equals("world")) {
             return;
         }
-        Facts.save(p,Facts.get());
+        // get uid for this request
+        int uid = FACT_UID.getAndIncrement();
+        // run save
+        Facts.prepareSave(p,uid);
     }
     public static void saveAll() {
-        String line = Facts.get();
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        // get all players
+        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+        // skip if no players in game
+        boolean noPlayers = true;
+        for (Player p : players) {
+            // skip if in default world
             if (p.getWorld().getName().equals("world")) {
                 continue;
             }
-            Facts.save(p,line);
+            noPlayers = false;
+        }
+        if (noPlayers) {
+            return;
+        }
+        // get uid for this request
+        int uid = FACT_UID.getAndIncrement();
+        // save facts for all players
+        for (Player p : players) {
+            // run save
+            Facts.prepareSave(p,uid);
         }
     }
-    private static String get() {
-        String line;
-        try (BufferedReader reader = new BufferedReader(new FileReader(FACT_PATH))) {
-            line = reader.readLine();
+    private static void prepareSave(Player p, int uid) {
+        // create indicator in log
+        Architect.LOGGER.info(Facts.INDICATOR.append(Component.text(uid)));
+        // send request command to TypeWriter
+        Bukkit.dispatchCommand(Architect.CONSOLE,"tw facts " + p.getName());
+        // read log
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> Facts.beginSave(p,uid),20);
+    }
+    private static void beginSave(Player p, int uid) {
+        // read the whole log
+        List<String> log = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH))) {
+            // read first line
+            String line = reader.readLine();
+            // read all remaining lines
+            while (line != null) {
+                // add line to log
+                log.add(line);
+                // read next line
+                line = reader.readLine();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return line;
-    }
-    private static void save(Player p,String line) {
-        // get indexes of uuid
-        List<Integer> uuids = new ArrayList<>();
-        String matcher = p.getUniqueId().toString();
-        int index = line.indexOf(matcher);
-        while (index >= 0) {
-            uuids.add(index);
-            index = line.indexOf(matcher,index + 1);
+        // run through all lines
+        for (String line : log) {
+            // skip if not the right line
+            if (!line.contains("[Server thread/INFO]: [Architect] Architect Fact Saver Run In Progress, ID " + uid)) {
+                continue;
+            }
+            for (int i = log.indexOf(line) + 1; i < log.size(); i++) {
+                // skip if not the right line
+                if (!log.get(i).contains("[Server thread/INFO]: Typewriter » " + p.getName() + " has the following facts:")) {
+                    continue;
+                }
+                // prepare facts
+                List<String> factLines = new ArrayList<>();
+                // run through all following lines and check for facts
+                for (int j = i + 2; j < log.size(); j++) {
+                    // get current line
+                    String current = log.get(j);
+                    // end if not a fact
+                    if (!current.contains("[Server thread/INFO]:  - ")) {
+                        break;
+                    }
+                    // add fact
+                    factLines.add(current);
+                }
+                // save player
+                Facts.savePlayer(p,factLines);
+                break;
+            }
+            break;
         }
-        // run through all uuid indexes
-        for (int uuid : uuids) {
-            // get fact index
-            int fact = uuid - 19;
-            // get value index
-            int value = uuid + 47;
-            // prepare string builder
-            StringBuilder builder = new StringBuilder();
+    }
+    private static void savePlayer(Player p, List<String> lines) {
+        // run through all the fact lines
+        for (String line : lines) {
+            // prepare objects
+            int index = 36;
+            StringBuilder name = new StringBuilder();
+            // get whole fact name
+            while (line.charAt(index) != ':') {
+                name.append(line.charAt(index));
+                index++;
+            }
+            String nameString = name.toString().toLowerCase().replace(" ","_");
+            // make sure count facts are skipped
+            if (nameString.contains("count")) {
+                continue;
+            }
+            index += 2;
+            StringBuilder value = new StringBuilder();
             // get whole value
-            while (Character.isDigit(line.charAt(value))) {
-                builder.append(line.charAt(value));
-                value++;
+            while (Character.isDigit(line.charAt(index))) {
+                value.append(line.charAt(index));
+                index++;
+            }
+            String valueString = value.toString();
+            if (valueString.equals("0")) {
+                continue;
             }
             // save fact
-            Meta.set(p,Meta.FACT + line.substring(fact,fact + 15),builder.toString());
+            Meta.set(p,Meta.FACT + nameString,valueString);
         }
     }
 }

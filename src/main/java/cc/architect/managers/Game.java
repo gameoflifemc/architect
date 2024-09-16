@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Game {
-    private static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
+    public static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
     public static final float INVESTMENTS_PERCENT = .04f;
     public static final float INVESTMENTS_RISKY_MIN_PERCENT = -.07f;
     public static final float INVESTMENTS_RISKY_MAX_PERCENT = .08f;
@@ -176,6 +176,6 @@ public class Game {
         HashMaps.ACTION_BAR.remove(p);
         p.sendActionBar(Component.empty());
         // give regeneration
-        p.addPotionEffect(REGENERATION);
+        p.addPotionEffect(Game.REGENERATION);
     }
 }

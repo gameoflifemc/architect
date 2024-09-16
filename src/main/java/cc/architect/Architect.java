@@ -18,6 +18,7 @@ import cc.architect.managers.Tasks;
 import cc.architect.minigames.travel.wrapper.TravelRegistry;
 import cc.architect.objects.Messages;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.util.TriState;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -43,10 +44,12 @@ public final class Architect extends JavaPlugin {
     public static BukkitScheduler SCHEDULER;
     public static ConsoleCommandSender CONSOLE;
     public static World WORLD;
-    public static World TRAVEL;
+    public static String SESSION;
+    public static ComponentLogger LOGGER;
+    public static World VILLAGE;
     public static World MINE;
     public static World FARM;
-    public static String SESSION;
+    public static World TRAVEL;
     @Override
     public void onEnable() {
         // plugin
@@ -59,8 +62,10 @@ public final class Architect extends JavaPlugin {
         CONSOLE = Bukkit.getConsoleSender();
         // world
         WORLD = Bukkit.getWorld("world");
-        //new session id (for mobs in travel)
+        // session id
         SESSION = UUID.randomUUID().toString();
+        // logger
+        LOGGER = this.getComponentLogger();
         // commands
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         Code.register(manager);
@@ -120,6 +125,9 @@ public final class Architect extends JavaPlugin {
         for (String worldName : worlds) {
             World world = new WorldCreator(worldName).keepSpawnLoaded(TriState.FALSE).createWorld();
             switch (worldName) {
+                case "village":
+                    VILLAGE = world;
+                    break;
                 case "mine":
                     MINE = world;
                     break;
@@ -144,7 +152,7 @@ public final class Architect extends JavaPlugin {
         // travel mini-games
         TravelRegistry.init();
         // welcome
-        this.getComponentLogger().info(Messages.PLUGIN_WELCOME);
+        LOGGER.info(Messages.PLUGIN_WELCOME);
         // yay, we're up and running!
     }
     @Override
