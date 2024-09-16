@@ -33,14 +33,14 @@ public class Farming {
             new AutoPot(new Location(Architect.FARM,54,-56,79),new Location(Architect.FARM,62,-56,86),Material.CARROTS),
             new AutoPot(new Location(Architect.FARM,115,-56,5),new Location(Architect.FARM,118,-56,7),Material.TORCHFLOWER_CROP),
             new AutoPot(new Location(Architect.FARM,115,-55,119),new Location(Architect.FARM,121,-55,124),Material.TORCHFLOWER_CROP),
-            new AutoPot(new Location(Architect.FARM,103,-39,35),new Location(Architect.FARM,103,-39,35),Material.PITCHER_CROP),
-            new AutoPot(new Location(Architect.FARM,104,-31,34),new Location(Architect.FARM,106,-31,36),Material.PITCHER_CROP),
-            new AutoPot(new Location(Architect.FARM,-51,-41,61),new Location(Architect.FARM,-49,-41,63),Material.PITCHER_CROP),
-            new AutoPot(new Location(Architect.FARM,108,-53,40),new Location(Architect.FARM,108,-53,40),Material.PITCHER_CROP),
-            new AutoPot(new Location(Architect.FARM,11,-43,-112),new Location(Architect.FARM,14,-43,109),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,103,-40,35),new Location(Architect.FARM,103,-36,35),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,104,-32,34),new Location(Architect.FARM,106,-29,36),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,-51,-42,61),new Location(Architect.FARM,-49,-39,63),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,108,-55,40),new Location(Architect.FARM,108,-50,40),Material.PITCHER_CROP),
+            new AutoPot(new Location(Architect.FARM,11,-44,-112),new Location(Architect.FARM,14,-40,109),Material.PITCHER_CROP),
             new AutoPot(new Location(Architect.FARM,104,-55,34),new Location(Architect.FARM,107,-51,37),Material.COCOA),
             new AutoPot(new Location(Architect.FARM,11,-54,-112),new Location(Architect.FARM,14,-52,-109),Material.COCOA),
-            new AutoPot(new Location(Architect.FARM,112,-56,-114),new Location(Architect.FARM,118,-56,-108),Material.CARROTS)
+            new AutoPot(new Location(Architect.FARM,112,-54,-114),new Location(Architect.FARM,118,-57,-108),Material.CARROTS)
     );
     public static final List<Material> farmableSeeds = List.of(Material.WHEAT_SEEDS,Material.CARROT,Material.POTATO, Material.BEETROOT_SEEDS);
     public static void breakBlockFarm(BlockBreakEvent e){
