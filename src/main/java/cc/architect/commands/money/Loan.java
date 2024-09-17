@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -137,6 +138,10 @@ public class Loan {
 
         if(!(map.equals("0"))) {
             p.sendMessage(Component.text("Už u nás máš vytořenou půjčku, nejdříve ji raději zplať aby jsi nezbankrotoval.").color(Colors.RED));
+            return;
+        }
+        if(Meta.get(p,Meta.LOAN_RISKY_MAP)!=null || !Objects.equals(Meta.get(p, Meta.LOAN_RISKY_MAP), "")){
+            p.sendMessage(Component.text("Už máš někde vytvořenou půjčku, raději jí zaplať aby jsi nezbankrotoval.").color(Colors.RED));
             return;
         }
 
