@@ -140,7 +140,7 @@ public class Loan {
             p.sendMessage(Component.text("Už u nás máš vytořenou půjčku, nejdříve ji raději zplať aby jsi nezbankrotoval.").color(Colors.RED));
             return;
         }
-        if(Meta.get(p,Meta.LOAN_RISKY_MAP)!=null || !Objects.equals(Meta.get(p, Meta.LOAN_RISKY_MAP), "")){
+        if(!Objects.equals(Meta.get(p, Meta.LOAN_RISKY_MAP), "")){
             p.sendMessage(Component.text("Už máš někde vytvořenou půjčku, raději jí zaplať aby jsi nezbankrotoval.").color(Colors.RED));
             return;
         }
