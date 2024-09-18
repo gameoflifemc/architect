@@ -18,11 +18,11 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Game {
     public static final PotionEffect REGENERATION = new PotionEffect(PotionEffectType.REGENERATION,PotionEffect.INFINITE_DURATION,0,false,false);
-    public static final float INVESTMENTS_PERCENT = .04f;
-    public static final float INVESTMENTS_RISKY_MIN_PERCENT = -.07f;
-    public static final float INVESTMENTS_RISKY_MAX_PERCENT = .08f;
+    public static final float INVESTMENTS_PERCENT = 0.04F;
+    public static final float INVESTMENTS_RISKY_MIN_PERCENT = -0.07F;
+    public static final float INVESTMENTS_RISKY_MAX_PERCENT = 0.08F;
+    public static final float LOAN_SPOR_INSTANT = 0.03F;
     public static final int SAVINGS_DIVIDER = 50;
-    public static final float LOAN_SPOR_INSTANT = .03f;
     public static void beginDay(Player p) {
         if (!Meta.check(p,Meta.IS_IN_GAME)) {
             // prepare meta
@@ -32,16 +32,16 @@ public class Game {
             Meta.set(p,Meta.LOAN_TOTAL,"0");
             Meta.set(p,Meta.EMERALDS_TOTAL,"0");
             Meta.set(p,Meta.SCORE_TOTAL,"0");
-
+            // investments
             Meta.set(p,Meta.INVESTMENTS_MAP,"");
             Meta.set(p,Meta.INVESTMENTS_MAP_RISKY,"");
-
+            // risky loan
             Meta.set(p,Meta.LOAN_RISKY_MAP,"");
             Meta.set(p,Meta.LOAN_RISKY_COUNTER,"10");
-
+            // safe loan
             Meta.set(p,Meta.LOAN_SAFE,"0");
             Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
-
+            // is in game indicator
             Meta.set(p,Meta.IS_IN_GAME, "true");
         }
         // prepare meta
