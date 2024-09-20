@@ -39,6 +39,7 @@ public class Savings {
         // remove from inventory
         inventory.removeItemAnySlot(new ItemStack(Material.EMERALD,amount));
         // write to database
+        Meta.set(p,Meta.SAVINGS_THIS_DAY,"true");
         Meta.add(p,Meta.SAVINGS,amount*10);
         getServer().dispatchCommand(Architect.CONSOLE,"simulation score add " + p.getName() + " " + (amount*9));
         p.sendMessage(Component.text("Úspěšně uloženo " + amount + " emeraldů. Celkem je nyní uloženo " + (Integer.parseInt(Meta.get(p,Meta.SAVINGS))/10) + " emeraldů.").color(Colors.GREEN));
@@ -48,6 +49,11 @@ public class Savings {
     public static int claim(CommandContext ctx) {
         Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
         if (p == null) {
+            return Command.SINGLE_SUCCESS;
+        }
+
+        if (Meta.getSafe(Meta.toUser(p),Meta.SAVINGS_THIS_DAY,"false").equals("true")) {
+            p.sendMessage(Component.text("Dnes jsi už uložil spoření, proto si je můžeš vyzvednout až zítra.").color(Colors.RED));
             return Command.SINGLE_SUCCESS;
         }
         // check amount

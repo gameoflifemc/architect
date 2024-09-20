@@ -43,8 +43,11 @@ public class Game {
             Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
             // is in game indicator
             Meta.set(p,Meta.IS_IN_GAME, "true");
+
+            Meta.set(p,Meta.SAVINGS_THIS_DAY, "false");
         }
         // prepare meta
+        Meta.set(p,Meta.SAVINGS_THIS_DAY, "false");
         Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
         Meta.set(p,Meta.ROUTINE,"1");
         Meta.set(p,Meta.ACTIONS,"20");
@@ -129,6 +132,7 @@ public class Game {
         Meta.clear(p,Meta.LOAN_RISKY_MAP);
         Meta.clear(p,Meta.LOAN_RISKY_COUNTER);
         Meta.clear(p,Meta.IS_IN_GAME);
+        Meta.clear(p,Meta.SAVINGS_THIS_DAY);
         // show title
         p.sendMessage(Component.text("Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu."));
     }

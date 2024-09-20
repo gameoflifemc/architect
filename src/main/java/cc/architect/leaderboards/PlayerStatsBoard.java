@@ -25,7 +25,7 @@ public class PlayerStatsBoard {
     public static void createStatsLeaderBoard(Location l) {
         InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS);
         setupBoard(board);
-        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,2.95,0.05));
+        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,3.05,0.05));
         header.setOnSpawnCallback((display, uuid) -> {
             header.setDisplayText(Component.text("Tvoje statistiky", Style.style(TextDecoration.BOLD,TextColor.color(220,220,20))),uuid);
             header.setChangeToAllPlayers((display1, uuid1) -> display1.setTransformation(

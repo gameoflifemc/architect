@@ -15,6 +15,7 @@ public class Meta {
     // game flow data
     public static final String DAYS = "days";
     public static final String IS_IN_GAME = "is_in_game";
+    public static final String SAVINGS_THIS_DAY = "savings_this_day";
     public static final String ROUTINE = "routine";
     // player data
     public static final String ACTIONS = "actions";
