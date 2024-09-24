@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Autosave implements Runnable {
     @Override
     public void run() {
-        Facts.saveAll();
         Bukkit.getOnlinePlayers().forEach(Autosave::autosave);
     }
     public static void autosave(Player p) {
@@ -21,10 +20,11 @@ public class Autosave implements Runnable {
         if (p.getWorld().getName().equals("world")) {
             return;
         }
-        location(p);
-        emeralds(p);
-        calculateHighest(p);
-        calculateDaily(p);
+        Facts.save(p);
+        Autosave.location(p);
+        Autosave.emeralds(p);
+        Autosave.calculateDaily(p);
+        Autosave.calculateHighest(p);
     }
     private static void location(Player p) {
         // get last location
@@ -34,7 +34,7 @@ public class Autosave implements Runnable {
         // save player location
         Meta.set(p,Meta.LAST_LOCATION,data);
     }
-    public static void emeralds(Player p) {
+    private static void emeralds(Player p) {
         // create atomic integer for emeralds
         AtomicInteger emeralds = new AtomicInteger();
         emeralds.set(0);
@@ -57,20 +57,6 @@ public class Autosave implements Runnable {
         emeraldsF = Math.max(0,emeraldsF);
         Meta.set(p,Meta.EMERALDS_TOTAL,String.valueOf(emeraldsF));
     }
-    private static int mapReader(String map) {
-        int total = 0;
-        if(map != null) {
-            String[] dataMap = map.split(";");
-            if (!dataMap[0].isEmpty()) {
-                for (String data : dataMap) {
-                    String[] subData = data.split(",");
-                    int amount = Integer.parseInt(subData[0]);
-                    total += amount;
-                }
-            }
-        }
-        return total;
-    }
     private static void calculateDaily(Player p) {
         // get days
         int days = Integer.parseInt(Meta.get(p,Meta.DAYS));
@@ -80,7 +66,7 @@ public class Autosave implements Runnable {
         Meta.set(p,Meta.INVESTMENTS_DAILY,String.valueOf(Integer.parseInt(Meta.get(p,Meta.INVESTMENTS_TOTAL)) / days));
         Meta.set(p,Meta.LOAN_DAILY,String.valueOf(Integer.parseInt(Meta.get(p,Meta.LOAN_TOTAL)) / days));
     }
-    public static void calculateHighest(Player p) {
+    private static void calculateHighest(Player p) {
         // get total values
         int score = Integer.parseInt(Meta.get(p,Meta.SCORE_TOTAL));
         int emeralds = Integer.parseInt(Meta.get(p,Meta.EMERALDS_TOTAL));
@@ -100,10 +86,24 @@ public class Autosave implements Runnable {
             Meta.set(p,Meta.LOAN_HIGHEST,String.valueOf(loan));
         }
     }
-    public static int divideCeil(int i){
+    private static int mapReader(String map) {
+        int total = 0;
+        if(map != null) {
+            String[] dataMap = map.split(";");
+            if (!dataMap[0].isEmpty()) {
+                for (String data : dataMap) {
+                    String[] subData = data.split(",");
+                    int amount = Integer.parseInt(subData[0]);
+                    total += amount;
+                }
+            }
+        }
+        return total;
+    }
+    private static int divideCeil(int i){
         return (int) Math.ceil((double) i / 10);
     }
-    public static int divideFloor(int i){
+    private static int divideFloor(int i){
         return (int) Math.floor((double) i / 10);
     }
 }

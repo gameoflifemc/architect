@@ -10,6 +10,7 @@ import cc.architect.managers.Routines;
 import cc.architect.minigames.travel.wrapper.TravelMinigame;
 import cc.architect.minigames.travel.wrapper.TravelRegistry;
 import cc.architect.objects.Colors;
+import cc.architect.objects.Icons;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -72,7 +73,7 @@ public class Simulation {
                                     int amount = IntegerArgumentType.getInteger(ctx,"amount");
                                     // write to database
                                     Meta.add(p,Meta.SCORE_TOTAL,amount);
-                                    p.sendMessage(Component.text("\uE004 ").color(NamedTextColor.WHITE).append(Component.text("Získáno " + amount + " skóre. Celkem " + Meta.get(p,Meta.SCORE_TOTAL) + " skóre.").color(Colors.GREEN)));
+                                    p.sendMessage(Icons.SUCCESS.append(Component.text("Získáno " + amount + " skóre. Celkem " + Meta.get(p,Meta.SCORE_TOTAL) + " skóre.").color(Colors.GREEN)));
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )

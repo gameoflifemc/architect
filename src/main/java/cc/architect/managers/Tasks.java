@@ -9,20 +9,17 @@ import cc.architect.tasks.player.Compass;
 
 public class Tasks {
     public static final Replenish replenishBedrockTask = new Replenish();
-    private static final int DELAY = 20;
+    private static final int DEFAULT_DELAY = 20;
     public static void registerTasks() {
         // compass
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Compass(),DELAY,1);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Compass(),DEFAULT_DELAY,1);
         // action bar
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new ActionBar(),DELAY,35);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new ActionBar(),DEFAULT_DELAY,35);
         // autosave
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Autosave(),DELAY,1200);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Autosave(),DEFAULT_DELAY,6000);
         // mining
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN, replenishBedrockTask,DELAY,6000);
-        // farming
-        //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new StartFarmingMinigame(),DELAY,10);
-        //Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Mushrooms(),DELAY,20);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN, replenishBedrockTask,DEFAULT_DELAY,6000);
         // stats
-        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,StatsCaching::cacheStats,DELAY,6000);
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,StatsCaching::cacheStats,DEFAULT_DELAY,6000);
     }
 }

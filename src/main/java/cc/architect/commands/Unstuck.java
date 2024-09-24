@@ -1,6 +1,6 @@
 package cc.architect.commands;
 
-import cc.architect.managers.Movers;
+import cc.architect.events.player.Respawn;
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -19,10 +19,13 @@ public class Unstuck {
                 if (p == null) {
                     return Command.SINGLE_SUCCESS;
                 }
-                Movers.toVillage(p);
+                if (p.getWorld().getName().equals("world")) {
+                    return Command.SINGLE_SUCCESS;
+                }
+                p.teleport(Respawn.getRespawnLocation(p));
                 return Command.SINGLE_SUCCESS;
             })
-                .build()
+            .build()
             );
         });
     }

@@ -6,9 +6,7 @@ import cc.architect.commands.money.Loan;
 import cc.architect.commands.money.Savings;
 import cc.architect.commands.money.investments.InvestmentBasic;
 import cc.architect.commands.money.investments.InvestmentRisky;
-import cc.architect.objects.Compass;
-import cc.architect.objects.HashMaps;
-import cc.architect.objects.Titles;
+import cc.architect.objects.*;
 import cc.architect.tasks.player.Autosave;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -101,12 +99,12 @@ public class Game {
     public static void finishDay(Player p) {
         // calculate game information
         Autosave.autosave(p);
-        Facts.saveOne(p);
         // remove everything concerning the given day, but keep stuff concerning the whole game
         Meta.clear(p,Meta.LAST_LOCATION);
         Meta.clear(p,Meta.ACTIONS);
         Meta.clear(p,Meta.ROUTINE);
         Meta.set(p,Meta.LOAN_SAFE_HAD_LOAN,"false");
+        Time.set(p,6000);
         p.setFoodLevel(20);
         // move to spawn
         Movers.toSpawn(p);
@@ -133,8 +131,8 @@ public class Game {
         Meta.clear(p,Meta.LOAN_RISKY_COUNTER);
         Meta.clear(p,Meta.IS_IN_GAME);
         Meta.clear(p,Meta.SAVINGS_THIS_DAY);
-        // show title
-        p.sendMessage(Component.text("Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu."));
+        p.getInventory().clear();
+        p.sendMessage(Icons.SUCCESS.append(Component.text(" Hra úspěšně dokončena. Gratulujeme! Skóre a další statistiky byly zapsány do leaderboardu.").color(Colors.GREEN)));
     }
     private static void enterGame(Player p) {
         Game.exitLobby(p);

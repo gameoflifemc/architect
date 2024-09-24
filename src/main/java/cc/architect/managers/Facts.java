@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,40 +37,9 @@ public class Facts {
             Bukkit.dispatchCommand(Architect.CONSOLE, "tw facts set " + id + " " + data + " " + p.getName());
         }
     }
-    public static void saveOne(Player p) {
-        // skip if in default world
-        if (p.getWorld().getName().equals("world")) {
-            return;
-        }
+    public static void save(Player p) {
         // get uid for this request
         int uid = FACT_UID.getAndIncrement();
-        // run save
-        Facts.prepareSave(p,uid);
-    }
-    public static void saveAll() {
-        // get all players
-        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        // skip if no players in game
-        boolean noPlayers = true;
-        for (Player p : players) {
-            // skip if in default world
-            if (p.getWorld().getName().equals("world")) {
-                continue;
-            }
-            noPlayers = false;
-        }
-        if (noPlayers) {
-            return;
-        }
-        // get uid for this request
-        int uid = FACT_UID.getAndIncrement();
-        // save facts for all players
-        for (Player p : players) {
-            // run save
-            Facts.prepareSave(p,uid);
-        }
-    }
-    private static void prepareSave(Player p, int uid) {
         // create indicator in log
         Architect.LOGGER.info(Facts.INDICATOR.append(Component.text(uid)));
         // send request command to TypeWriter
@@ -120,13 +88,13 @@ public class Facts {
                     factLines.add(current);
                 }
                 // save player
-                Facts.savePlayer(p,factLines);
+                Facts.sendMeta(p,factLines);
                 break;
             }
             break;
         }
     }
-    private static void savePlayer(Player p, List<String> lines) {
+    private static void sendMeta(Player p, List<String> lines) {
         // run through all the fact lines
         for (String line : lines) {
             // prepare objects

@@ -13,7 +13,14 @@ public class Respawn implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        e.setRespawnLocation(switch (p.getWorld().getName()) {
+        e.setRespawnLocation(Respawn.getRespawnLocation(p));
+        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
+            p.setFoodLevel(Integer.parseInt(Meta.get(p,Meta.ACTIONS)));
+            p.addPotionEffect(Game.REGENERATION);
+        },20);
+    }
+    public static Location getRespawnLocation(Player p) {
+        return switch (p.getWorld().getName()) {
             case "village" -> Architect.VILLAGE.getSpawnLocation();
             case "mine" -> Architect.MINE.getSpawnLocation();
             case "farm" -> Architect.FARM.getSpawnLocation();
@@ -28,10 +35,6 @@ public class Respawn implements Listener {
                 }
             }
             default -> Architect.WORLD.getSpawnLocation();
-        });
-        Architect.SCHEDULER.runTaskLater(Architect.PLUGIN,() -> {
-            p.setFoodLevel(Integer.parseInt(Meta.get(p,Meta.ACTIONS)));
-            p.addPotionEffect(Game.REGENERATION);
-        },20);
+        };
     }
 }

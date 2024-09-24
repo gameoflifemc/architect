@@ -5,6 +5,8 @@ import cc.architect.commands.money.Loan;
 import cc.architect.commands.money.Savings;
 import cc.architect.commands.money.investments.InvestmentGlobal;
 import cc.architect.leaderboards.stats.PlayerStatsHolder;
+import cc.architect.objects.Colors;
+import cc.architect.objects.Icons;
 import me.caps123987.monitorapi.displays.DisplayButtonComponent;
 import me.caps123987.monitorapi.displays.DisplayTextComponent;
 import me.caps123987.monitorapi.displays.InteractiveDisplay;
@@ -38,13 +40,12 @@ public class PlayerStatsBoard {
             ));
         });
         DisplayButtonComponent emeraldsInfo = new DisplayButtonComponent(new Vector(-3.4,2.25,0.05));
-        emeraldsInfo.setOnSpawnCallback((display, uuid) -> emeraldsInfo.setDisplayText(Component.text("\uE003"),uuid));
-        emeraldsInfo.onClick((display, event) -> event.getPlayer().sendMessage(Component.text("Počet emeraldů se počítá takto: \n Emeraldy v inventáři + Spoření + Investice - Půjčky \nPokud budeš kdykoli v mínusu tak ti tabulka ukáže hodnotu 0")));
+        emeraldsInfo.setOnSpawnCallback((display, uuid) -> emeraldsInfo.setDisplayText(Icons.INFO,uuid));
+        emeraldsInfo.onClick((display, event) -> event.getPlayer().sendMessage(Icons.INFO.append(Component.text("Celkový počet emeraldů je určen:\n1. Emeraldy v inventáři\n2. Naspořenými emeraldy\n3. Zainvestovanými emeraldy\n4. Půjčenými emeraldy").color(Colors.BASE))));
         board.addComponent(header);
         board.addComponent(emeraldsInfo);
         board.create(l);
     }
-
     public static void setupBoard(InteractiveDisplay board){
         board.setChangeToAllPlayers((display)-> display.setLineWidth(300));
 

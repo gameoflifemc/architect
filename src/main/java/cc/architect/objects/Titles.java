@@ -12,7 +12,7 @@ public class Titles {
     public static final Title TRANSITION1 = Title.title(Component.empty(),Component.text("0").font(Fonts.LOADING),
         Title.Times.times(TRANSITION_FADE,TRANSITION_STAY,Duration.ZERO)
     );
-    public static final Title TRANSITION2 = Title.title(Component.text("$#").font(Fonts.LOADING),Component.text("0").font(Fonts.LOADING),
+    public static final Title TRANSITION2 = Title.title(Component.empty(),Component.text("0").font(Fonts.LOADING),
         Title.Times.times(Duration.ZERO,TRANSITION_STAY,Duration.ZERO)
     );
     public static final Title TRANSITION3 = Title.title(Component.empty(),Component.text("0").font(Fonts.LOADING),
