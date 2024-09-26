@@ -86,7 +86,7 @@ public class Party implements PluginMessageListener {
      * - Type: responce <br>
      * - UUID: Special identificator <br>
      * - ServerName: Name of the server sending the request <br>
-     * - Response: DENY-has invite  ACCEPT-valid NOT_FOUND OFFILNE<br>
+     * - Response: DENY-has invite  ACCEPT-valid NOT_FOUND OFFLINE<br>
      * - Receiver: Name of the player receiving the request <br>
      * - Sender: Name of the player sending the request <br><br>
      * - Channel: BaseChannels.INVITE_CHANNEL

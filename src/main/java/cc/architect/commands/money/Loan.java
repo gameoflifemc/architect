@@ -81,6 +81,10 @@ public class Loan {
     public static void handleLoanLichvarAdd(Player p) {
         StringBuilder loanBuilder = new StringBuilder();
         String loansMap = Meta.get(p,Meta.LOAN_RISKY_MAP);
+        if(loansMap == null) {
+            Meta.set(p,Meta.LOAN_RISKY_MAP,"");
+            return;
+        }
         String[] loans = loansMap.split(";");
         if(loans[0].isEmpty()) return;
 
@@ -96,6 +100,10 @@ public class Loan {
         Meta.set(p,Meta.LOAN_RISKY_MAP,loanBuilder.toString());
     }
     public static void handleLoanSporAdd(Player p) {
+        if(Meta.get(p,Meta.LOAN_SAFE)==null) {
+            Meta.set(p,Meta.LOAN_SAFE,"0");
+            return;
+        }
         int loan_spor = Integer.parseInt(Meta.get(p,Meta.LOAN_SAFE));
         Meta.add(p,Meta.LOAN_SAFE, (int) (loan_spor * Game.LOAN_SPOR_INSTANT));
     }

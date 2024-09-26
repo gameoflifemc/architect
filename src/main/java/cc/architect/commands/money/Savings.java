@@ -82,6 +82,10 @@ public class Savings {
     }
 
     public static void handeSavingsAdder(Player p) {
+        if(Meta.get(p,Meta.SAVINGS)==null) {
+            Meta.set(p,Meta.SAVINGS,"0");
+            return;
+        }
         int savings = Integer.parseInt(Meta.get(p,Meta.SAVINGS));
         Meta.add(p,Meta.SAVINGS,savings / Game.SAVINGS_DIVIDER);
     }
