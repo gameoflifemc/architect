@@ -15,6 +15,7 @@ import java.io.DataOutputStream;
 
 public class Base {
     public static final String PUBLIC = "BungeeCord";
+    public static final String LOGINER = "loginer:log";
     public static final String CONNECT = "Connect";
     public static final String RAW_MESSAGE = "RawMessage";
     public static final String PLAYER_LIST = "PlayerList";
@@ -28,6 +29,9 @@ public class Base {
     public static DataOutputStream msgOut = new DataOutputStream(msgBytes);
     public static void sendToDefaultChannel(ByteArrayDataOutput out){
         Iterables.getFirst(Bukkit.getOnlinePlayers(),null).sendPluginMessage(Architect.PLUGIN, Base.PUBLIC,out.toByteArray());
+    }
+    public static void sendToProxyLoggerChannel(ByteArrayDataOutput out){
+        Iterables.getFirst(Bukkit.getOnlinePlayers(),null).sendPluginMessage(Architect.PLUGIN, Base.LOGINER,out.toByteArray());
     }
     public static void sendToDefaultChannelPlayer(ByteArrayDataOutput out,Player player){
         player.sendPluginMessage(Architect.PLUGIN, Base.PUBLIC,out.toByteArray());
