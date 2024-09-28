@@ -39,7 +39,7 @@ public class InvestmentBasic {
             if(days==0){
                 newAmount = amount;
             }
-            invBuilder.append(newAmount).append(",").append(days).append(";");
+            invBuilder.append(newAmount).append(",").append(data[1]).append(";");
         }
 
         Meta.set(p,Meta.INVESTMENTS_MAP,invBuilder.toString());

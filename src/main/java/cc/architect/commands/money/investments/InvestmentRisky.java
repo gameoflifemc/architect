@@ -33,17 +33,17 @@ public class InvestmentRisky {
         for (String investment : investments) {
             String[] data = investment.split(",");
             int amount = Integer.parseInt(data[0]);
-            int days = Math.max(Integer.parseInt(data[1])-playerDay,0);
+            int days = Math.max(Integer.parseInt(data[1])-playerDay,-1);
 
             float randFloat = (float) ((Math.random() * (Game.INVESTMENTS_RISKY_MAX_PERCENT - Game.INVESTMENTS_RISKY_MIN_PERCENT)) + Game.INVESTMENTS_RISKY_MIN_PERCENT);
             randFloat = Math.round(randFloat*100)/100f;
 
             int newAmount = amount + (int) ((double) amount * randFloat);
 
-            if(days==0){
+            if(days==-1){
                 newAmount = amount;
             }
-            invBuilder.append(newAmount).append(",").append(days).append(";");
+            invBuilder.append(newAmount).append(",").append(data[1]).append(";");
         }
 
         Meta.set(p,Meta.INVESTMENTS_MAP_RISKY,invBuilder.toString());
