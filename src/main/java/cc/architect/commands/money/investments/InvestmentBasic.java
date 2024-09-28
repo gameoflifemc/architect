@@ -33,10 +33,10 @@ public class InvestmentBasic {
         for (String investment : investments) {
             String[] data = investment.split(",");
             int amount = Integer.parseInt(data[0]);
-            int days = Math.max(Integer.parseInt(data[1])-playerDay,0);
+            int days = Math.max(Integer.parseInt(data[1])-playerDay,-1);
 
             int newAmount = amount + (int)(amount * INVESTMENTS_PERCENT);
-            if(days==0){
+            if(days==-1){
                 newAmount = amount;
             }
             invBuilder.append(newAmount).append(",").append(data[1]).append(";");
