@@ -22,6 +22,8 @@ public class Meta {
     public static final String FACT = "fact_";
     public static final String SAVINGS = "savings";
     public static final String CODE = "code";
+    public static final String ILNESS = "ilness";
+    public static final String IS_ILl = "is_ill";
     // total values
     public static final String SCORE_TOTAL = "score_total";
     public static final String EMERALDS_TOTAL = "emeralds_total";

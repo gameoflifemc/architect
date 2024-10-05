@@ -4,6 +4,7 @@ import cc.architect.commands.money.Loan;
 import cc.architect.commands.money.Savings;
 import cc.architect.commands.money.investments.InvestmentBasic;
 import cc.architect.commands.money.investments.InvestmentRisky;
+import cc.architect.managers.Ilness;
 import cc.architect.managers.Meta;
 import cc.architect.managers.Movers;
 import cc.architect.managers.Routines;
@@ -211,12 +212,18 @@ public class Simulation {
                         })
                     )
                 )
-                    .then(Commands.literal("update")
-                        .executes(ctx -> {
-                            cacheStats();
-                            return Command.SINGLE_SUCCESS;
-                        })
-                    )
+                .then(Commands.literal("update")
+                    .executes(ctx -> {
+                        cacheStats();
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+                .then(Commands.literal("cure")
+                    .executes(ctx -> {
+                        Ilness.cure(Bukkit.getPlayerExact(ctx.getSource().getSender().getName()));
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
                 .build()
             );
         });

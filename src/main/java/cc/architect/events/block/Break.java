@@ -4,6 +4,7 @@ import cc.architect.Architect;
 import cc.architect.bonuses.DiamondBonus;
 import cc.architect.loottables.LootTableManager;
 import cc.architect.loottables.definitions.MiningChestLootTable;
+import cc.architect.managers.Ilness;
 import cc.architect.managers.Items;
 import cc.architect.managers.Tasks;
 import cc.architect.objects.Messages;
@@ -32,8 +33,10 @@ public class Break implements Listener {
             Block b = e.getBlock();
             if (world == Architect.MINE) {
                 mining(p,b);
+                Ilness.addIlness(p,3);
             } else if (world == Architect.FARM) {
                 Farming.breakBlockFarm(e);
+                Ilness.addIlness(p,1);
             }
         }
     }

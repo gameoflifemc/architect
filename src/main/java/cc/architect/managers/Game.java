@@ -43,6 +43,7 @@ public class Game {
             Meta.set(p,Meta.IS_IN_GAME, "true");
 
             Meta.set(p,Meta.SAVINGS_THIS_DAY, "false");
+            Ilness.setup(p);
         }
         // prepare meta
         Meta.set(p,Meta.SAVINGS_THIS_DAY, "false");
@@ -50,6 +51,10 @@ public class Game {
         Meta.set(p,Meta.ROUTINE,"1");
         Meta.set(p,Meta.ACTIONS,"20");
         p.setFoodLevel(20);
+
+        // add ilness (player will be ill at least once)
+        Ilness.addIlness(p,120);
+        Ilness.addIfPotion(p);
         // enter game
         Game.enterGame(p);
         // simulate interest
@@ -66,6 +71,8 @@ public class Game {
     public static void resumeDay(Player p) {
         // enter game
         Game.enterGame(p);
+        // add ilness if needed
+        Ilness.addIfPotion(p);
         // synchronize action points
         if (Meta.get(p,Meta.ACTIONS) != null) {
             p.setFoodLevel(Integer.parseInt(Meta.get(p,Meta.ACTIONS)));

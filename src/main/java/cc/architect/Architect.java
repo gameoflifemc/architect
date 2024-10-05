@@ -34,6 +34,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public final class Architect extends JavaPlugin {
@@ -48,10 +49,13 @@ public final class Architect extends JavaPlugin {
     public static World MINE;
     public static World FARM;
     public static World TRAVEL;
+    public static Random RANDOM;
     @Override
     public void onEnable() {
         // plugin
         PLUGIN = this;
+        // Random
+        RANDOM = new Random();
         // luckperms
         LUCKPERMS = LuckPermsProvider.get();
         // scheduler
