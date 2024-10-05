@@ -115,6 +115,8 @@ public final class Architect extends JavaPlugin {
             messenger.registerIncomingPluginChannel(this,Base.PUBLIC,channel);
         }
         messenger.registerOutgoingPluginChannel(this,Base.PUBLIC);
+        messenger.registerOutgoingPluginChannel(this,Base.LOGINER);
+
         // worlds
         List<String> worlds = List.of(
             "village",
