@@ -229,10 +229,17 @@ public class Simulation {
                     })
                 )
                 .then(Commands.literal("cure")
-                    .executes(ctx -> {
-                        Ilness.cure(Bukkit.getPlayerExact(ctx.getSource().getSender().getName()));
-                        return Command.SINGLE_SUCCESS;
-                    })
+                    .then(Commands.argument("player",StringArgumentType.word())
+                        .executes(ctx -> {
+                            Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
+                            String world = StringArgumentType.getString(ctx,"world");
+                            if (p == null) {
+                                return Command.SINGLE_SUCCESS;
+                            }
+                            Ilness.cure(p);
+                            return Command.SINGLE_SUCCESS;
+                        })
+                    )
                 )
                 .build()
             );
