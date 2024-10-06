@@ -232,7 +232,6 @@ public class Simulation {
                     .then(Commands.argument("player",StringArgumentType.word())
                         .executes(ctx -> {
                             Player p = Bukkit.getPlayerExact(StringArgumentType.getString(ctx,"player"));
-                            String world = StringArgumentType.getString(ctx,"world");
                             if (p == null) {
                                 return Command.SINGLE_SUCCESS;
                             }
