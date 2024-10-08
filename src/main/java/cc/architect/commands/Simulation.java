@@ -75,16 +75,7 @@ public class Simulation {
                                     }
                                     int amount = IntegerArgumentType.getInteger(ctx,"amount");
                                     // write to database
-                                    Location loc = p.getLocation().clone();
-                                    loc.setX(Math.round(loc.getX()));
-                                    loc.setY(Math.round(loc.getY()));
-                                    loc.setZ(Math.round(loc.getZ()));
-                                    loc.setPitch(Math.round(loc.getPitch()));
-                                    loc.setYaw(Math.round(loc.getYaw()));
-
-                                    Meta.add(p,Meta.SCORE_TOTAL,amount);
-                                    p.sendMessage(Icons.SUCCESS.append(Component.text("Získáno " + amount + " skóre. Celkem " + Meta.get(p,Meta.SCORE_TOTAL) + " skóre.").color(Colors.GREEN)));
-                                    ProxyLogger.logInfoProxy(p.getName() + " location: "+loc.toString()+" amount: "+amount);
+                                    ScoreGiver.give(p,amount);
                                     return Command.SINGLE_SUCCESS;
                                 })
                             )

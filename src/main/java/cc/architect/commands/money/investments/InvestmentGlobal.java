@@ -1,6 +1,7 @@
 package cc.architect.commands.money.investments;
 
 import cc.architect.Utilities;
+import cc.architect.commands.ScoreGiver;
 import cc.architect.managers.Meta;
 import cc.architect.objects.Colors;
 import com.mojang.brigadier.Command;
@@ -53,6 +54,21 @@ public class InvestmentGlobal {
         p.sendMessage(Component.text("Úspěšně zainvestováno " + amount + " emeraldů na dobu "+time+" dnů.").color(Colors.GREEN));
         printInvestments(p,metaKey);
 
+        switch (amount) {
+            case 50:
+                ScoreGiver.give(p,125);
+                break;
+            case 100:
+                ScoreGiver.give(p,250);
+                break;
+            case 150:
+                ScoreGiver.give(p,500);
+                break;
+            case 1000:
+                ScoreGiver.give(p,3600);
+                break;
+        }
+
         return Command.SINGLE_SUCCESS;
     }
 
@@ -94,6 +110,7 @@ public class InvestmentGlobal {
         // write to database
         p.sendMessage(Component.text("Dostal jsi " + claimAmount + " emeraldů.").color(Colors.GREEN));
         printInvestments(p,metaKey);
+
         return Command.SINGLE_SUCCESS;
     }
 
