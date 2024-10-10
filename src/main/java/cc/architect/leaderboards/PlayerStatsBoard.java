@@ -25,9 +25,9 @@ import java.util.Arrays;
 
 public class PlayerStatsBoard {
     public static void createStatsLeaderBoard(Location l) {
-        InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS);
+        InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS, l.getWorld());
         setupBoard(board);
-        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,3.05,0.05));
+        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,3.05,0.05), l.getWorld());
         header.setOnSpawnCallback((display, uuid) -> {
             header.setDisplayText(Component.text("Tvoje statistiky", Style.style(TextDecoration.BOLD,TextColor.color(220,220,20))),uuid);
             header.setChangeToAllPlayers((display1, uuid1) -> display1.setTransformation(
@@ -39,7 +39,7 @@ public class PlayerStatsBoard {
                 )
             ));
         });
-        DisplayButtonComponent emeraldsInfo = new DisplayButtonComponent(new Vector(-3.4,2.25,0.05));
+        DisplayButtonComponent emeraldsInfo = new DisplayButtonComponent(new Vector(-3.4,2.25,0.05), l.getWorld());
         emeraldsInfo.setOnSpawnCallback((display, uuid) -> emeraldsInfo.setDisplayText(Icons.INFO,uuid));
         emeraldsInfo.onClick((display, event) -> event.getPlayer().sendMessage(Icons.INFO.append(Component.text("Celkový počet emeraldů je určen:\n1. Emeraldy v inventáři\n2. Naspořenými emeraldy\n3. Zainvestovanými emeraldy\n4. Půjčenými emeraldy").color(Colors.BASE))));
         board.addComponent(header);

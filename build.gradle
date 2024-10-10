@@ -22,7 +22,7 @@ dependencies {
     implementation 'net.luckperms:api:5.4'
     implementation 'me.clip:placeholderapi:2.11.6'
     implementation 'com.github.retrooper:packetevents-spigot:2.4.0'
-    implementation 'com.github.CAPS123987:MonitorAPI:1.3-Beta'
+    implementation 'com.github.CAPS123987:MonitorAPI:1.9-Beta'
     // processors
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 }

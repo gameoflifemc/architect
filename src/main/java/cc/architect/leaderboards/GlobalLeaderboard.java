@@ -28,15 +28,15 @@ public class GlobalLeaderboard {
 
     public static final String[] pageTypes = {"score","emeralds","investments","loan"};
     public static void createStatsLeaderBoard(Location l) {
-        InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS);
+        InteractiveDisplay board = new InteractiveDisplay(RenderMode.ALL_PLAYERS_INDIVIDUAL_DISPLAYS, l.getWorld());
         setupMainBoard(board);
-        DisplayButtonComponent durationButton = new DisplayButtonComponent(new Vector(0,-.75,0));
+        DisplayButtonComponent durationButton = new DisplayButtonComponent(new Vector(0,-.75,0), l.getWorld());
         setupDurationButton(board, durationButton, "duration","_highest","_daily",Messages.durationTotal,Messages.durationDaily);
 
-        DisplayButtonComponent typeButton = new DisplayButtonComponent(new Vector(4,1,0));
+        DisplayButtonComponent typeButton = new DisplayButtonComponent(new Vector(4,1,0), l.getWorld());
         setupTypeButton(board, typeButton, "type");
 
-        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,3,0.05));
+        DisplayTextComponent header = new DisplayTextComponent(new Vector(0,3,0.05), l.getWorld());
         header.setOnSpawnCallback((display, uuid) -> {
             header.setDisplayText(Component.text("Leaderboard", Style.style(TextDecoration.BOLD,TextColor.color(220,220,20))),uuid);
             header.setChangeToAllPlayers((display1, uuid1) -> display1.setTransformation(
