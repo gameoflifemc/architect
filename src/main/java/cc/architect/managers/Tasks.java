@@ -6,6 +6,7 @@ import cc.architect.tasks.mining.Replenish;
 import cc.architect.tasks.player.ActionBar;
 import cc.architect.tasks.player.Autosave;
 import cc.architect.tasks.player.Compass;
+import cc.architect.tasks.player.Tips;
 
 public class Tasks {
     public static final Replenish replenishBedrockTask = new Replenish();
@@ -21,5 +22,7 @@ public class Tasks {
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN, replenishBedrockTask,DEFAULT_DELAY,6000);
         // stats
         Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,StatsCaching::cacheStats,DEFAULT_DELAY,6000);
+        // tips
+        Architect.SCHEDULER.runTaskTimer(Architect.PLUGIN,new Tips(),DEFAULT_DELAY,12000);
     }
 }

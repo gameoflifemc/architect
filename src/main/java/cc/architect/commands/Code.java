@@ -28,7 +28,7 @@ public class Code {
                     return Command.SINGLE_SUCCESS;
                 }
                 String code = Meta.check(p,Meta.CODE) ? Meta.get(p,Meta.CODE) : Code.generate(p);
-                p.sendMessage(Icons.SUCCESS.append(PREFIX).append(Component.text(code)).append(SUFFIX).appendNewline().append(NEXT_LINE).color(Colors.GREEN).clickEvent(ClickEvent.copyToClipboard(code)));
+                p.sendMessage(Icons.SUCCESS.append((PREFIX).append(Component.text(code)).append(SUFFIX).appendNewline().append(NEXT_LINE).color(Colors.GREEN)).clickEvent(ClickEvent.copyToClipboard(code)));
                 return Command.SINGLE_SUCCESS;
             })
             .build()
